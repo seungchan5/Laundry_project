@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/project_footer.css">
+    <link rel="stylesheet" href="/css/project_header.css">
+    <link rel="stylesheet" href="/css/project_rider.css">
+    <!-- sock js -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.2/sockjs.min.js"></script>
+    <!-- STOMP -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        window.addEventListener('load', function(){
+            var msg = $('#msg').val();
+            if(msg != ""){
+                swal('배차 실패!',msg,'info')
+            }
+        });
+    </script>
+    <script src="/js/rider_list_on.js"></script>
+    <title>Document</title>
+</head>
+<!--<header th:replace="~{/common/project_back_header :: header}"></header>-->
+<header>
+    <div class='logo'>
+        <a href="#" onclick="history.back();">
+<!--            <img id="ig" src="/images/main_logo.jpg" alt="선택한 이미지" style="width: 100%; height: 100%; text-align: center;"/>-->
+        </a>
+    </div>
+</header>
+<body>
+    <div class='container'>
+<!--        <div th:text="${id}"></div>-->
+<!--        <input type="text" name="" id="aaaa" th:value="${msg}">-->
+<!--        <aside th:replace="~{/common/project_rider_header :: rider_header}"></aside>-->
+            <div class='rider_header'>
+                <div class='ride_head'>배달</div><br>
+                <div class='ride_txt'>
+                    <div class='ch'>대기중인 배달 건수 : </div>
+<!--                    <div class='ride_num' th:text="${cnt[1]['RESULT']} + '건'">0건</div>-->
+                    <div class='ride_num'>0건</div>
+                </div>
+            </div>
+            <div class='select_category'>
+                <ul>
+                    <!--                    <a href="/ride/wait"><li class='active' th:text="${'대기중(' + cnt[1]['RESULT']} + ')'">대기중(0)</li></a>-->
+                                        <a href="/ride/wait"><li class='active'>대기중(0)</li></a>
+                    <a href="/ride/accept"><li th:text="${'진행중(' + cnt[0]['RESULT']} + ')'">진행중(16)</li></a>
+                    <a href="/ride/finish"><li th:text="${'완료(' + cnt[2]['RESULT']} + ')'">완료(7)</li></a>
+                </ul>
+            </div>
+            <div class='delivery_list'>
+                <ul id="orderList">
+                    <th:block th:each="list : ${orderList}">
+                    <a th:href="@{/ride/orders/{ordersId}(ordersId=${list.ordersId})}">
+                        <li th:if="${list.ordersStatus == 2 or list.ordersStatus == 3 or list.ordersStatus == 4}" >
+                        <li th:if="${list.ordersStatus == 10 or list.ordersStatus == 11 or list.ordersStatus == 12}" style="background-color: #00ffff38;">
+                            <span class='order_num'>주문번호 :&nbsp;</span><span class='order_num' name="ordersId" th:text="${list.ordersId}">1119</span><br>
+                            <span class='delivery_address' th:text="${list.ordersAddress + ' ' + list.ordersAddressDetails}">서울특별시 서대문구 대현동 777-8 508동 116호</span>
+                            <div class='space'>
+                                <span class='delivery_time' th:text="${list.ordersDate}">2023-08-26 18:57:11</span>
+                                <span class='delivery_dis'>거리 : 1.2km</span>
+                            </div>
+                        </li>
+                    </a>
+                    </th:block>
+<!--                    <th:block th:if="${cnt[1]['RESULT'] == 0}">-->
+<!--                        <li class='drive_none'>-->
+<!--                            <span>현재 요청된 배달이 없습니다.</span>-->
+<!--                        </li>-->
+<!--                    </th:block>-->
+                </ul>
+            </div>
+        <div id="orderStatus"></div>
+        <input type="hidden" name="workingArea" id="workingArea" value="" th:value="${riderInfo.workingArea}">
+        <input type="hidden" name="quickRiderId" id="quickRiderId" value="" th:value="${riderInfo.riderId}">
+        <input type="hidden" name="" id="msg" th:value="${msg}">
+    </div>
+</body>
+<footer th:replace="~{/common/project_rider_footer :: footer}"> </footer>
+</html>

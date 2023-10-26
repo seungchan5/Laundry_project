@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/project_footer.css">
+    <link rel="stylesheet" href="/css/project_header.css">
+    <link rel="stylesheet" href="/css/project_manager_order_list.css">
+    <title>세탁신청</title>
+</head>
+<header th:replace="~{/common/project_header :: header}"></header>
+<body>
+    <div class='container'>
+        <input type="text" value="1" class="hidden" id="inspectionStatus">
+        <aside th:replace="~{/common/project_order_header :: manager_header}"></aside>
+
+        <div class='res_box' id="resBox">
+        </div>
+    </div>
+</body>
+<footer th:replace="~{/common/project_footer :: footer}"> </footer>
+</html>

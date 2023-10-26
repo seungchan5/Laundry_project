@@ -1,0 +1,83 @@
+.orderList{
+    width: 100%;
+}
+
+.menu{
+    width: 100%;
+    display: flex;
+    background-color: var(--main-font-color);
+    margin-bottom: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 2px 2px 5px #dadada;
+    height: 3rem;
+}
+.leftBtn, .rightBtn{
+    margin: 0;
+    padding: 0;
+    width: 50%;
+    height: 100%;
+    background-color: var(--main-font-color);
+    border: none;
+    color: white;
+    font-size: 1.1rem;
+}
+.leftBtn{
+    border-top-left-radius: 0.5rem;
+    border-bottom-left-radius: 0.5rem;
+}
+
+.rightBtn{
+    border-top-right-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+}
+
+.order{
+    display: block;
+    width: 100%;
+    background-color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    box-shadow: 2px 2px 5px #dadada;
+    padding: 1rem;
+    margin-bottom: 0.9rem;
+}
+
+.orderTop{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+.orderDate{
+    color: var(--gray);
+    margin: 0;
+}
+.orderStatus{
+    font-size: 1.1rem;
+    margin: 0;
+}
+.option{
+    display: inline-block;
+    margin-left: 0.3rem;
+    border: none;
+    padding: 0.1rem 0.5rem;
+    width: 4.5rem;
+    background-color: var(—main-font-color);
+    border-radius: 0.5rem;
+    color: white;
+}
+.orderBox{
+    margin: 0;
+}
+
+.selected{
+    background-color: var(--main-color);
+    border-radius: 0.5rem;
+}
+.orderCenter{
+    text-align: left;
+}
+
+.hidden{
+    display: none;
+}
+

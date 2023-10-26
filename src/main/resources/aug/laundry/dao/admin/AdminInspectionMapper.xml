@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="aug.laundry.dao.admin.AdminInspectionMapper">
+    <select id="getInspectionList" resultType="aug.laundry.dto.AdminInspectionDto">
+        SELECT orders_id, orders_date, quick_laundry_id
+        FROM (SELECT ROWNUM rn, t.*
+              from (SElECT o.orders_id, to_char(o.orders_date, 'yyyy-mm-dd') AS orders_date, q.quick_laundry_id
+                    FROM orders o
+                             INNER JOIN orders_detail od ON o.orders_id = od.orders_id
+                             LEFT OUTER JOIN quick_laundry q ON od.orders_detail_id = q.orders_detail_id
+                    WHERE o.orders_status = #{orderStatus}
+                    ORDER BY o.orders_date DESC) t)
+        WHERE rn BETWEEN #{cri.startNo} and #{cri.endNo}
+    </select>
+
+    <select id="getTotalCount" resultType="int">
+        SELECT count(*)
+        FROM orders
+        WHERE orders_status = #{ordersStatus}
+    </select>
+
+    <select id="getOrderInfo" resultType="aug.laundry.dto.AdminInspectionDto">
+        SELECT o.orders_id, o.orders_request, od.orders_detail_id, ins.inspection_id
+        FROM orders o
+                 INNER JOIN orders_detail od ON o.orders_id = od.orders_id
+                 INNER JOIN inspection ins ON o.orders_id = ins.orders_id
+        where o.orders_id = #{ordersId}
+    </select>
+
+    <select id="getCommonLaundryInfo" resultType="aug.laundry.dto.AdminCommonLoundryDto">
+        SELECT cl.common_laundry_id, cl.common_laundry_weight, cl.orders_detail_id
+        FROM orders_detail od
+                 INNER JOIN common_laundry cl ON od.orders_detail_id = cl.orders_detail_id
+        WHERE od.orders_detail_id = #{orderDetailId}
+    </select>
+
+    <select id="getDrycleaningInfo" resultType="aug.laundry.dto.AdminDrycleaningDto">
+        SELECT d.drycleaning_id,
+               d.orders_detail_id,
+               d.drycleaning_category,
+               d.drycleaning_possibility,
+               d.drycleaning_not_reason
+        FROM orders_detail od
+                 INNER JOIN drycleaning d ON od.orders_detail_id = d.orders_detail_id
+        WHERE od.orders_detail_id = #{orderDetailId}
+    </select>
+
+    <select id="getRepairInfo" resultType="aug.laundry.dto.AdminRepairDto">
+        SELECT r.repair_id,
+               r.orders_detail_id,
+               r.repair_request,
+               r.repair_category,
+               r.repair_possibility,
+               r.repair_not_reason
+        FROM orders_detail od
+                 INNER JOIN repair r ON od.orders_detail_id = r.orders_detail_id
+        WHERE od.orders_detail_id = #{orderDetailId}
+    </select>
+
+    <select id="getOrderSearchInfo" resultType="aug.laundry.dto.AdminInspectionDto">
+        SElECT o.orders_id, to_char(o.orders_date, 'yyyy-mm-dd') AS orders_date, q.quick_laundry_id
+        FROM orders o
+                 INNER JOIN orders_detail od ON o.orders_id = od.orders_id
+                 LEFT OUTER JOIN quick_laundry q ON od.orders_detail_id = q.orders_detail_id
+                 INNER JOIN inspection ins ON o.orders_id = ins.orders_id
+        WHERE o.orders_id = #{ordersId}
+          AND o.orders_status = #{ordersStatus}
+    </select>
+
+    <select id="getRepairImage" resultType="String">
+        SELECT repair_image_store_name
+        FROM repair_image
+        WHERE repair_id = #{repairId}
+    </select>
+
+    <update id="updateCommon">
+        UPDATE common_laundry
+        SET common_laundry_weight = #{commonLaundryWeight}
+        WHERE common_laundry_id = #{commonLaundryId}
+    </update>
+
+    <update id="updateRepair">
+        UPDATE repair
+        SET repair_possibility = #{repairPossibility},
+            repair_not_reason  = #{repairNotReason}
+        WHERE repair_id = #{repairId}
+    </update>
+
+    <update id="updateDrycleaning">
+        UPDATE drycleaning
+        SET drycleaning_possibility = #{drycleaningPossibility},
+            drycleaning_not_reason  = #{drycleaningNotReason}
+        WHERE drycleaning_id = #{drycleaningId}
+    </update>
+
+    <update id="updateInspectionStatus">
+        UPDATE inspection
+        SET admin_id          = #{adminId},
+            inspection_status = 'Y'
+        WHERE orders_id = #{ordersId}
+    </update>
+
+    <update id="updateOrderStatus">
+        UPDATE orders
+        SET orders_status = 6
+        WHERE orders_id = #{ordersId}
+    </update>
+
+    <select id="getInspectionImageList" resultType="InspectionImage">
+        SELECT inspection_image_id, inspection_id, inspection_image_upload_name, inspection_image_store_name
+        FROM inspection_image
+        WHERE inspection_id = (SELECT inspection_id
+                               FROM INSPECTION
+                               WHERE orders_id = #{ordersId})
+    </select>
+
+    <delete id="deleteImage">
+        DELETE
+        FROM inspection_image
+        WHERE inspection_image_store_name = #{inspectionImageStoreName}
+    </delete>
+
+    <select id="getMemberId" resultType="Long">
+        SELECT member_id FROM orders WHERE orders_id = #{ordersId}
+    </select>
+</mapper>

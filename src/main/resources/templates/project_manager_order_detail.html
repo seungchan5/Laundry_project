@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/project_footer.css">
+    <link rel="stylesheet" href="/css/project_header.css">
+    <link rel="stylesheet" href="/css/project_manager_order_detail.css">
+</head>
+<header th:replace="~{/common/project_manager_header :: header}"></header>
+<body>
+    
+    <div class='container'>
+        <form th:action="@{'/admin/9/' + ${info['orderInfo'].ordersId}}" method="post" enctype="multipart/form-data">
+            <input type="text" class="hidden" th:value="${info['orderInfo'].ordersId}" name="ordersId">
+            <input type="text" class="hidden" th:value="${info['orderInfo'].inspectionId}" name="inspectionId">
+            <input type="text" value="9" name="adminId" class="hidden" >
+            <h2>주문정보</h2>
+            <table class='orderOption'>
+                <tr>
+                    <th class='content'>주문번호</th>
+                    <td class='content' th:text="${info['orderInfo'].ordersId}"></td>
+                </tr>
+                <tr>
+                    <th class='content'>요청사항</th>
+                </tr>
+            </table>
+            <div class='info'>
+                <span class='content' th:text="${info['orderInfo'].ordersRequest}"></span>
+            </div>
+            <hr class='bighr'>
+
+            <h4 class='laundry' th:if="${info['commonLaundryInfo'] != null }">생활빨래</h4>
+            <table th:if="${info['commonLaundryInfo'] != null }">
+                <tr>
+                    <th class='content'>세탁무게</th>
+                    <td class='content laundry_result'>
+                        <input type="text" class="hidden" name="commonLaundryId" th:value="${info['commonLaundryInfo'].commonLaundryId}">
+                        <input type="text" pattern="[0-9]*(\.[0-9]+)?" name="commonLaundryWeight" id="laundryWeight">
+                        <span>L</span>
+                    </td>
+                </tr>
+            </table>
+
+            <h4 th:if="${info['drycleaningInfo'] != null}">드라이클리닝</h4>
+            <table th:if="${info['drycleaningInfo'] != null}" th:each="dry, dryIndex : ${info['drycleaningInfo']}" th:id="|dryTable${dryIndex.index}|">
+                <tr>
+                    <td>
+                        <input type="text" class="hidden" th:value="${dry.drycleaningId}" th:name="|drycleaningList[${dryIndex.index}].drycleaningId|">
+
+                    </td>
+                </tr>
+                <tr>
+                    <th class='content' th:text="${dry.drycleaningCategory}"></th>
+                </tr>
+                <tr>
+                    <td class='content drycleaning_result'>
+                        <div onchange="hiddenInput(this)" th:id="|dpos${dryIndex.index}b|">
+                            <input type="radio" th:name="|drycleaningList[${dryIndex.index}].drycleaningPossibility|" th:id="|dpos${dryIndex.index}|" value="Y">
+                            <span class="custom-radio" id='poss' onclick='toogleRadio(this)'></span>
+                            <label th:for="|dpos${dryIndex.index}|">가능</label>
+                        </div>
+                        <div onchange="showInput(this)" th:id="|idpos${dryIndex.index}b|">
+                            <input type="radio" th:name="|drycleaningList[${dryIndex.index}].drycleaningPossibility|" th:id="|idpos${dryIndex.index}|" value="N">
+                            <span class="custom-radio" id='imposs' onclick='toogleRadio(this)'></span>
+                            <label th:for="|idpos${dryIndex.index}|">불가능</label>
+                        </div>
+                    </td>
+                <tr>
+
+                <tr >
+                    <th class='reason selectD' th:id="|dpos${dryIndex.index}box|">
+                        <input type="text" th:name="|drycleaningList[${dryIndex.index}].drycleaningNotReason|" class="reason1" placeholder='불가능한 사유를 적어주세요.'>
+                    </th>
+                </tr>
+            </table>
+
+            <hr>
+            <h4 th:if="${info['repairInfo'] != null}">수선</h4>
+            <table th:if="${info['repairInfo'] != null}" th:each="repair, repairIndex : ${info['repairInfo']}" th:id="|repairTable${repairIndex.index}|">
+                <tr>
+                    <td>
+                        <input type="text" class="hidden" th:value="${repair.repairId}" th:name="|repairList[${repairIndex.index}].repairId|">
+                    </td>
+                </tr>
+                <tr>
+                    <th class='content' th:text="${repair.repairCategory}">소분류 이름</th>
+                </tr>
+                <tr th:if="${repair.repairImageStoreName != null}" th:each="img : ${repair.repairImageStoreName}">
+                    <td>
+                        <img class='imgSize' th:src="@{'/images/repair_images/' + ${img}}">
+                    </td>
+                </tr>
+                <tr>
+                    <td class='content drycleaning_result'>
+                        <div onchange="rhiddenInput(this)" th:id="|rpos${repairIndex.index}b|">
+                            <input type="radio" th:name="|repairList[${repairIndex.index}].repairPossibility|" th:id="|rpos${repairIndex.index}|" value="Y">
+                            <span class="custom-radio" id='poss2' onclick='toogleRadio(this)'></span>
+                            <label th:for="|rpos${repairIndex.index}|">가능</label>
+                        </div>
+                        <div onchange="rshowInput(this)" th:id="|irpos${repairIndex.index}b|">
+                            <input type="radio" th:name="|repairList[${repairIndex.index}].repairPossibility|" th:id="|rimpos${repairIndex.index}|" value="N">
+                            <span class="custom-radio" id='imposs2' onclick='toogleRadio(this)'></span>
+                            <label th:for="|rimpos${repairIndex.index}|">불가능</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th class='content'>요청사항</th>
+                </tr>
+                <tr>
+                    <th th:text="${repair.repairRequest}"/>
+                </tr>
+                <tr>
+                    <th class='reason selectR' th:id="|rpos${repairIndex.index}box|">
+                        <input type="text" th:name="|repairList[${repairIndex.index}].repairNotReason|" class="reason1" placeholder='불가능한 사유를 적어주세요.'>
+                    </th>
+                </tr>
+            </table>
+
+            <!-- 사진 -->
+            <label class="input-file-button" for="btnUpload">
+                검수 이미지 추가
+            </label>
+            <input type="file" id="btnUpload" multiple='multiple' name="files" style="display: none;"/>
+
+            <div id="imagePreview">
+            </div>
+
+            <div class='fixbox'>
+                <input type="submit" id="btnSubmit" value="검수완료">
+            </div>
+        </form>
+    </div>
+</body>
+<footer th:replace="~{/common/project_manager_order_footer :: footer}"> </footer>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const memberId = [[${session.memberId != null ? session.memberId : 'null'}]];
+    const ordersId = [[${info['orderInfo'].ordersId != null ? info['orderInfo'].ordersId : 'null'}]];
+    /*]]>*/
+
+    let selectedFiles = [];
+
+    // 이미지 미리보기, 삭제, 이미지 배열 추가
+    document.querySelector('#btnUpload').addEventListener('change', function () {
+        // btnUpload를 가르키는 변수 input
+        let input = this;
+
+        if (input.files && input.files.length) {
+            // 사용자가 파일을 선택했으면 수행
+            for (let i = 0; i < input.files.length; i++) {
+                let file = input.files[i];
+                selectedFiles.push(file); // 선택한파일을 배열에 추가
+                let reader = new FileReader();
+                reader.onload = function (e) {
+                    let container = document.createElement('div');
+                    container.className = 'image-container';
+
+                    let img = document.createElement('img');
+                    // 파일 url
+                    img.src = e.target.result;
+                    img.style.width = '100%';
+                    img.style.height = '100%';
+
+                    // 삭제 버튼
+                    let deleteButton = document.createElement('button');
+                    deleteButton.className = 'preview-de';
+                    deleteButton.textContent = 'X';
+
+                    deleteButton.addEventListener('click', function () {
+                        let index = selectedFiles.indexOf(file);
+                        if(index!==-1) {
+                            selectedFiles.splice(index, 1);
+                        }
+                        container.remove();
+                        // 파일 초기화
+                        input.value = null;
+                    });
+
+                    // 이미지와 삭제버튼을 div에 추가
+                    container.appendChild(img);
+                    container.appendChild(deleteButton);
+                    document.getElementById('imagePreview').appendChild(container);
+                };
+                reader.readAsDataURL(input.files[i]);
+            }
+        }
+    });
+
+    document.querySelector('#btnSubmit').addEventListener('click', function (e) {
+        e.preventDefault();
+
+        // 모든 라디오 버튼을 선택
+        let radios = document.querySelectorAll('input[type="radio"]');
+        let radiosNameArr = [];
+
+        radios.forEach(function(radio) {
+            radiosNameArr.push(radio.getAttribute('name'));
+        });
+
+        let radioArr = Array.from(new Set(radiosNameArr));
+        let validRadio = false;
+        let validRadioAll= [];
+        radioArr.forEach(function (radioName) {
+            let radio = document.querySelectorAll(`input[type="radio"][name="${radioName}"]`);
+
+            for (let i = 0; i < radio.length; i++) {
+                if(radio[i].checked) {
+                    validRadio = true;
+                    validRadioAll.push(validRadio);
+                    return;
+                }
+            }
+        });
+
+        let cnt=0;
+        for (let j = 0; j < validRadioAll.length; j++) {
+            if (validRadio == true) {
+                cnt++;
+            }
+        }
+        let weight = /^\d+(\.\d+)?$/;
+        let laundryElement = document.querySelector('#laundryWeight');
+        let laundryW = laundryElement ? laundryElement.value : null;
+
+        if(laundryW !== null && !weight.test(laundryW)) {
+            alert("일반세탁 무게 확인이 필요합니다..");
+            return;
+        }else if(cnt!==radioArr.length) {
+            alert("검수 체크가 필요합니다.");
+            return;
+        }else if(selectedFiles.length === 0) {
+            alert("이미지 첨부가 필요합니다.");
+            return;
+        }
+
+        let formData = new FormData();
+
+        let inspectionDataDto = {
+            inspectionId: document.querySelector('[name=inspectionId]').value
+        }
+
+        if(laundryW !== null){
+            inspectionDataDto.commonLaundryDto = {
+                commonLaundryId: document.querySelector('[name=commonLaundryId]').value,
+                commonLaundryWeight: document.querySelector('[name=commonLaundryWeight]').value
+            };
+        }
+        inspectionDataDto.drycleaningList = [];
+        inspectionDataDto.repairList = [];
+
+        document.querySelectorAll('table[id^="dryTable"]').forEach(function (element, dryIndex) {
+            let dry = {
+                drycleaningId: element.querySelector('input[name$="drycleaningId"]').value,
+                drycleaningPossibility: element.querySelector('input[name$="drycleaningPossibility"]:checked').value,
+                drycleaningNotReason: element.querySelector('input[name$="drycleaningNotReason"]').value
+            };
+            inspectionDataDto.drycleaningList.push(dry);
+        });
+        document.querySelectorAll('table[id^="repairTable"]').forEach(function (element, repairIndex) {
+            let repair = {
+                repairId: element.querySelector('input[name$="repairId"]').value,
+                repairPossibility: element.querySelector('input[name$="repairPossibility"]:checked').value,
+                repairNotReason: element.querySelector('input[name$="repairNotReason"]').value
+            };
+            inspectionDataDto.repairList.push(repair);
+        });
+
+        formData.append("inspectionDataDto", new Blob([JSON.stringify(inspectionDataDto)], { type: 'application/json' }));
+
+        selectedFiles.forEach(file => {
+            formData.append("file", file);
+        });
+        fetch(`/admin/view/${memberId}/${ordersId}`, {
+            method: 'POST',
+            body: formData
+        })
+            .then(response=>response.json())
+            .then(data=> {
+                if(data.result === 'success') {
+                    window.location.href = "/admin/" + memberId;
+                } else if (data.result === 'errors') {
+                    alert(data.errors);
+                } else {
+                    alert("등록 실패. 다시 시도해주세요.");
+                }
+            });
+    });
+
+    function toogleRadio(element) {
+        const radio = element.previousElementSibling;
+        if (!radio.checked){
+            radio.checked = !radio.checked;
+        }
+
+    }
+
+    function showInput(element) {
+        const reasonBox = document.querySelectorAll(".selectD");
+        for(let i=0; i<reasonBox.length; i++) {
+            if(element.id+"ox" == "i"+reasonBox[i].id) {
+                reasonBox[i].style.display='block';
+            }
+        }
+    }
+
+    function hiddenInput(element) {
+        const reasonBox = document.querySelectorAll(".selectD");
+        for(let i=0; i<reasonBox.length; i++) {
+            if(element.id+"ox" == reasonBox[i].id) {
+                reasonBox[i].style.display='none';
+            }
+        }
+    }
+
+    function rshowInput(element) {
+        const repairBox = document.querySelectorAll(".selectR");
+        for(let i=0; i<repairBox.length; i++) {
+            if(element.id+"ox" == "i"+repairBox[i].id) {
+                repairBox[i].style.display='block';
+            }
+        }
+    }
+
+    function rhiddenInput(element) {
+        const repairBox = document.querySelectorAll(".selectR");
+        for(let i=0; i<repairBox.length; i++) {
+            if(element.id+"ox" == repairBox[i].id) {
+                repairBox[i].style.display='none';
+            }
+        }
+    }
+</script>
+</html>

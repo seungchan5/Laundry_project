@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/project_footer.css">
+    <link rel="stylesheet" href="/css/project_header.css">
+    <link rel="stylesheet" href="/css/project_search_id.css">
+
+    <title>세탁신청</title>
+</head>
+<header th:replace="~{/common/project_header :: header}"></header>
+<body>
+
+<div class='container'>
+    <form class='find_Id_form' id="confirmIdForm" method="post" action="/login/find-account">
+        <div class='find_Id_box'>
+            <h5 class=''>이름</h5>
+            <input type="text" id="memberName" name="memberName">
+        </div>
+
+        <div class='regi_box_phone'>
+            <h5>휴대폰번호</h5>
+            <div>
+                <input type="tel" maxlength='13' class='find_Id_box_pw' onkeyup="phoneNum()" id="memberPhonenumber" name="memberPhone">
+                <button type="button" class='phoneCheck' onclick="sendSms()" id="sendSmsBtn">발송</button>
+            </div>
+            <div class='regi_box_phone_check'>
+                <input type="text" class='find_Id_box_pw phonenumber-check-input'>
+                <button type="button" class='phoneCheck phonenumber-check-button'>확인</button>
+            </div>
+        </div>
+        <div id="phonenumber-check-warn"></div>
+        <input type="hidden" class="validation-input validation-phonenumber">
+
+        <div class='find_id_button'>
+
+            <a onclick="submitValidation()">아이디찾기</a>
+        </div>
+    </form>
+</div>
+<script src="/js/project_search_id.js"></script>
+</body>
+<footer th:replace="~{/common/project_footer :: footer}"></footer>
+</html>

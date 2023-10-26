@@ -1,0 +1,264 @@
+.bighr{
+    width: 100%;
+    border: 4px solid #e9e9e9;
+}
+
+hr{
+    border: 1.5px solid #e9e9e9;
+    margin: 1.5rem 0 0.5rem 0;
+}
+.info{
+    width: 100%;
+    min-height: 4rem;
+    border: none;
+    border-radius: var(--border-radius);
+    background-color: white;
+    padding: 0.5rem;
+    box-shadow: 2px 2px 5px #dadada;
+    margin: 1rem 0;
+}
+h4{
+    margin: 1rem 0;
+    font-size: large;
+}
+
+h2{
+    margin: 1rem 0;
+    font-size: larger;
+}
+
+table{
+    margin: 0;
+    margin-top: 1rem;
+    width: 100%;
+}
+
+tr{
+    display: flex;
+    justify-content: space-between;
+    margin: 0.5rem 0.25rem;
+}
+
+th, td{
+    margin: 0;
+}
+
+.change{
+    text-decoration: underline;
+}
+
+span, .location{
+    display: block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    margin: 0.5rem 1rem;
+    width: 90%;
+}
+
+footer span{
+    display: initial;
+    margin: initial;
+}
+
+.coupon{
+    width: 100%;
+    height: 2.5rem;
+    padding: 0 1rem;
+    border: 1px solid #dadada;
+    border-radius: var(--border-radius);
+    display: flex;
+    align-items:center;
+    justify-content: space-between;
+}
+.couponName{
+    margin: 0;
+    width: auto;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.coupon svg{
+    margin: 0;
+    width: 1rem;
+    min-width: 1rem;
+    fill: #757575;
+}
+
+.radioBox{
+    width:100%
+}
+.radioBox .box{
+    width: 100%;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0;
+}
+.radioBox .box input[type=text]{
+    width: calc(100% - 32px - 4px - 21px);
+    height: 2rem;
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    border: 1px solid #ccc;
+    outline: none;
+}
+.box label{
+    width: calc(100% - 32px - 4px - 21px);
+}
+
+input[type=radio] {
+    display: none;
+}
+
+input[type=radio]:checked + .custom-radio {
+    border: 6px solid var(--main-font-color);
+
+}
+
+.custom-radio {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    background-color: white;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+}
+
+.additional{
+    margin: 0;
+}
+
+.more{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #a0a0a0;
+    fill: #a0a0a0;
+    
+}
+.more span{
+    margin: 0;
+    width: auto;
+    margin: 0.5rem;
+}
+.more svg{
+    width: 0.5rem;
+    margin: 0;
+}
+
+.content{
+    color: #5f5f5f;
+    fill: #5f5f5f;
+}
+
+body{
+    margin-bottom: clamp(9rem, 3vw, 10rem); /* 푸터의 height 만큼 margin을 주어야지 스크롤이 가능하다. */
+}
+input[type=submit]{
+    width: calc(100% - 2rem);   
+}
+
+.fixbox{
+    bottom: 4rem;
+    height: 5rem;
+    margin: 0;
+    left: 0rem;
+    width: 100%;
+    position: fixed;
+    background-color: white;
+    text-align: center;
+}
+.basicinfo{
+    margin: 1rem 0;
+}
+.basicinfoTitle{
+    font-size: 1rem;
+    margin: 0;
+}
+.basicinfoContent{
+    font-size: 0.9rem;
+    color: #929292;
+}
+.basicinfoContent_div{
+    min-height: 3rem;
+    padding: 0.5rem;
+    font-size: 0.9rem;
+    background-color: #efefef;
+}
+
+.detail_info{
+    width: 100%;
+    margin-top: -1rem;
+    padding-left: 1rem;
+}
+
+.detailcontent{
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.detailcontent *, .detailcontent{
+    font-size: 0.9rem;
+}
+td[class='detailcontent']{
+    color: #929292;
+}
+.content_name{
+    width: auto;
+    color: #929292;
+}
+.content_status_pos{
+    width: auto;
+    color: #2fd33dba;
+}
+.content_status_impos{
+    width: auto;
+    color: rgba(255, 0, 0, 0.694);
+}
+.content_reason{
+    width: auto;
+    color: rgba(255, 0, 0, 0.694);
+    font-size: 0.8rem;
+}
+.detailcontent span{
+    margin: 0;
+
+}
+
+.point{
+    width: 100%;
+    display: flex;
+    gap: 0.5rem;
+    height: 2.5rem;
+}
+
+#point{
+    margin: 0;
+    width: 100%;
+    padding: 0 1rem;
+    border: 1px solid #dadada;
+    border-radius: var(--border-radius);
+    text-align: right;
+    outline-color: var(--main-color);
+}
+.pointbtn{
+    margin: 0;
+    width: 5rem;
+    border: none;
+    background-color: var(--main-color);
+    border-radius: var(--border-radius);
+    color: white;
+}
+
+.discount{
+    color: rgba(255, 0, 0, 0.694);
+}
+
+.totalPrice{
+    border-top: 2px dotted #dadada;
+    height: 5rem;
+    font-size: 1.4rem;
+}

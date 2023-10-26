@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/project_footer.css">
+    <link rel="stylesheet" href="/css/project_header.css">
+    <link rel="stylesheet" href="/css/project_pickup_location.css">
+    <script src="/js/project_pickup_location.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div class='container'>
+        <form action="#" method="get">
+            <div class='radioBox'>
+                <div class='box'>
+                    <input type="radio" name="location" id="door" checked>
+                    <span class="custom-radio" id='doors' onclick='toogleRadio(this)'></span>
+                    <label for="door">문 앞</label>
+                </div>
+                <div class='box'>
+                    <input type="radio" name="location" id="office">
+                    <span class="custom-radio" id='offices' onclick='toogleRadio(this)'></span>
+                    <label for="office">경비실</label>
+                </div>
+                <div class='box'>
+                    <input type="radio" name="location" id="exception">
+                    <span class="custom-radio" id='mods' onclick='toogleRadio(this)'></span>
+                    <label for="exception">그 외</label>
+                </div>
+                <textarea name="" id="" cols="30" rows="10" class='details'></textarea>
+                <input type="submit" value="저장">
+            </div>
+        </form>
+    </div>
+</body>
+<script>
+
+    
+</script>
+</html>

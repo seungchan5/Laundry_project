@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/project_footer.css">
+    <link rel="stylesheet" href="/css/project_header.css">
+    <link rel="stylesheet" href="/css/project_manager_order_detail.css">
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        const memberId = [[${session.memberId != null ? session.memberId : 'null'}]];
+        const ordersId = [[${info['orderInfo'].ordersId != null ? info['orderInfo'].ordersId : 'null'}]];
+        /*]]>*/
+
+        function goEdit() {
+            window.location.href = `/admin/edit/view/${memberId}/${ordersId}`;
+        }
+    </script>
+</head>
+<header th:replace="~{/common/project_manager_header :: header}"></header>
+<body>
+
+<div class='container'>
+    <input type="text" class="hidden" th:value="${info['orderInfo'].ordersId}" name="ordersId">
+    <input type="text" class="hidden" th:value="${info['orderInfo'].inspectionId}" name="inspectionId">
+    <input type="text" class="hidden" value="9" name="adminId">
+    <h2>주문정보</h2>
+    <table class='orderOption'>
+        <tr>
+            <th class='content'>주문번호</th>
+            <td class='content' th:text="${info['orderInfo'].ordersId}"></td>
+        </tr>
+        <tr>
+            <th class='content'>요청사항</th>
+        </tr>
+    </table>
+    <div class='info'>
+        <span class='content' th:text="${info['orderInfo'].ordersRequest}"></span>
+    </div>
+    <hr class='bighr'>
+
+    <h4 class='laundry' th:if="${info['commonLaundryInfo'] != null }">생활빨래</h4>
+    <table th:if="${info['commonLaundryInfo'] != null }">
+        <tr>
+            <th class='content'>세탁무게</th>
+            <td class='content laundry_result'>
+                <input type="text" name="commonLaundryId" class="hidden" th:value="${info['commonLaundryInfo'].commonLaundryId}">
+                <span name="commonLaundryWeight" id="laundryWeight" th:text="${info['commonLaundryInfo'].commonLaundryWeight}"></span>
+                <span>L</span>
+            </td>
+        </tr>
+    </table>
+
+    <h4 th:if="${info['drycleaningInfo'] != null}">드라이클리닝</h4>
+    <table th:if="${info['drycleaningInfo'] != null}" th:each="dry, dryIndex : ${info['drycleaningInfo']}">
+        <tr>
+            <td>
+                <input type="text" class="hidden" th:value="${dry.drycleaningId}" th:name="|drycleaningList[${dryIndex.index}].drycleaningId|">
+
+            </td>
+        </tr>
+        <tr>
+            <th class='content' th:text="${dry.drycleaningCategory}"></th>
+        </tr>
+        <tr>
+            <td class='content drycleaning_result'>
+                <div>
+                    <input type="radio" value="Y" th:checked="${dry.drycleaningPossibility.toString() == 'Y'}">
+                    <span class="custom-radio" id='poss' ></span>
+                    <label>가능</label>
+                </div>
+                <div>
+                    <input type="radio" value="N" th:checked="${dry.drycleaningPossibility.toString() == 'N'}" >
+                    <span class="custom-radio" id='imposs' ></span>
+                    <label>불가능</label>
+                </div>
+            </td>
+        <tr>
+        <tr th:if="${dry.drycleaningPossibility.toString() == 'N'}">
+            <th class='content'>불가능 이유</th>
+        </tr>
+        <tr th:if="${dry.drycleaningPossibility.toString() == 'N'}">
+            <th th:text="${dry.drycleaningNotReason}"/>
+        </tr>
+    </table>
+
+    <hr>
+    <h4 th:if="${info['repairInfo'] != null}">수선</h4>
+    <table th:if="${info['repairInfo'] != null}" th:each="repair, repairIndex : ${info['repairInfo']}">
+        <tr>
+            <td>
+                <input type="text" class="hidden" th:value="${repair.repairId}" th:name="|repairList[${repairIndex.index}].repairId|">
+            </td>
+        </tr>
+        <tr>
+            <th class='content' th:text="${repair.repairCategory}">소분류 이름</th>
+        </tr>
+        <tr th:if="${repair.repairImageStoreName != null}" th:each="img : ${repair.repairImageStoreName}">
+            <td>
+                <img class='imgSize' th:src="@{'/images/repair_images/' + ${img}}">
+            </td>
+        </tr>
+        <tr>
+            <td class='content drycleaning_result' th:id="|rpos${repairIndex.index}b|">
+                <div>
+                    <input type="radio" value="Y"  th:checked="${repair.repairPossibility.toString() == 'Y'}" >
+                    <span class="custom-radio" id='poss2'></span>
+                    <label>가능</label>
+                </div>
+                <div>
+                    <input type="radio" value="N" th:checked="${repair.repairPossibility.toString() == 'N'}" >
+                    <span class="custom-radio" id='imposs2' ></span>
+                    <label >불가능</label>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th class='content'>요청사항</th>
+        </tr>
+        <tr>
+            <th th:text="${repair.repairRequest}"/>
+        </tr>
+
+        <tr th:if="${repair.repairPossibility.toString() == 'N'}">
+            <th class='content'>불가능 이유</th>
+        </tr>
+        <tr th:if="${repair.repairPossibility.toString() == 'N'}">
+            <th th:text="${repair.repairNotReason}"/>
+        </tr>
+
+    </table>
+
+    <!-- 사진 -->
+    <h4>검수사진</h4>
+    <div id="imagePreview" th:if="${info['imageList'] != null}" th:each="imageList, imageListIndex : ${info['imageList']}">
+        <img class='imgSize' th:src="@{'/images/inspection_images/'+${imageList.inspectionImageStoreName}}">
+    </div>
+
+    <div class='fixbox'>
+        <input type="button" class="btnEdit" value="검수수정" onclick="goEdit()">
+    </div>
+</div>
+</body>
+<footer th:replace="~{/common/project_manager_order_footer :: footer}"> </footer>
+</html>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="aug.laundry.dao.FileUploadMapper">
+    <insert id="saveImage">
+        <choose>
+            <when test='tableType.equals("DELIVERY")'>
+                INSERT INTO delivery_image(delivery_image_id, orders_id, delivery_image_upload_name, delivery_image_store_name)
+                VALUES(seq_delivery_image_id.nextval,#{id}, #{imageUploadName},#{imageStoreName})
+            </when>
+            <when test='tableType.equals("INSPECTION")'>
+                INSERT INTO inspection_image(inspection_image_id, inspection_id, inspection_image_upload_name, inspection_image_store_name)
+                VALUES(seq_inspection_image_id.nextval,#{id}, #{imageUploadName},#{imageStoreName})
+            </when>
+            <when test='tableType.equals("REPAIR")'>
+                INSERT INTO repair_image(repair_image_id, repair_id, repair_image_upload_name, repair_image_store_name)
+                VALUES(seq_repair_image_id.nextval,#{id}, #{imageUploadName},#{imageStoreName})
+            </when>
+        </choose>
+    </insert>
+</mapper>

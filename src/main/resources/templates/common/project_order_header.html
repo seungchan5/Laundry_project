@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/project_manager_order_list.css">
+
+</head>
+<body>
+  <aside class='res_box' th:fragment="manager_header">
+    <script>
+      let pageNo = 1;
+      let realEnd = 1;
+
+      window.addEventListener('load', function () {
+        getList();
+
+<!--        const bthSearch = document.querySelector('#bthSearch');-->
+<!--        const btnReset = document.querySelector('#btnReset');-->
+
+<!--        bthSearch.addEventListener('click', searchEvent);-->
+
+        btnReset.addEventListener('click', function () {
+          document.querySelector('#resBox').innerHTML = '';
+          pageNo=1;
+          getList();
+        });
+      });
+
+      window.addEventListener('scroll', function () {
+        let scrollTop = window.scrollY; // 수직 스크롤 위치 스크롤을 아래로 내릴수록 증가
+        let windowHeight = window.innerHeight; // 브라우저 창의 높이
+        let documentHeight = document.documentElement.scrollHeight; // 문서 전체 높이
+        let isBottom = scrollTop + windowHeight + 10 >= documentHeight; //정확히 맨 아래에 도달했을 때가 아니라 약간 여유를 두기 위해 +10
+        if(isBottom) {
+          if(pageNo >= realEnd) {
+            return;
+          } else {
+            pageNo++;
+            getList();
+          }
+        }
+      });
+
+      function fetchGet(url, callback) {
+        try{
+          fetch(url)
+                  .then(response => response.json())
+                  .then(map => callback(map))
+        }catch(e){
+          console.log('fetchGet', e);
+        }
+      }
+      function getList(){
+        const orderStatus = document.querySelector('#inspectionStatus').value;
+        console.log("orderStatus=", orderStatus);
+        console.log("pageNo=",pageNo);
+        fetchGet(`/orders/getList/${pageNo}/${orderStatus}`, listView);
+      }
+
+      function listView(map) {
+        const resBox = document.querySelector('#resBox');
+        const orderStatus = document.querySelector('#inspectionStatus').value;
+        const list = map.list;
+        const res = map.res;
+        realEnd = map.realEnd;
+        let divlist='';
+
+        if(res === 'success') {
+          if(list.length>0) {
+                console.log(10);
+            list.forEach(order=>{
+<!--              const url = orderStatus == 1 ? '/orders/' + order.ordersId + '/payment' : '/admin/complete/'+order.ordersId;-->
+              const url = '/orders/' + order.ordersId + '/payment';
+<!--              const quick = order.quickLaundryId!=null ? '빠른세탁' : '';-->
+              divlist+='<div class="order_box" onclick="location.href=\''+url+'\'">'
+                      + '<div class="date_status">'
+                      + order.ordersDate
+                      + '</div>'
+                      + '<div class="date_status">'
+                      + order.statusEnumTitle
+                      + '</div>'
+                      + '<div class="date_status">'
+                      + order.statusEnumContent
+                      + '</div>'
+                      + '</div>';
+            });
+          }
+        } else {
+          resBox.innerHTML= '검수전 주문이 존재하지 않습니다.';
+        }
+
+        resBox.innerHTML += divlist;
+      }
+
+
+<!--      function searchEvent() {-->
+<!--        const orderIdSearch = document.querySelector('#orderIdSearch').value;-->
+<!--        const orderStatus = document.querySelector('#inspectionStatus').value;-->
+
+<!--        fetchGet(`/searchOrder/${orderIdSearch}/${orderStatus}`, searchResult);-->
+<!--      }-->
+
+<!--      function searchResult(map) {-->
+<!--        const resBox = document.querySelector('#resBox');-->
+<!--        const orderStatus = document.querySelector('#inspectionStatus').value;-->
+<!--        const orderInfo = map.orderInfo;-->
+<!--        const res = map.res;-->
+
+<!--        if(res === 'success') {-->
+<!--          const url = orderStatus == 5 ? '/admin/9/'+orderInfo.ordersId : '/admin/complete/'+orderInfo.ordersId;-->
+<!--          const quick = orderInfo.quickLaundryId!=null ? '빠른세탁' : '';-->
+<!--          resBox.innerHTML='<div class="order_box" onclick="location.href=\''+url+'\'">'-->
+<!--                    + '<div class="date_status">'-->
+<!--                    + '<p class="date_text">'+orderInfo.ordersDate+'</p>'-->
+<!--                    + '<p class="status">'+quick+'</p>'-->
+<!--                    + '</div>'-->
+<!--                    + '<div class="image_box">'-->
+<!--                    + '<p class="status_text">주문번호 : ' + orderInfo.ordersId + '</p>'-->
+<!--                    + '</div>'-->
+<!--                    + '</div>';-->
+<!--        } else {-->
+<!--          resBox.innerHTML= '찾으시는 주문번호가 존재하지 않습니다.';-->
+<!--        }-->
+<!--        document.querySelector('#orderIdSearch').value='';-->
+<!--      }-->
+    </script>
+
+    <div class='select_category'>
+      <ul>
+        <li class='active'>
+          <a href="/orders">진행중인 주문</a>
+        </li>
+        <li>
+          <a href="/orders/complete">배달완료</a>
+        </li>
+      </ul>
+    </div>
+
+<!--    <div class='o_text_box1'>-->
+<!--      <input type='text' class='searchbox' id='orderIdSearch' placeholder='주문번호 검색'>-->
+<!--      <button type='button' id="bthSearch">검색</button>-->
+<!--      <button type='button' id="btnReset">초기화</button>-->
+<!--      &lt;!&ndash;초기화는 전체검색으로 전환&ndash;&gt;-->
+<!--      &lt;!&ndash; JAX로 검색할 것&ndash;&gt;-->
+<!--    </div>-->
+    <hr>
+
+<!--    <div class="order_box">-->
+<!--      <div class="date_status">-->
+<!--        11월 7일(월) 주문-->
+<!--      </div>-->
+<!--      <div class="date_status">-->
+<!--        세탁물이 집에 돌아갈 준비를 하고 있어요.-->
+<!--      </div>-->
+<!--    </div>-->
+
+  </aside>
+</body>
+
+</html>

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/project_footer.css">
+    <link rel="stylesheet" href="/css/project_header.css">
+    <link rel="stylesheet" href="/css/project_order_view.css">
+    <script src="/js/project_order_view.js"></script>
+    <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+</head>
+<header th:replace="~{/common/project_header :: header}"></header>
+<body>
+
+<div class='container'>
+    <form action="#" method="get">
+        <h2 th:text="${order.ordersDate}">12월 15일(수) 주문</h2>
+        <hr>
+        <h4>기본사항</h4>
+        <div class='basicinfo'>
+            <span class='basicinfoTitle'>주문번호</span>
+            <span th:text="${order.ordersId}" class='basicinfoContent' id='ordersId'>10101010101010L</span>
+        </div>
+        <div class='basicinfo'>
+            <span class='basicinfoTitle'>일정</span>
+            <span th:text="|수거 : ${order.ordersPickupDate}|" class='basicinfoContent'>수거 : 2023/08/23(화) 23시</span>
+            <span th:text="|반납 : ${order.ordersReturnDate}|" class='basicinfoContent'>반납 : 2023/08/24(수) 07시</span>
+        </div>
+        <div class='basicinfo'>
+            <span class='basicinfoTitle'>주소</span>
+            <span th:text="${order.ordersAddress + ' ' + order.ordersAddressDetails}" class='basicinfoContent'>서울특별시 서대문구 대현동</span>
+        </div>
+        <div class='basicinfo'>
+            <span class='basicinfoTitle'>요청사항</span>
+            <span th:text="${order.ordersRequest}" class='basicinfoContent_div'>빡빡 깨끗하게 세탁해서 보내주세요.</span>
+        </div>
+        <hr>
+        <h4>검수 청구 정산서</h4>
+        <table>
+            <tr th:if="${delivery.deliveryStatus}">
+                <th class='content'>배송비</th>
+                <td th:text="|+ ${#numbers.formatDecimal(delivery.delivery.getPrice(),3,'COMMA',0,'COMMA')}원|" class='content'>+ 3,000원</td>
+            </tr>
+            <tr th:if="${quickLaundry.quickLaundryStatus}">
+                <th class='content'>빠른세탁</th>
+                <td th:text="|+ ${#numbers.formatDecimal(quickLaundry.quickLaundry.getPrice(),3,'COMMA',0,'COMMA')}원|" class='content'>+ 5,000원</td>
+            </tr>
+            <tr th:if="${order.commonLaundryId != null}">
+                <th:block th:if="${order.commonLaundryWeight != null}">
+                <th th:text="|생활빨래 ${order.commonLaundryWeight}L|" class='content'>생활빨래 2.7kg</th>
+                <td th:text="|+ ${{order.commonLaundryPrice}}원|" class='content'>+ 4,000원</td>
+                </th:block>
+                <th:block th:if="${order.ordersStatus} == 2 or ${order.ordersStatus} == 3 or ${order.ordersStatus} == 4 or ${order.ordersStatus} == 5">
+                <th:block th:if="${order.commonLaundryId} != null or ${order.commonLaundryWeight} == null">
+                    <th class='content'>생활빨래</th>
+                    <td class='content'>검수중</td>
+                </th:block>
+                </th:block>
+
+            </tr>
+        </table>
+        <table class='additional'>
+            <tr th:if="${!dryMap.get('dryList').isEmpty()}">
+                <th class='content'>드라이클리닝</th>
+                <!--                <td class='content'>+ 100,000원</td>-->
+            </tr>
+            <tr class='details'>
+                <table class='detail_info'>
+                    <th:block th:if="${!dryMap.get('dryList').isEmpty()}">
+                        <tr th:each="dry : ${dryMap.get('dryList')}">
+                            <th class='detailcontent'>
+                                <span th:text="${dry.drycleaningCategory.getTitle()}" class='content_name'>와이셔츠</span>
+                                <th:block th:if="${dry.drycleaningPossibility} == 'Y'">
+                                    <span th:text="'가능'" class='content_status_pos'>가능</span>
+                                </th:block>
+
+                                <th:block th:if="${dry.drycleaningPossibility} == 'N'">
+                                    <span th:text="'불가능'" class='content_status_impos'>불가능</span>
+                                    <span th:text="| : ${dry.drycleaningNotReason}|" class='content_reason'>: 사유사유사유사유</span>
+                                </th:block>
+                            </th>
+                            <td th:if="${dry.drycleaningPossibility} == 'Y'" th:text="|+ ${{dry.drycleaningPrice}}원|" class='detailcontent'>+ 10,000원</td>
+                            <td th:if="${dry.drycleaningPossibility} == 'N'" class='detailcontent'>+ 0원</td>
+                            <td th:if="${order.ordersStatus} == 2 or ${order.ordersStatus} == 3 or ${order.ordersStatus} == 4 or ${order.ordersStatus} == 5">검수중</td>
+                        </tr>
+
+                    </th:block>
+                </table>
+            </tr>
+        </table>
+
+        <table class='additional'>
+            <tr th:if="${!repairMap.get('repairList').isEmpty()}">
+                <th class='content'>수선</th>
+                <!--                <td class='content'>+ 100,000원</td>-->
+            </tr>
+            <tr class='details'>
+                <table class='detail_info'>
+                    <th:block th:if="${!repairMap.get('repairList').isEmpty()}">
+                        <tr th:each="repair : ${repairMap.get('repairList')}">
+                            <th class='detailcontent'>
+                                <span th:text="${repair.repairCategory.getTitle()}" class='content_name'>와이셔츠</span>
+                                <th:block th:if="${repair.repairPossibility} == 'Y'">
+                                    <span th:text="'가능'" class='content_status_pos'>가능</span>
+                                </th:block>
+
+                                <th:block th:if="${repair.repairPossibility} == 'N'">
+                                    <span th:text="'불가능'" class='content_status_impos'>불가능</span>
+                                    <span th:text="| : ${repair.repairNotReason}|" class='content_reason'>: 사유사유사유사유</span>
+                                </th:block>
+                            </th>
+                            <td th:if="${repair.repairPossibility} == 'Y'" th:text="|+ ${{repair.repairPrice}}원|" class='detailcontent'>+ 10,000원</td>
+                            <td th:if="${repair.repairPossibility} == 'N'" class='detailcontent'>+ 0원</td>
+                            <td th:if="${order.ordersStatus} == 2 or ${order.ordersStatus} == 3 or ${order.ordersStatus} == 4 or ${order.ordersStatus} == 5">검수중</td>
+                        </tr>
+
+                    </th:block>
+                </table>
+            </tr>
+        </table>
+
+        <hr class='bighr'>
+
+        <th:block th:if="${order.ordersStatus} != 1 and ${order.ordersStatus} != 2 and ${order.ordersStatus} != 3 and ${order.ordersStatus} != 4 and ${order.ordersStatus} != 5">
+            <th:block th:if="${order.ordersStatus} == 6 or ${order.ordersStatus} == 7">
+        <table>
+            <tr>
+                <th>포인트</th>
+                <td></td>
+            </tr>
+        </table>
+        <div class='point'>
+            <input type="text" name="point" id="point" th:placeholder="|보유 포인트 : ${point == 0 ? '0' : #numbers.formatDecimal(point,3,'COMMA',0,'COMMA')}P|" placeholder='보유 포인트 : 400P'>
+            <button type='button' class='pointbtn'>전부사용</button>
+        </div>
+
+        <table>
+            <tr>
+                <th>쿠폰</th>
+                <td></td>
+            </tr>
+        </table>
+        <!--        th:onclick="|location.href='@{/orders/members/{memberId}/coupons(memberId=${memberId})}'|"-->
+        <button type="button"  class='coupon' id="selectCoupon">
+            <span class='couponName content'>적용안함</span>
+            <svg xmlns="http://www.w3.org/2000/svg" style='rotate: 180deg;' viewBox="0 0 512 512"><path d="M290.5 51.8C283.3 39.5 270.2 32 256 32s-27.3 7.5-34.5 19.8l-216 368c-7.3 12.4-7.3 27.7-.2 40.1S25.7 480 40 480H472c14.3 0 27.6-7.7 34.7-20.1s7-27.8-.2-40.1l-216-368z"/></svg>
+        </button>
+        <input type="hidden" name="coupon" id="coupon">
+        <input type="hidden" name="couponPrice" id="couponPrice">
+
+        <hr class='bighr'>
+            </th:block>
+
+
+        <h4>결제 금액</h4>
+        <table>
+            <tr th:if="${delivery.deliveryStatus}">
+                <th class='content'>배송비</th>
+                <td th:text="|+ ${#numbers.formatDecimal(delivery.delivery.getPrice(),3,'COMMA',0,'COMMA')}원|" class='content'>+ 3,000원</td>
+            </tr>
+            <tr th:if="${quickLaundry.quickLaundryStatus}">
+                <th class='content'>빠른세탁</th>
+                <td th:text="|+ ${#numbers.formatDecimal(quickLaundry.quickLaundry.getPrice(),3,'COMMA',0,'COMMA')}원|" class='content'>+ 4,000원</td>
+            </tr>
+            <tr th:if="${order.commonLaundryWeight != null}">
+                <th th:text="|생활빨래 ${order.commonLaundryWeight}L|" class='content'>생활빨래 2.7kg</th>
+                <td th:text="|+ ${{order.commonLaundryPrice}}원|" class='content'>+ 27,000원</td>
+            </tr>
+            <tr th:if="${!dryMap.get('dryList').isEmpty()}">
+                <th class='content'>드라이클리닝</th>
+                <th:block th:if="${dryMap.get('totalDryPrice') != 0}">
+                    <td th:text="|+ ${#numbers.formatDecimal(dryMap.get('totalDryPrice'),3,'COMMA',0,'COMMA')}원|" class='content'>+ 20,000원</td>
+                </th:block>
+                <th:block th:if="${dryMap.get('totalDryPrice') == 0}">
+                    <td class='content'>+ 0원</td>
+                </th:block>
+            </tr>
+            <tr th:if="${!repairMap.get('repairList').isEmpty()}">
+                <th class='content'>수선</th>
+                <th:block th:if="${repairMap.get('totalRepairPrice') != 0}">
+                    <td th:text="|+ ${#numbers.formatDecimal(repairMap.get('totalRepairPrice'),3,'COMMA',0,'COMMA')}원|" class='content'>+ 20,000원</td>
+                </th:block>
+                <th:block th:if="${repairMap.get('totalRepairPrice') == 0}">
+                    <td class='content'>+ 0원</td>
+                </th:block>
+            </tr>
+
+
+            <th:block th:if="${order.ordersStatus} != 8 and ${order.ordersStatus} != 9 and ${order.ordersStatus} != 10 and ${order.ordersStatus} != 11 and ${order.ordersStatus} != 12 and ${order.ordersStatus} != 13">
+            <tr id="coupon-row">
+                <th class='content'>쿠폰</th>
+                <td class='content discount'>- 3,000원</td>
+            </tr>
+            </th:block>
+            <th:block th:if="${order.ordersStatus} == 8 or ${order.ordersStatus} == 9 or ${order.ordersStatus} == 10 or ${order.ordersStatus} == 11 or ${order.ordersStatus} == 12 or ${order.ordersStatus} == 13">
+                <th:block th:if="${price.couponPrice}!=0">
+                    <tr id="coupon-row">
+                        <th class='content'>쿠폰</th>
+                        <td th:text="|- ${#numbers.formatDecimal(price.couponPrice,3,'COMMA',0,'COMMA')}원|" class='content discount'>- 3,000원</td>
+                    </tr>
+                </th:block>
+            </th:block>
+
+            <th:block th:if="${order.ordersStatus} != 8 and ${order.ordersStatus} != 9 and ${order.ordersStatus} != 10 and ${order.ordersStatus} != 11 and ${order.ordersStatus} != 12 and ${order.ordersStatus} != 13">
+            <tr id="point-row">
+                <th class='content'>포인트</th>
+                <td class='content discount'>- 3,000원</td>
+            </tr>
+            </th:block>
+            <th:block th:if="${order.ordersStatus} == 8 or ${order.ordersStatus} == 9 or ${order.ordersStatus} == 10 or ${order.ordersStatus} == 11 or ${order.ordersStatus} == 12 or ${order.ordersStatus} == 13">
+                <th:block th:if="${price.pointStack}!=0">
+                    <tr id="point-row">
+                        <th class='content'>포인트</th>
+                        <td th:text="|- ${#numbers.formatDecimal(price.pointStack,3,'COMMA',0,'COMMA')}원|" class='content discount'>- 3,000원</td>
+                    </tr>
+                </th:block>
+            </th:block>
+
+
+            <tr th:if="${subscriptionDiscount!=0}">
+                <th class='content'>패스할인</th>
+                <td th:text="|- ${#numbers.formatDecimal(subscriptionDiscount,3,'COMMA',0,'COMMA')}원|" class='content discount'>- 3,000원</td>
+            </tr>
+        </table>
+        <table class='totalPrice'>
+            <th:block th:if="${order.ordersStatus} == 6 or ${order.ordersStatus} == 7">
+                <tr>
+                    <th class='content'>총 합계</th>
+                    <td th:text="|${#numbers.formatDecimal(totalPriceWithDeliveryPrice,3,'COMMA',0,'COMMA')}원|" id='totalPrice' class='content'>200,000원</td>
+                </tr>
+            </th:block>
+
+            <th:block th:if="${order.ordersStatus} == 8 or ${order.ordersStatus} == 9 or ${order.ordersStatus} == 10 or ${order.ordersStatus} == 11 or ${order.ordersStatus} == 12 or ${order.ordersStatus} == 13">
+                <tr>
+                    <th class='content'>결제완료</th>
+                    <td th:text="|${#numbers.formatDecimal(price.ordersFinalPrice,3,'COMMA',0,'COMMA')}원|" id='totalPrice' class='content'>200,000원</td>
+                </tr>
+            </th:block>
+        </table>
+        </th:block>
+
+        <th:block th:if="${order.ordersStatus} == 6 or ${order.ordersStatus} == 7">
+        <div class='fixButton'>
+            <button th:onclick="requestPay()" type="button">결제하기</button>
+            <!--            <input type="submit" value="200,000원 결제하기">-->
+            <!-- 검수중이거나 수거전 일때는 문구 바꿔주세요. -->
+        </div>
+        </th:block>
+    </form>
+</div>
+</body>
+<footer th:replace="~{/common/project_footer :: footer}"> </footer>
+<script th:inline="javascript">
+    let tPrice = [[${totalPriceWithDeliveryPrice}]];
+    let totalPoint = [[${point}]];
+    let memberName = [[${member.memberName}]];
+    let memberPhone = [[${member.memberPhone}]];
+    let memberId = [[${member.memberId}]];
+</script>
+
+</html>

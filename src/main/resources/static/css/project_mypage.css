@@ -1,0 +1,41 @@
+.title{
+    text-align: center;
+    margin: 2rem 0;
+    margin-bottom: 5rem;
+}
+
+.mypageList{
+    width: 100%;
+    padding: 0;
+}
+
+.mypageList a{
+    width: 100%;
+    min-height: 5rem;
+    border-bottom: 1px solid rgb(224, 213, 213);
+    display: block;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.menuTitle{
+    width: 100%;
+    font-size: large;
+    margin: 0.5rem 0;
+}
+.menuContent{
+    margin: 0.5rem 0 1rem 0;
+    line-height: 1.5rem;
+}
+
+.menuOne{
+    font-size: 1.3rem;
+}
+
+.out{
+    color: red;
+}
+
+

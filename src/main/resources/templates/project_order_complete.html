@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <title>Title</title>
+    <!-- sock js -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.2/sockjs.min.js"></script>
+    <!-- STOMP -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.4.0/kakao.min.js" integrity="sha384-mXVrIX2T/Kszp6Z0aEWaA8Nm7J6/ZeWXbL8UpGRjKwWe56Srd/iyNmWMBhcItAjH" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script> Kakao.init('5658a574a621b53dc23388793fa3f81b'); // 사용하려는 앱의 JavaScript 키 입력</script>
+    <script>
+      window.addEventListener('load', function() {
+          const orderId = $('#ordersId').val();
+
+            fetch('/check/'+ orderId)
+            .then(response => response.json())
+            .then(map => {
+
+            if(map.res != 0){
+                  if(orderId != null && orderId != ""){
+                    swal('주문 성공!',"세탁을 말끔히 해줄게~",'success').then((result)=>{
+                    let socket = new SockJS('/websocket');
+
+                    let stompClient = Stomp.over(socket);
+
+                    stompClient.connect({}, function() {
+                        const message = {
+                            message : "새 주문이 들어왔습니다"
+                    }
+                        stompClient.send("/message/order-complete-message/" + orderId, {}, JSON.stringify(message));
+                        stompClient.disconnect();
+                        location.href = "/";
+                    });
+                  });
+                }
+            }else{
+                swal('주문 성공!',"세탁을 말끔히 해줄게~",'success').then((result)=>{
+                    location.href = "/";
+                });
+            }
+        });
+      });
+    </script>
+<body>
+<input type="hidden" name="" id="ordersId" value="" th:value="${ordersId}">
+</body>
+</html>

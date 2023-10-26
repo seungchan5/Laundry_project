@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="aug.laundry.dao.member.MemberMapper">
+    <select id="selectOne" resultType="aug.laundry.dto.MemberDto">
+        select * from member where member_id = #{memberId}
+    </select>
+
+    <select id="selectId" resultType="aug.laundry.dto.MemberDto">
+        select * from member where MEMBER_ACCOUNT = #{memberAccount}
+    </select>
+
+    <select id="checkId" resultType="int">
+        SELECT COUNT(MEMBER_ACCOUNT) FROM MEMBER WHERE MEMBER_ACCOUNT = #{memberAccount}
+
+    </select>
+
+    <insert id="registerUser">
+        INSERT INTO MEMBER (MEMBER_ID, MEMBER_ACCOUNT, MEMBER_PASSWORD, MEMBER_NAME, MEMBER_PHONE, MEMBER_ZIPCODE, MEMBER_ADDRESS, MEMBER_ADDRESS_DETAILS, MEMBER_CREATE_DATE, MEMBER_SOCIAL, SUBSCRIPTION_ID, SUBSCRIPTION_EXPIRE_DATE, GRADE_ID, MEMBER_RECENTLY_DATE, MEMBER_DELETE_STATUS, MEMBER_MY_INVITE_CODE, MEMBER_INVITE_CODE)
+        VALUES (
+        SEQ_MEMBER_ID.NEXTVAL,
+        #{memberAccount},
+        #{memberPassword},
+        #{memberName},
+        #{memberPhone},
+        #{memberZipcode},
+        #{memberAddress},
+        #{memberAddressDetails},
+        SYSDATE,
+        NULL,
+        NULL,
+        NULL ,
+        2,
+        NULL,
+        'N',
+        #{memberMyInviteCode},
+        #{memberInviteCode})
+    </insert>
+
+    <select id="inviteCodeCheck" resultType="int">
+        select count(MEMBER_MY_INVITE_CODE) from member where MEMBER_MY_INVITE_CODE = #{inviteCode}
+    </select>
+
+    <select id="findRecommender" resultType="Long">
+        select MEMBER_ID from member where MEMBER_MY_INVITE_CODE = #{inviteCode}
+
+    </select>
+
+    <select id="confirmId" resultType="aug.laundry.dto.MemberDto">
+        <if test = "memberAccount == null">
+            SELECT * FROM MEMBER WHERE MEMBER_NAME = #{memberName} AND MEMBER_PHONE = #{memberPhone}
+        </if>
+        <if test="memberAccount != null">
+            SELECT * FROM MEMBER WHERE MEMBER_NAME = #{memberName} AND MEMBER_PHONE = #{memberPhone} AND MEMBER_ACCOUNT = #{memberAccount} AND MEMBER_DELETE_STATUS = 'N'
+        </if>
+    </select>
+
+    <insert id="updatePassword">
+        UPDATE MEMBER
+        SET MEMBER_PASSWORD = #{memberPassword}
+        WHERE MEMBER_ACCOUNT = #{memberAccount}
+    </insert>
+
+    <insert id="giveCoupon">
+        INSERT INTO COUPON_LIST VALUES
+        (SEQ_COUPON_LIST_ID.NEXTVAL, #{memberId}, #{couponId}, SYSDATE, 1, null,ADD_MONTHS(SYSDATE, 1))
+    </insert>
+
+    <update id="updateAddress">
+        UPDATE MEMBER
+        SET MEMBER_ZIPCODE = #{memberZipcode}, MEMBER_ADDRESS=#{memberAddress}, MEMBER_ADDRESS_DETAILS=#{memberAddressDetails}
+        WHERE MEMBER_ID = #{memberId}
+    </update>
+
+    <select id="getPhoneCnt" resultType="int">
+        select COUNT(MEMBER_PHONE) FROM MEMBER WHERE MEMBER_PHONE = #{memberPhone} AND MEMBER_SOCIAL IS NULL
+    </select>
+
+
+
+
+</mapper>

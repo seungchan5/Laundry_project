@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/project_footer.css">
+    <link rel="stylesheet" href="/css/project_header.css">
+    <link rel="stylesheet" href="/css/project_rider.css">
+    <style>
+        .delivery-done {
+            background-color: #00ffff38;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=5xEXKwOOBa1ZkF3EBC9nc6DcYaOAwO858xW0ZDd2"></script>
+    <script>
+window.addEventListener('load', function() {
+    var riderId = $('#quickRiderId').val();
+    console.log(riderId);
+    var ordersStatus = "대기중";
+    console.log(ordersStatus);
+    var workingArea = $('#workingArea').val();
+
+    fetch('/ride/getList/'+ riderId + '/' + ordersStatus + '/' + workingArea)
+    .then(response => response.json())
+    .then(map => {
+        var info = map.info;
+        var page = '';
+        var cnt = 0;
+        if(info.length != 0){
+            info.forEach((list, index)=>{
+            var endX;
+            var endY;
+            var dis;
+            var tDistance;
+
+            var headers = {};
+            headers["appKey"]="5xEXKwOOBa1ZkF3EBC9nc6DcYaOAwO858xW0ZDd2";
+
+            $.ajax({
+            method: "GET",
+            headers: headers,
+            url: "https://apis.openapi.sk.com/tmap/geo/fullAddrGeo?version=1&format=json",
+            async: false,
+            data: {
+                "coordType": "WGS84GEO",
+                "fullAddr": list.ordersAddress
+            },
+            success: function(response) {
+                var resultInfo = response.coordinateInfo;
+                    if (resultInfo.coordinate[0].adminDong === "" || resultInfo.coordinate[0].adminDong === null) {
+                        endX = resultInfo.coordinate[0].newLonEntr;
+                        endY = resultInfo.coordinate[0].newLatEntr;
+                    }else {
+                        endX = resultInfo.coordinate[0].lon;
+                        endY = resultInfo.coordinate[0].lat;
+                    }
+                           navigator.geolocation.getCurrentPosition((position) => {
+
+                                        console.log(position.coords.latitude);
+                                        console.log(position.coords.longitude);
+                                        var searchOption = "12";
+
+                                        var trafficInfochk = "N";
+
+                                        var headers = {};
+                                        headers["appKey"]="5xEXKwOOBa1ZkF3EBC9nc6DcYaOAwO858xW0ZDd2";
+
+                                        $.ajax({
+                                        type : "POST",
+                                        headers : headers,
+                                        url : "https://apis.openapi.sk.com/tmap/routes?version=1&format=json&callback=result&appKey=5xEXKwOOBa1ZkF3EBC9nc6DcYaOAwO858xW0ZDd2",
+                                        async : false,
+                                        data : {
+                                             "startX" : position.coords.longitude,
+                                             "startY" : position.coords.latitude,
+                                             "endX" : endX,
+                                             "endY" : endY,
+                                             "reqCoordType" : "WGS84GEO",
+                                             "resCoordType" : "EPSG3857",
+                                             "searchOption" : searchOption,
+                                             "trafficInfo" : trafficInfochk
+                                        },
+                                        success : function(response) {
+
+                                         var resultData = response.features;
+
+                                        dis = (resultData[0].properties.totalDistance / 1000).toFixed(1);
+                                        },
+                                        error: function(xhr, status, error) {
+                                            console.error(error);
+                                        }
+                                });
+                                if(10 >= dis){
+                                    cnt++;
+                                }
+                                console.log("cnt : " + cnt);
+                                $('#waitNum').html('대기중(' + cnt + ')');
+                            });
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+            }
+        });
+        });
+        }
+    });
+});
+    </script>
+
+    <title>Document</title>
+</head>
+<!--<header th:replace="~{/common/project_back_header :: header}"></header>-->
+<header>
+    <div class='logo'>
+        <a href="#" onclick="history.back();">
+<!--            <img id="ig" src="/images/laundryDelivery.png" alt="선택한 이미지" style="width: 100%; height: 100%; text-align: center;"/>-->
+        </a>
+    </div>
+</header>
+<body>
+    <div class='container'>
+<!--        <aside th:replace="~{/common/project_rider_header :: rider_header}"></aside>-->
+            <div class='rider_header'>
+                <div class='ride_head'>배달</div><br>
+                <div class='ride_txt'>
+                    <div>완료한 배달 건수 : </div>
+                    <div class='ride_num' th:text="${cnt[2]['RESULT']} + '건'">0건</div>
+                </div>
+            </div>
+            <div class='select_category'>
+                <ul>
+<!--                    <a href="/ride/wait"><li th:text="${'대기중(' + cnt[1]['RESULT']} + ')'">대기중(0)</li></a>-->
+                    <a href="/ride/wait"><li id="waitNum">대기중(0)</li></a>
+                    <a href="/ride/accept"><li th:text="${'진행중(' + cnt[0]['RESULT']} + ')'">진행중(16)</li></a>
+                    <a href="/ride/finish"><li class='active' th:text="${'완료(' + cnt[2]['RESULT']} + ')'">완료(7)</li></a>
+                </ul>
+            </div>
+            <div class='delivery_list'>
+                <ul>
+                    <th:block th:each="list : ${orderList}">
+                        <a th:href="@{/ride/orders/{ordersId}(ordersId=${list.ordersId})}" >
+<!--                            <li>-->
+<!--                            <li th:if="${list.ordersStatus == '배송완료'}" style="background-color: #00ffff38;">-->
+                            <li th:class="${list.ordersStatus == '배송완료'} ? 'delivery-done' : ''">
+                                <span class='order_num'>주문번호 :&nbsp;</span>
+                                <span class='order_num' name="ordersId" th:if="${list.ordersStatus == '배송완료'}" th:text="${list.ordersId} + ' (집)'">1119</span>
+                                <span class='order_num' name="ordersId" th:if="${list.ordersStatus == '배달완료'}" th:text="${list.ordersId} + ' (업체)'">1119</span><br>
+                                <span class='delivery_address' th:text="${list.ordersAddress + ' ' + list.ordersAddressDetails}">서울특별시 서대문구 대현동 777-8 508동 116호</span>
+                                <div class='space'>
+                                    <span class='delivery_time' th:text="${list.ordersDate}">2023-08-26 18:57:11</span>
+                                    <span class='delivery_dis' th:text="${list.ordersStatus}"></span>
+                                </div>
+                            </li>
+                        </a>
+                    </th:block>
+                    <th:block th:if="${cnt[2]['RESULT'] == 0}">
+                        <li class='drive_none'>
+                            <span>완료한 배달이 없습니다!</span>
+                        </li>
+                    </th:block>
+                </ul>
+            </div>
+    </div>
+    <input type="hidden" name="workingArea" id="workingArea" value="" th:value="${riderInfo.workingArea}">
+    <input type="hidden" name="quickRiderId" id="quickRiderId" value="" th:value="${riderInfo.riderId}">
+</body>
+<!--<footer th:replace="~{/common/project_footer :: footer}"> </footer>-->
+<footer th:replace="~{/common/project_rider_footer :: footer}"> </footer>
+</html>

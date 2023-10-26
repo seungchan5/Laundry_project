@@ -1,0 +1,180 @@
+.rider_header{
+            height: 4.5rem;
+            position: relative;
+            text-align: center;
+            border-bottom:2px solid black ;
+        }
+
+        .rider_header div{
+            display: inline-block;
+        }
+        .ride_head{
+            font-size: x-large;
+            margin-bottom: 0.5rem;
+        }
+        .logout{
+            float: right;
+            width: 4rem;
+            height: 1.5rem;
+            background: rgba(192, 192, 192, 0.322);
+            border-radius: var(--border-radius);
+            margin-right: 1rem;
+        }
+        .ride_txt{
+            float: left;
+        }
+        .ride_num{
+            color: purple;
+        }
+
+        .select_category{
+            border-bottom: 1px solid black;
+        }
+        .select_category ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: space-between;
+        }
+        .select_category li {
+            width: 100%;
+            height: 3rem;
+            background-color: #cccccc38;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: medium;
+            color: rgba(0, 0, 0, 0.219);
+        }
+        .select_category li.active {
+            color: black;
+            background-color: rgba(192, 192, 192, 0.637);
+        }
+        .delivery_list ul{
+            padding-left: 0px;
+        }
+        .delivery_list ul li{
+            border-bottom: 1px dotted black;
+            height: 6rem;
+            position: relative;
+        }
+        .delivery_list ul li .delivery_address{
+            font-size: medium;
+            margin-top: 0.5rem;
+        }
+        .order_num{
+            margin-top:0.5rem;
+            font-size: small;
+            color: red;
+        }
+        .delivery_list ul li div{
+            margin-left: 0.5rem;
+            display: inline-block;
+            float: left;
+            height: 0.5rem;
+        }
+        .delivery_list ul li .delivery_time{
+            margin-left: 0.5rem;
+            margin-top: 2rem;
+            font-size: small;
+            color: silver;
+        }
+        .delivery_list ul li .delivery_dis{
+            float: right;
+            margin-right: 0.5rem;
+            font-size: medium;
+            margin-top: 2rem;
+            color: green;
+        }
+        .drive_none{
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .now_order_now{
+            position: absolute;
+            left: -9999px;
+            top: auto;
+            overflow: hidden;
+        }
+        .select_category ul a{
+        }
+
+        .orderRegion{
+            width: 5rem;
+            height: 1.5rem;
+            float: right;
+            padding-top: 0.2rem;
+            background-color: black;
+            color: #2ed704;
+            border-radius: 0.5rem;
+        }
+
+
+        .category{
+            width: 100%;
+            height: 4rem;
+            border-bottom: 1px solid black;
+        }
+        .category .category_btn{
+            text-align: center;
+            width: 100%;
+            color: aliceblue;
+            font-size: larger;
+            background-color: rgba(169, 169, 169, 0.534);
+            height: 3.5rem;
+            border-radius: 0.5rem;
+            margin-top: 0.5rem;
+            padding-top: 1rem;
+        }
+
+
+        .modal{
+            width: 90%;
+            height: 30rem;
+            background-color: darkgray;
+            border-radius: 0.5rem;
+            display: none;
+            position: absolute;
+            top: 12rem;
+            left: 1.2rem;
+        }
+        .modalBox{
+            width: 90%;
+            background-color: white;
+            height: 25rem;
+            border: 1px solid rgba(0, 0, 0, 0.336);
+            border-radius: 0.5rem;
+            position: relative;
+            bottom: -2.5rem;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-50%);
+        }
+        .modal.show {
+            display: block;
+        }
+        .modalBox ul{
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+        }
+        .modalBox .liBtn{
+            flex-basis: calc(25% - 10px); /* 4개의 요소가 한 행에 위치하도록 25%로 설정하고 간격을 조절합니다. */
+            height: 3rem;
+            background-color: #cccccc38;
+            margin: 5px; /* 간격을 추가합니다. */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: medium;
+            color: black;
+            border: 1px solid black;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+            text-align: center;
+        }

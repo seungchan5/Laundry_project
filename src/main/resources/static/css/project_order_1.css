@@ -1,0 +1,89 @@
+.option{
+    width: 100%;
+    margin: 1rem 0;
+}
+
+label{
+    width: 100%;
+    height: 6rem;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    display: inline-block;
+    margin-bottom: 0.5rem;
+    padding: 1rem;
+    background-color:white;
+    box-shadow: 2px 2px 5px #dadada;
+}
+
+span{
+    width: 100%;
+    display: inline-block;
+    height: 50%;
+    white-space: nowrap;
+}
+
+.span{
+    font-size: 1.4rem;
+}
+
+.spandetails{
+    font-size: 0.9rem;
+    text-align: right;
+    line-height: 400%;
+    color: #666;
+}
+
+.option .title{
+    display: flex;
+    justify-content: space-between;
+}
+
+.option .title h3{
+    margin: 0;
+}
+.option .title button{
+    margin: 0;
+    font-size: 1.1rem;
+    text-decoration: underline;
+}
+
+.option .dateTime{
+    margin: 1rem 0;
+}
+
+.optionbox{
+    width: 100%;
+    height: 6rem;
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    box-shadow: 2px 2px 5px #dadada;
+}
+
+.optionbox_title{
+    display: flex;
+    justify-content: space-between
+}
+.optionbox_title h3, .optionbox_title svg{
+    margin: 0;
+}
+
+input[type=submit]{
+    bottom: 4.5rem;
+    left: 1rem;
+    width: calc(100% - 2rem);
+    position: fixed;
+}
+body{
+    margin-bottom: clamp(9rem, 3vw, 10rem); /* 푸터의 height 만큼 margin을 주어야지 스크롤이 가능하다. */
+}
+
+.select1{
+    border: 4px solid var(--main-color);
+}
+
+.select2{
+    fill: var(--main-color);
+}
+

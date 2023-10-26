@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="aug.laundry.dao.mypage.MypageMapper">
+
+    <select id="findByNameAndPass" resultType="aug.laundry.dto.MypageDto">
+        SELECT member_name, to_char(subscription_expire_date, 'yy/MM/dd') as subscription_expire_date
+        FROM MEMBER
+        WHERE member_id=#{memberId}
+    </select>
+
+    <select id="findByName" resultType="String">
+        SELECT MEMBER_NAME
+        FROM MEMBER
+        WHERE member_id = #{memberId}
+    </select>
+
+    <select id="findByInviteCode" resultType="String">
+        SELECT MEMBER_MY_INVITE_CODE
+        FROM MEMBER
+        WHERE member_id = #{memberId}
+    </select>
+
+    <select id="findByInfo" resultType="aug.laundry.dto.MypageDto">
+        SELECT MEMBER_NAME, MEMBER_PHONE, MEMBER_ZIPCODE, MEMBER_ADDRESS, MEMBER_ADDRESS_DETAILS,
+        SUBSCRIPTION_ID, SUBSCRIPTION_EXPIRE_DATE, GRADE_ID, MEMBER_MY_INVITE_CODE
+        FROM MEMBER
+        WHERE member_id = #{memberId}
+    </select>
+
+    <update id="updateAddress">
+        UPDATE MEMBER
+        SET MEMBER_ZIPCODE = #{memberZipcode}, MEMBER_ADDRESS = #{memberAddress}, MEMBER_ADDRESS_DETAILS = #{memberAddressDetails}
+        WHERE MEMBER_ID = #{memberId}
+    </update>
+
+    <update id="updatePhone">
+        UPDATE MEMBER
+        SET MEMBER_PHONE = #{memberPhone}
+        WHERE MEMBER_ID = #{memberId}
+    </update>
+    
+    <update id="unregister">
+        UPDATE MEMBER
+        SET MEMBER_DELETE_STATUS = 'Y'
+        WHERE MEMBER_ID = #{memberId}
+    </update>
+
+    <update id="changePassword">
+        UPDATE MEMBER
+        SET MEMBER_PASSWORD = #{memberPassword}
+        WHERE MEMBER_ID = #{memberId}
+    </update>
+    
+    <select id="getPoint" resultType="aug.laundry.dto.MyPointDto">
+        SELECT POINT_ID, POINT_STACK, POINT_STACK_REASON, TO_CHAR(POINT_STACK_DATE, 'yy-MM-dd HH24:MI')AS POINT_STACK_DATE, POINT_NOW
+        FROM POINT
+        WHERE MEMBER_ID = #{memberId}
+        ORDER BY POINT_ID DESC
+    </select>
+
+    <select id="getPointNow" resultType="aug.laundry.dto.PointNowDto">
+        select point_now
+        from (select * from point order by point_id desc)
+        where <![CDATA[ROWNUM = 1]]> and member_id = #{memberId}
+    </select>
+    
+    <select id="someCoupon" resultType="int">
+        SELECT COUNT(MEMBER_ID)
+        FROM COUPON_LIST
+        WHERE MEMBER_ID = #{memberId} AND COUPON_LIST_STATUS = 1 AND (COUPON_END_DATE > SYSDATE OR COUPON_END_DATE IS NULL)
+    </select>
+
+    <select id="findMySubscribeMonths" resultType="aug.laundry.dto.MySubscribeMonthsDto">
+        SELECT SUBSCRIPTION_ID, TO_CHAR(SUBSCRIPTION_EXPIRE_DATE, 'YY/MM/DD HH24:MI') AS SUBSCRIPTION_EXPIRE_DATE
+        FROM MEMBER
+        WHERE MEMBER_ID = #{memberId}
+    </select>
+
+</mapper>

@@ -1,0 +1,88 @@
+.container{
+    width: 100%;
+    min-width: 310px;
+}
+
+.container > form{
+    width: 100%;
+}
+
+form h3{
+    text-align: left;
+    margin: 1rem 0
+}
+
+input[type=submit]{
+    bottom: 4.5rem;
+    left: 1rem;
+    width: calc(100% - 2rem);
+    position: fixed;
+}
+
+input{
+    border: none;
+    border-bottom: 1px solid #dadada;
+    outline: none;
+    padding: 1rem;
+}
+
+input:focus{
+    border-bottom: 1px solid var(--main-color);
+}
+
+#zipcode{
+    width: 40%;
+    height: 2.5rem;
+    margin-top: 1rem;
+    font-size: 1.2rem;
+}
+
+.searchAddressBtn{
+    width: 20%;
+    height: 2.5rem;
+    background-color: var(--main-color-hover);
+    color: #fff;
+    border-radius: var(--border-radius);
+    margin-left: 0.5rem;
+    font-size: 1.2rem;
+}
+#searchAddressValue{
+    margin-top: 1rem;
+    width: 100%;
+    font-size: 1.2rem;
+}
+
+#detailAddress{
+    margin-top: 1rem;
+    width: 100%;
+    font-size: 1.2rem;
+}
+
+#extraAddress{
+    margin-top: 1rem;
+    width: 100%;
+    background-color: #fff;
+    font-size: 1.2rem;
+}
+.errors{
+    text-align: center;
+    color: red;
+    margin-bottom: 1rem;
+}
+.errorsborder{
+    border: 2px solid rgb(255, 114, 114);
+}
+
+.errors.message{
+    font-size: 1.2rem;
+}
+
+.errorBox{
+    text-align: center;
+}
+
+.errors svg{
+    width: 1.2rem;
+    fill: rgb(48, 180, 31);
+}
+

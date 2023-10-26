@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="aug.laundry.dao.payment.PaymentMapper">
+
+
+    <select id="findCouponByCouponListId" resultType="aug.laundry.dto.CouponCheckDto">
+        SELECT A.COUPON_LIST_STATUS, C.COUPON_PRICE
+        FROM COUPON_LIST A
+        INNER JOIN MEMBER B
+        ON A.MEMBER_ID = B.MEMBER_ID
+        INNER JOIN COUPON C
+        ON A.COUPON_ID = C.COUPON_ID
+        WHERE A.COUPON_LIST_ID = #{couponListId}
+    </select>
+
+    <insert id="savePaymentInfo">
+        <selectKey keyProperty="paymentinfo.paymentinfoId" resultType="Long" order="BEFORE">
+            SELECT SEQ_PAYMENTINFO_ID.NEXTVAL
+            FROM DUAL
+        </selectKey>
+        INSERT INTO PAYMENTINFO (PAYMENTINFO_ID, MEMBER_ID, IMP_UID,
+                                 PAY_METHOD, MERCHANT_UID,
+                                 BUYER_NAME, BUYER_TEL, AMOUNT, PAYMENT_STATUS)
+        VALUES(#{paymentinfo.paymentinfoId}, #{paymentinfo.memberId}, #{paymentinfo.impUid}, #{paymentinfo.payMethod}, #{paymentinfo.merchantUid},
+               #{paymentinfo.buyerName}, #{paymentinfo.buyerTel}, #{paymentinfo.amount}, #{constPaymentStatus})
+    </insert>
+
+    <select id="findPaymentinfoByPaymentinfoId" resultType="Paymentinfo">
+        SELECT MEMBER_ID, IMP_UID, PAY_METHOD, MERCHANT_UID, BUYER_NAME, BUYER_TEL, AMOUNT, PAYMENT_STATUS
+        FROM PAYMENTINFO
+        WHERE PAYMENTINFO_ID = #{paymentinfoId}
+    </select>
+
+    <update id="updateRefundInfoBypaymentinfoId">
+        UPDATE PAYMENTINFO
+        SET PAYMENT_STATUS = #{constPaymentStatus},
+        REFUND_REASON = #{errorMessage}
+        WHERE PAYMENTINFO_ID = #{paymentinfoId}
+    </update>
+
+    <select id="findPaymentinfoByImpUid" resultType="Paymentinfo">
+        SELECT PAYMENTINFO_ID, MEMBER_ID, IMP_UID,
+               PAY_METHOD, MERCHANT_UID, BUYER_NAME,
+               BUYER_TEL, AMOUNT, PAYMENT_STATUS, REFUND_REASON
+        FROM PAYMENTINFO
+        WHERE IMP_UID = #{impUid}
+    </select>
+
+</mapper>

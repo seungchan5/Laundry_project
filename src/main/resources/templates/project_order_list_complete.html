@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/project_footer.css">
+    <link rel="stylesheet" href="/css/project_header.css">
+    <link rel="stylesheet" href="/css/project_order_list.css">
+<!--    <script src="/js/project_order_list.js"></script>-->
+
+    <title>세탁신청</title>
+</head>
+<header th:replace="~{/common/project_header :: header}"></header>
+<body>
+<div class='container'>
+    <div class='menu'>
+        <button type='button' th:onclick="|location.href='@{/orders}'|" class='leftBtn'>진행중인 주문</button>
+        <button type='button' th:onclick="|location.href='@{/orders/complete}'|" class='rightBtn selected'>완료된 주문</button>
+    </div>
+<!--    <div th:each="category, stat : ${categories}" class='orderList' id='now'>-->
+<!--        <a th:href="@{/orders/{ordersId}/payment(ordersId=${category.ordersId})}" class='order'>-->
+<!--            <div class='orderTop'>-->
+<!--                <div class='orderBox'>-->
+<!--                    <span th:text="${orders[stat.index].ordersDate}" class='orderDate'>9월 15일(금)</span>-->
+<!--                    <div class='option'>빠른세탁</div>-->
+<!--                </div>-->
+<!--                <span th:text="${orders[stat.index].orderStatus.title}" class='orderStatus'>주문완료</span>-->
+<!--            </div>-->
+<!--            <div class='orderCenter'>-->
+<!--                <span th:text="${category.category}" class='orderContent'>OOOO 수선 외 5건</span>-->
+<!--            </div>-->
+<!--        </a>-->
+<!--    </div>-->
+    <th:block th:if="${!ordersFinished.isEmpty()}">
+        <div th:each="category, stat : ${categoriesFinished}" class='orderList' id='now'>
+            <a th:href="@{/orders/{ordersId}/payment(ordersId=${category.ordersId})}" class='order'>
+                <div class='orderTop'>
+                    <div class='orderBox'>
+                        <span th:text="${ordersFinished[stat.index].ordersDate}" class='orderDate'>9월 15일(금)</span>
+                        <div class='option'>빠른세탁</div>
+                    </div>
+                    <span th:text="${ordersFinished[stat.index].orderStatus.title}" class='orderStatus'>종료</span>
+                </div>
+                <div class='orderCenter'>
+                    <span th:text="${category.category}" class='orderContent'>OOOO 수선 외 5건</span>
+                </div>
+            </a>
+        </div>
+    </th:block>
+</div>
+</body>
+<footer th:replace="~{/common/project_footer :: footer}"> </footer>
+</html>

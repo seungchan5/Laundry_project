@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="aug.laundry.dao.basket.RepairMapper">
+
+
+
+    <insert id="insert">
+        INSERT INTO REPAIR (REPAIR_ID , ORDERS_DETAIL_ID , REPAIR_REQUEST , REPAIR_CATEGORY ,REPAIR_POSSIBILITY, REPAIR_NOT_REASON)
+        VALUES (SEQ_REPAIR_ID.NEXTVAL, #{ordersDetailId},#{repairRequest}, #{repairCategory},#{repairPossibility}, #{repairNotReason});
+
+    </insert>
+
+
+
+
+
+
+
+</mapper>

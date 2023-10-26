@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="aug.laundry.dao.orders.OrdersMapper">
+
+
+    <select id="findByOrdersId" resultType="aug.laundry.dto.OrdersResponseDto">
+        SELECT TO_CHAR(TO_NUMBER(TO_CHAR(A.ORDERS_DATE, 'MM'))) || '월 ' || TO_CHAR(A.ORDERS_DATE, 'DD') || '일' || TO_CHAR(A.ORDERS_DATE, '(DY)') AS ORDERS_DATE,
+        A.ORDERS_ID,
+        TO_CHAR(A.ORDERS_PICKUP_DATE, 'YYYY/MM/DD(DY) HH24') || '시' AS ORDERS_PICKUP_DATE,
+        TO_CHAR(A.ORDERS_RETURN_DATE, 'YYYY/MM/DD(DY) HH24') || '시' AS ORDERS_RETURN_DATE,
+        A.ORDERS_ADDRESS,
+        A.ORDERS_ADDRESS_DETAILS, A.ORDERS_REQUEST, C.COMMON_LAUNDRY_WEIGHT,
+        C.COMMON_LAUNDRY_ID,
+        A.MEMBER_ID,
+        A.ORDERS_STATUS
+        FROM ORDERS A
+        LEFT JOIN ORDERS_DETAIL B
+        ON A.ORDERS_ID = B.ORDERS_ID
+        LEFT JOIN COMMON_LAUNDRY C
+        ON B.ORDERS_DETAIL_ID = C.ORDERS_DETAIL_ID
+        WHERE A.ORDERS_ID = #{ordersId}
+    </select>
+
+    <select id="findDryCleaningByOrdersId" resultType="Drycleaning">
+        SELECT A.DRYCLEANING_CATEGORY, A.DRYCLEANING_POSSIBILITY, A.DRYCLEANING_NOT_REASON
+        FROM DRYCLEANING A
+        INNER JOIN ORDERS_DETAIL B
+            ON A.ORDERS_DETAIL_ID = B.ORDERS_DETAIL_ID
+        WHERE B.ORDERS_ID = #{ordersId}
+    </select>
+
+    <select id="findRepairByOrdersId" resultType="Repair">
+        SELECT A.REPAIR_CATEGORY, A.REPAIR_POSSIBILITY, A.REPAIR_NOT_REASON
+        FROM REPAIR A
+        INNER JOIN ORDERS_DETAIL B
+            ON A.ORDERS_DETAIL_ID = B.ORDERS_DETAIL_ID
+        WHERE B.ORDERS_ID = #{ordersId}
+    </select>
+
+    <select id="findQuickLaundryByOrdersId" resultType="int">
+        SELECT COUNT(*)
+        FROM QUICK_LAUNDRY A
+        INNER JOIN ORDERS_DETAIL B
+        ON A.ORDERS_DETAIL_ID = B.ORDERS_DETAIL_ID
+        WHERE B.ORDERS_ID = #{ordersId}
+    </select>
+
+    <update id="updateExpectedNDiscountPriceByOrdersId">
+        UPDATE ORDERS
+        SET ORDERS_EXPECTED_PRICE = #{expectedPrice},
+            SUBSCRIPTION_DISCOUNT_PRICE = #{subscriptionDiscountPrice}
+        WHERE ORDERS_ID = #{ordersId}
+    </update>
+
+    <update id="updateExpectedPriceByOrdersId">
+        UPDATE ORDERS
+        SET ORDERS_EXPECTED_PRICE = #{expectedPrice}
+        WHERE ORDERS_ID = #{ordersId}
+    </update>
+
+    <update id="updateSubscriptionDiscountPrice">
+        UPDATE ORDERS
+        SET SUBSCRIPTION_DISCOUNT_PRICE = #{subscriptionDiscountPrice}
+        WHERE ORDERS_ID = #{ordersId}
+    </update>
+
+    <select id="findExpectedPriceByOrdersId" resultType="Long">
+        SELECT ORDERS_EXPECTED_PRICE
+        FROM ORDERS
+        WHERE ORDERS_ID = #{ordersId}
+    </select>
+
+    <update id="updateOrdersStatusToCompletePayment">
+        UPDATE ORDERS
+        SET ORDERS_STATUS = #{constPaySuccess}
+        WHERE ORDERS_ID = #{ordersId}
+    </update>
+
+    <update id="updatePriceNStatusNPaymentinfo">
+        UPDATE ORDERS
+        SET ORDERS_FINAL_PRICE = #{ordersFinalPrice},
+        ORDERS_STATUS = #{constPaySuccess},
+        PAYMENTINFO_ID = #{paymentinfoId},
+        QUICK_RIDER_ID = NULL
+        WHERE ORDERS_ID = #{ordersId}
+    </update>
+    
+    <update id="updatePriceNStatusNPaymentinfoForCommonDelivery">
+        UPDATE ORDERS
+        SET ORDERS_FINAL_PRICE = #{ordersFinalPrice},
+        ORDERS_STATUS = #{constPaySuccess},
+        PAYMENTINFO_ID = #{paymentinfoId}
+        WHERE ORDERS_ID = #{ordersId}
+    </update>
+
+<!--    <update id="">-->
+<!--        UPDATE ORDERS-->
+<!--        SET ORDERS_FINAL_PRICE = #{ordersFinalPrice},-->
+<!--        ORDERS_STATUS = #{constPaySuccess},-->
+<!--        PAYMENTINFO_ID = #{paymentinfoId}-->
+<!--        WHERE ORDERS_ID = #{ordersId}-->
+<!--    </update>-->
+
+    <update id="updateCouponListStatusToUsedCoupon">
+        UPDATE COUPON_LIST
+        SET COUPON_LIST_STATUS = #{constCouponListStatus},
+            ORDERS_ID = #{ordersId}
+        WHERE COUPON_LIST_ID = (SELECT A.COUPON_LIST_ID
+        FROM COUPON_LIST A
+        INNER JOIN ORDERS B
+        ON A.MEMBER_ID = B.MEMBER_ID
+        WHERE COUPON_LIST_ID = #{couponListId})
+    </update>
+
+    <insert id="addPoint">
+        <selectKey keyProperty="pointDto.pointId" resultType="Long" order="BEFORE">
+            SELECT SEQ_POINT_ID.NEXTVAL
+            FROM DUAL
+        </selectKey>
+        INSERT INTO POINT(POINT_ID, MEMBER_ID, POINT_STACK, POINT_STACK_REASON, POINT_STACK_DATE, POINT_NOW)
+        VALUES(#{pointDto.pointId}, #{pointDto.memberId}, #{pointDto.pointStack}, #{pointDto.pointStackReason}, SYSDATE, (SELECT
+        POINT_NOW
+        FROM
+        (SELECT
+        POINT_NOW,
+        POINT_STACK_DATE,
+        ROW_NUMBER() OVER (ORDER BY POINT_STACK_DATE DESC) AS rn
+        FROM
+        POINT
+        WHERE
+        MEMBER_ID = #{pointDto.memberId})
+        WHERE
+        rn = 1) + #{pointDto.pointStack})
+    </insert>
+
+    <select id="findOrdersByMemberIdAndCri" resultType="aug.laundry.dto.OrdersListResponseDto">
+        SELECT ORDERS_ID, ORDERS_DATE, ORDERS_STATUS, ORDERS_PICKUP, ORDERS_PICKUP_DATE, ORDERS_RETURN_DATE
+        FROM(SELECT ROWNUM rn, t.*
+        from(SELECT ORDERS_ID, TO_CHAR(TO_NUMBER(TO_CHAR(ORDERS_DATE, 'MM'))) || '월 ' || TO_CHAR(ORDERS_DATE, 'DD') || '일' || TO_CHAR(ORDERS_DATE, '(DY)') AS ORDERS_DATE,
+        ORDERS_STATUS, ORDERS_PICKUP, ORDERS_PICKUP_DATE, ORDERS_RETURN_DATE
+        FROM ORDERS
+        WHERE MEMBER_ID = #{memberId} AND ORDERS_STATUS NOT IN(1,13)
+        ORDER BY ORDERS_DATE DESC) t)
+        WHERE rn BETWEEN #{cri.startNo} and #{cri.endNo}
+    </select>
+
+    <select id="findOrdersFinishedByMemberIdAndCri" resultType="aug.laundry.dto.OrdersListResponseDto">
+        SELECT ORDERS_ID, ORDERS_DATE, ORDERS_STATUS, ORDERS_PICKUP, ORDERS_PICKUP_DATE, ORDERS_RETURN_DATE
+        FROM(SELECT ROWNUM rn, t.*
+        from(SELECT ORDERS_ID, TO_CHAR(TO_NUMBER(TO_CHAR(ORDERS_DATE, 'MM'))) || '월 ' || TO_CHAR(ORDERS_DATE, 'DD') || '일' || TO_CHAR(ORDERS_DATE, '(DY)') AS ORDERS_DATE,
+        ORDERS_STATUS, ORDERS_PICKUP, ORDERS_PICKUP_DATE, ORDERS_RETURN_DATE
+        FROM ORDERS
+        WHERE MEMBER_ID = #{memberId} AND ORDERS_STATUS IN(1,13)
+        ORDER BY ORDERS_DATE DESC) t)
+        WHERE rn BETWEEN #{cri.startNo} and #{cri.endNo}
+    </select>
+
+    <select id="getTotalCount" resultType="int">
+        SELECT COUNT(*)
+        FROM ORDERS
+        WHERE MEMBER_ID = #{memberId} AND ORDERS_STATUS NOT IN(#{constOrderStatus})
+    </select>
+
+    <update id="updatePaymentinfoIdByOrdersId">
+        UPDATE ORDERS
+        SET PAYMENTINFO_ID = #{paymentinfoId}
+        WHERE ORDERS_ID = #{ordersId}
+    </update>
+
+    <select id="findPricesByOrdersId" resultType="aug.laundry.dto.PriceResponseDto">
+        SELECT ABS(NVL(C.POINT_STACK,0)) AS POINT_STACK, NVL(D.COUPON_PRICE,0) AS COUPON_PRICE, A.ORDERS_FINAL_PRICE
+        FROM ORDERS A
+        LEFT JOIN COUPON_LIST B
+        ON A.ORDERS_ID = B.ORDERS_ID
+        LEFT JOIN POINT C
+        ON A.POINT_ID = C.POINT_ID
+        LEFT JOIN COUPON D
+        ON B.COUPON_ID = D.COUPON_ID
+        WHERE A.ORDERS_ID = #{ordersId}
+    </select>
+    
+    <update id="updatePointIdByOrdersId">
+        UPDATE ORDERS
+        SET POINT_ID = #{pointId}
+        WHERE ORDERS_ID = #{ordersId}
+    </update>
+
+    <update id="updateCouponStatusNOrdersId">
+        UPDATE COUPON_LIST
+        SET COUPON_LIST_STATUS = #{couponListStatus},
+            ORDERS_ID = #{ordersId}
+        WHERE COUPON_LIST_ID = #{couponListId}
+    </update>
+
+    <select id="findSubscriptionDiscountPrice" resultType="Long">
+        SELECT SUBSCRIPTION_DISCOUNT_PRICE
+        FROM ORDERS
+        WHERE ORDERS_ID = #{ordersId}
+    </select>
+
+    <select id="findCountOfQuickDelivery" resultType="int">
+        SELECT COUNT(*)
+        FROM QUICK_LAUNDRY A
+        LEFT JOIN ORDERS_DETAIL B
+        ON A.ORDERS_DETAIL_ID = B.ORDERS_DETAIL_ID
+        WHERE B.ORDERS_ID = #{ordersId}
+    </select>
+
+    <select id="findCategoryByMemberId" resultType="aug.laundry.dto.CategoryForOrdersListDto">
+        SELECT ORDERS_ID,
+        CASE WHEN COUNT(*) = 1 THEN MAX(CATEGORY)
+        ELSE MAX(CATEGORY) || ' 외 ' || TO_CHAR(COUNT(*)-1) || '건'
+        END AS CATEGORY
+        FROM
+        (
+        SELECT A.ORDERS_ID, B.DRYCLEANING_CATEGORY || ' (DRYCLEANING)' AS CATEGORY
+        FROM ORDERS_DETAIL A
+        INNER JOIN DRYCLEANING B
+        ON A.ORDERS_DETAIL_ID = B.ORDERS_DETAIL_ID
+        INNER JOIN ORDERS C
+        ON A.ORDERS_ID = C.ORDERS_ID
+        WHERE A.MEMBER_ID = #{memberId} AND C.ORDERS_STATUS != #{orderCancel} AND C.ORDERS_STATUS != #{deliverySuccess}
+
+        UNION ALL
+
+        SELECT A.ORDERS_ID, B.REPAIR_CATEGORY || ' (REPAIR)'AS CATEGORY
+        FROM ORDERS_DETAIL A
+        INNER JOIN REPAIR B
+        ON A.ORDERS_DETAIL_ID = B.ORDERS_DETAIL_ID
+        INNER JOIN ORDERS C
+        ON A.ORDERS_ID = C.ORDERS_ID
+        WHERE A.MEMBER_ID = #{memberId} AND C.ORDERS_STATUS != #{orderCancel} AND C.ORDERS_STATUS != #{deliverySuccess}
+
+        UNION ALL
+
+        SELECT A.ORDERS_ID,
+        CASE WHEN COUNT(*) = 0 THEN 'EMPTY'
+        ELSE 'BASIC' || ' (COMMON)'
+        END AS CATEGORY
+        FROM ORDERS_DETAIL A
+        INNER JOIN COMMON_LAUNDRY B
+        ON A.ORDERS_DETAIL_ID = B.ORDERS_DETAIL_ID
+        INNER JOIN ORDERS C
+        ON A.ORDERS_ID = C.ORDERS_ID
+        WHERE A.MEMBER_ID = #{memberId} AND C.ORDERS_STATUS != #{orderCancel} AND C.ORDERS_STATUS != #{deliverySuccess}
+        GROUP BY A.ORDERS_ID
+        )
+        GROUP BY ORDERS_ID
+        ORDER BY ORDERS_ID DESC
+    </select>
+
+    <select id="findCategoryFinishedByMemberId" resultType="aug.laundry.dto.CategoryForOrdersListDto">
+        SELECT ORDERS_ID,
+        CASE WHEN COUNT(*) = 1 THEN MAX(CATEGORY)
+        ELSE MAX(CATEGORY) || ' 외 ' || TO_CHAR(COUNT(*)-1) || '건'
+        END AS CATEGORY
+        FROM
+        (
+        SELECT A.ORDERS_ID, B.DRYCLEANING_CATEGORY || ' (DRYCLEANING)' AS CATEGORY
+        FROM ORDERS_DETAIL A
+        INNER JOIN DRYCLEANING B
+        ON A.ORDERS_DETAIL_ID = B.ORDERS_DETAIL_ID
+        INNER JOIN ORDERS C
+        ON A.ORDERS_ID = C.ORDERS_ID
+        WHERE A.MEMBER_ID = #{memberId} AND (C.ORDERS_STATUS = #{orderCancel} OR C.ORDERS_STATUS = #{deliverySuccess})
+
+        UNION ALL
+
+        SELECT A.ORDERS_ID, B.REPAIR_CATEGORY || ' (REPAIR)'AS CATEGORY
+        FROM ORDERS_DETAIL A
+        INNER JOIN REPAIR B
+        ON A.ORDERS_DETAIL_ID = B.ORDERS_DETAIL_ID
+        INNER JOIN ORDERS C
+        ON A.ORDERS_ID = C.ORDERS_ID
+        WHERE A.MEMBER_ID = #{memberId} AND (C.ORDERS_STATUS = #{orderCancel} OR C.ORDERS_STATUS = #{deliverySuccess})
+
+        UNION ALL
+
+        SELECT A.ORDERS_ID,
+        CASE WHEN COUNT(*) = 0 THEN 'EMPTY'
+        ELSE 'BASIC' || ' (COMMON)'
+        END AS CATEGORY
+        FROM ORDERS_DETAIL A
+        INNER JOIN COMMON_LAUNDRY B
+        ON A.ORDERS_DETAIL_ID = B.ORDERS_DETAIL_ID
+        INNER JOIN ORDERS C
+        ON A.ORDERS_ID = C.ORDERS_ID
+        WHERE A.MEMBER_ID = #{memberId} AND (C.ORDERS_STATUS = #{orderCancel} OR C.ORDERS_STATUS = #{deliverySuccess})
+        GROUP BY A.ORDERS_ID
+        )
+        GROUP BY ORDERS_ID
+        ORDER BY ORDERS_ID DESC
+    </select>
+    
+    <select id="findOrders" resultType="aug.laundry.dto.OrdersForOrdersListDto">
+        SELECT A.ORDERS_ID, TO_CHAR(TO_NUMBER(TO_CHAR(A.ORDERS_DATE, 'MM'))) || '월 ' || TO_CHAR(A.ORDERS_DATE, 'DD') || '일' || TO_CHAR(A.ORDERS_DATE, '(DY)') AS ORDERS_DATE,
+                'R' || A.ORDERS_STATUS AS ORDERSTATUS
+        FROM ORDERS A
+        INNER JOIN ORDERS B
+        ON A.ORDERS_ID = B.ORDERS_ID
+        WHERE A.MEMBER_ID = #{memberId} AND A.ORDERS_STATUS != #{orderCancel} AND A.ORDERS_STATUS != #{deliverySuccess}
+        ORDER BY A.ORDERS_ID DESC
+    </select>
+
+    <select id="findOrdersFinished" resultType="aug.laundry.dto.OrdersForOrdersListDto">
+        SELECT A.ORDERS_ID, TO_CHAR(TO_NUMBER(TO_CHAR(A.ORDERS_DATE, 'MM'))) || '월 ' || TO_CHAR(A.ORDERS_DATE, 'DD') || '일' || TO_CHAR(A.ORDERS_DATE, '(DY)') AS ORDERS_DATE,
+                'R' || A.ORDERS_STATUS AS ORDERSTATUS
+        FROM ORDERS A
+        INNER JOIN ORDERS B
+        ON A.ORDERS_ID = B.ORDERS_ID
+        WHERE A.MEMBER_ID = #{memberId} AND (A.ORDERS_STATUS = #{orderCancel} OR A.ORDERS_STATUS = #{deliverySuccess})
+        ORDER BY A.ORDERS_ID DESC
+    </select>
+    
+    <select id="findCouponListIdByOrdersId" resultType="Long">
+        SELECT A.COUPON_LIST_ID
+        FROM COUPON_LIST A
+        LEFT JOIN ORDERS B
+        ON A.ORDERS_ID = B.ORDERS_ID
+        WHERE B.ORDERS_ID = #{ordersId}
+    </select>
+
+    <update id="updateCouponList">
+        UPDATE COUPON_LIST
+        SET COUPON_LIST_STATUS = #{notUsed},
+        ORDERS_ID = NULL
+        WHERE COUPON_LIST_ID = #{couponListId}
+    </update>
+
+    <update id="updateRiderId">
+        UPDATE orders
+        SET rider_id = (select rider_id from rider where rider_possible_zipcode = (SELECT REGEXP_SUBSTR(orders_address, '\w+구') AS extracted_dong from orders where orders_id = #{ordersId}))
+        WHERE orders_id = #{ordersId}
+    </update>
+
+
+
+</mapper>

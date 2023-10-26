@@ -1,0 +1,114 @@
+h2{
+    margin: 2rem 0;
+}
+.top{
+    display: flex;
+    justify-content: space-between;
+}
+.category{
+    display: inline-block;
+    margin: 0;
+
+}
+
+#category1, #category2, #category3{
+    appearance: none;
+    border-radius: 0.4rem;
+    font-size: 1.1rem;
+    text-align: center;
+    width: 5rem;
+    height: 2rem;
+}
+.c2{
+    margin-left: 7px;
+    appearance: none;
+    border-radius: 0.4rem;
+    font-size: 1.1rem;
+    text-align: center;
+    width: 12rem;
+    height: 2rem;
+
+}
+.c1{
+    appearance: none;
+    border-radius: 0.4rem;
+    font-size: 1.1rem;
+    text-align: center;
+    width: 5rem;
+    height: 2rem;
+}
+#quantity{
+    margin-left: 10px;
+    margin-right: 10px;
+    appearance: none;
+    border-radius: 0.4rem;
+    font-size: 1.1rem;
+    text-align: center;
+    width: 3rem;
+    height: 2rem;
+}
+
+.categoryadd{
+    text-decoration: underline;
+    font-size: 1rem;
+    margin: 0;
+}
+
+.drycleaninglist{
+    margin: 2rem 0 1rem 0;
+}
+
+.list{
+    width: 100%;
+    height: 5rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem 0;
+    padding: 0 0.5rem;
+}
+
+.list .img{
+    width: 4rem;
+    text-align: center;
+    margin: 0;
+    display: inline-block;
+}
+
+.list .img svg{
+    width: 2rem;
+}
+
+.categoryname{
+    width: 8rem;
+}
+
+.list .count{
+    min-width: 4rem;
+    margin: 0;
+    display: flex;
+}
+.list .count svg{
+    width: 1rem;
+    cursor: pointer;
+}
+.price{
+    text-align: right;
+    margin: 0;
+}
+.totalpricebox{
+    width: 100%;
+    text-align: right;
+}
+
+input[type=submit]{
+    bottom: 4.5rem;
+    left: 1rem;
+    width: calc(100% - 2rem);
+    position: fixed;
+}
+body{
+    margin-bottom: clamp(9rem, 3vw, 10rem); /* 푸터의 height 만큼 margin을 주어야지 스크롤이 가능하다. */
+}

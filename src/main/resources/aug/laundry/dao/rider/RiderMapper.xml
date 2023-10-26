@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="aug.laundry.dao.rider.RiderMapper">
+
+<!--    <select id="orderList" resultType="aug.laundry.domain.Orders">-->
+<!--        select orders_pay_status as ordersStatus, orders_id, orders_address, orders_address_details, orders_date-->
+<!--        from orders-->
+<!--        <if test="status == '대기중'">-->
+<!--            where quick_rider_id is null and orders_pay_status in(2, 10) and rider_id is null-->
+<!--        </if>-->
+<!--        <if test="status == '진행중'">-->
+<!--            where quick_rider_id = (select quick_rider_id from quick_rider where quick_rider_name = '스크류바') and orders_pay_status in(3, 4, 11, 12)-->
+<!--        </if>-->
+<!--        <if test="status == '완료'">-->
+<!--            where quick_rider_id = (select quick_rider_id from quick_rider where quick_rider_name = '스크류바')and orders_pay_status in(5, 13)-->
+<!--        </if>-->
+<!--    </select>-->
+
+    <select id="orderListEnum" resultType="aug.laundry.dto.OrdersEnum">
+        <!--        select orders_pay_status, orders_id, orders_address ||' '||orders_address_details as orders_address, orders_date-->
+        select orders_status, orders_id, orders_address, orders_address_details, orders_date
+        from orders
+        <if test="status == '대기중'">
+            where quick_rider_id is null and orders_status in(2, 10) and orders_address like CONCAT(CONCAT('%', #{workingArea}), '%')
+        </if>
+        <if test="status == '진행중'">
+            where quick_rider_id = #{quickRiderId} and orders_status in(3, 4, 11, 12) and orders_address like CONCAT(CONCAT('%', #{workingArea}), '%')
+        </if>
+        <if test="status == '완료'">
+            where quick_rider_id = #{quickRiderId} and orders_status in(5, 13) and orders_address like CONCAT(CONCAT('%', #{workingArea}), '%')
+        </if>
+    </select>
+
+    <select id="orderListCnt" resultType="map">
+        select 'acceptCnt' as query_name, count(*) as result
+        from orders
+        where quick_rider_id = #{quickRiderId}
+        and orders_status in (3, 4, 11, 12) and orders_address like CONCAT(CONCAT('%', #{workingArea}), '%')
+
+        union all
+
+        select 'waitCnt' as query_name, count(*) as result
+        from orders
+        where quick_rider_id is null and rider_id is null and orders_address like CONCAT(CONCAT('%', #{workingArea}), '%')
+
+        union all
+
+        select 'completeCnt' as query_name, count(*) as result
+        from orders
+        where quick_rider_id = #{quickRiderId}
+        and orders_status in (5, 13) and orders_address like CONCAT(CONCAT('%', #{workingArea}), '%')
+    </select>
+
+
+
+
+<!--  주문 상세  -->
+    <select id="orderInfo" resultType="Orders">
+        SELECT
+        o.orders_status,
+        o.orders_id,
+<!--        o.orders_address || ' ' || o.orders_address_details AS ordersAddress,-->
+        o.orders_address,
+        o.orders_address_details,
+        o.orders_date,
+        o.orders_request,
+        o.orders_pickup,
+        o.orders_info,
+        o.rider_id,
+        o.orders_return_date,
+        o.orders_pickup_date
+<!--        ,ql.quick_laundry_take_time as ordersPickupDate-->
+        FROM
+        orders o
+        INNER JOIN
+        orders_detail od ON o.orders_id = od.orders_id
+<!--        INNER JOIN-->
+<!--        quick_laundry ql ON od.orders_detail_id = ql.orders_detail_id-->
+        WHERE
+        o.orders_id = #{ordersId}
+<!--        o.orders_pay_status in(2, 10) and o.orders_id = #{ordersId}-->
+        <!--        o.orders_pay_status in(3, 4, 11, 12) and o.orders_id = #{ordersId} and o.quick_rider_id = (select quick_rider_id from quick_rider where quick_rider_name = '스크류바')-->
+    </select>
+
+<!--  배달기사가 배정되어 orders테이블에 rider_id 업데이트  -->
+    <update id="updateOrderRider">
+        <!--        update orders set quick_rider_id = (select quick_rider_id from quick_rider where quick_rider_name = '스크류바') where orders_id = #{ordersId}-->
+                update orders set quick_rider_id = #{riderId} where orders_id = #{ordersId}
+    </update>
+
+<!--  그리고 orders_pay_status 변경(변경 될때마다 사용)  -->
+    <update id="updateOrderStatus">
+        update orders set orders_status = orders_status+1 where orders_id = #{ordersId}
+    </update>
+
+    <select id="riderInfo" resultType="Rider">
+        select quick_rider_id as riderId, working_Area from quick_rider where quick_rider_id = #{riderId}
+    </select>
+
+    <select id="finishImg" resultType="DeliveryImage">
+        select * from delivery_image where orders_id = #{ordersId}
+    </select>
+
+<!--  정기배송  -->
+    <select id="routineOrderList" resultType="aug.laundry.domain.Orders">
+        select orders_status, orders_id, orders_date, orders_address, orders_address_details
+        from orders
+        where rider_id = #{riderId} and quick_rider_id is null
+        and orders_address like CONCAT(CONCAT('%', #{ordersAddress}), '%')
+        <if test="status == '진행중'">
+            and orders_status in (3,12) and rider_id is not null
+        </if>
+        <if test="status == '완료'">
+            and orders_status in (4,13) and rider_id is not null
+        </if>
+    </select>
+
+    <select id="routineRider" resultType="aug.laundry.domain.Rider">
+        select * from rider where rider_Id = #{riderId}
+    </select>
+
+    <select id="routineOrderCnt" resultType="map">
+    select 'waitCnt' as query_name, count(*) as result FROM orders WHERE orders_status IN (3, 12) AND rider_id = #{riderId}
+    UNION
+    select 'completeCnt' as query_name, count(*) as result FROM orders WHERE orders_status IN (4, 13) AND rider_id = #{riderId}
+    </select>
+
+    <select id="routineTotalCnt" resultType="map">
+        SELECT 'TotalCnt' AS query_name, COUNT(*) AS result
+        FROM orders o
+        JOIN rider r ON o.rider_id = r.rider_id
+        WHERE
+<!--            o.orders_pay_status IN (3, 4, 11, 12) AND -->
+            o.orders_address LIKE '%' || #{zipCode} || '%'
+            AND r.rider_Id = #{riderId}
+    </select>
+
+    <select id="dongCnt" resultType="Integer">
+<!--        SELECT 'dongCnt' AS query_name, COUNT(*) AS result from orders where orders_address LIKE '%' || #{ordersAddress} || '%'-->
+        SELECT COUNT(*) AS result from orders where orders_address LIKE '%' || #{ordersAddress} || '%'
+        <if test="status == '진행중'">
+            and orders_Status in (3, 12) and rider_id is not null
+        </if>
+        <if test="status == '완료'">
+            and orders_Status in (4, 13) and rider_id is not null
+        </if>
+    </select>
+
+    <select id="acceptCheck" resultType="Integer">
+        select orders_status from orders where orders_id = #{ordersId}
+    </select>
+
+    <update id="updateStatus">
+        update orders set orders_status = orders_status+1 where rider_id = (rider_id)
+    </update>
+
+    <select id="isRoutineDelivery">
+        SELECT count(*) FROM QUICK_LAUNDRY WHERE ORDERS_DETAIL_ID = (SELECT ORDERS_DETAIL_ID FROM ORDERS_DETAIL WHERE ORDERS_ID = #{ordersId})
+    </select>
+
+    <update id="updateRoutineOrdersRiderId">
+        UPDATE orders SET rider_id = (select rider_id from rider where rider_possible_zipcode = (SELECT REGEXP_SUBSTR(orders_address, '\w+구') AS extracted_dong from orders where orders_id = #{ordersId})) WHERE orders_id = #{ordersId}
+    </update>
+
+    <delete id="deleteOrderId">
+        update orders set rider_id = null where rider_id = #{ordersId}
+    </delete>
+</mapper>

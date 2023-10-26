@@ -1,0 +1,168 @@
+h2{
+    margin: 1rem 0;
+    text-align: center;
+}
+.explain{
+    width: 100%;
+    height: 6rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    color: #666;
+
+}
+.imglist{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.imgbox svg{
+    margin: 0 auto;
+    fill: var(--border-color);
+}
+
+.imgbox{
+    width: calc(100% / 3 - 0.5rem);
+    height: calc(100% /3 - 0.5rem);
+    border: 1px solid #e9e9e9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--border-color);
+    margin: 0;
+}
+
+#required{
+    width: 100%;
+    height: 3rem;
+    padding: 1rem;
+    font-size: 1.1rem;
+    outline: none;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+}
+
+input[type=submit]{
+    bottom: 4.5rem;
+    left: 1rem;
+    width: calc(100%);
+    text-align: center;
+
+
+}
+body{
+    margin-bottom: clamp(9rem, 3vw, 10rem); /* 푸터의 height 만큼 margin을 주어야지 스크롤이 가능하다. */
+}
+
+.banner{
+    width: 100%;
+
+    border-radius: var(--border-radius);
+
+}
+#info{
+    background-color: lightgray;
+    width: 100%;
+    height: 8rem;
+    text-align: center;
+    margin-bottom: 5px;
+
+
+
+}
+#spaninfo{
+    margin-top: 100px;
+}
+#repairBox{
+    position: relative;
+    border: 3px solid#d7d7d7;
+
+    width: 80%;
+    height: 300px;
+    border-radius: var(--border-radius);
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+#repairHead{
+    width: 100%;
+    height: 50px;
+    background-color: lightgray;
+    border-radius: 5px;
+
+}
+#left{
+    float: left;
+    margin-left: 10px;
+    margin-top: 15px;
+    border-radius: var(--border-radius);
+}
+#right{
+    width: 40px;
+    height: 35px;
+    text-align: center;
+    background-color: white;
+    float: right;
+    padding-top: 5px;
+    margin-right: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+
+}
+#repairBody{
+
+    width: 100%;
+    height: 200px;
+    /* border: 3px solid red; */
+
+}
+
+#repairInfoBox{
+    width: 100%;
+    height: 50px;
+    position: absolute;
+    bottom: 0;
+    /* border: 3px solid blue; */
+
+}
+#next{
+    width: 100%;
+}
+#repairInfo{
+
+    border-top: 3px solid  #d7d7d7;
+    border: 1px solid  #d7d7d7;
+   width: 100%;
+   height: 50px;
+    font-size: smaller;
+    border-radius: 7px;
+
+
+}
+#image_container img {
+    width: 100%;
+    height: 150px;
+  }
+  #repairAdd{
+
+
+    text-align: center;
+    border: 3px solid  #d7d7d7;
+    border-radius: var(--border-radius);
+    width: 100px;
+    height: 50px;
+    margin-top: 20px;
+  }
+  #plus{
+
+    padding-top: 10px;
+
+
+  }
+
+
+
+
+
+

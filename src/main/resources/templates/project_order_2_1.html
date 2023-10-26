@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>드라이클리닝:: 세탁해조</title>
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/project_footer.css">
+    <link rel="stylesheet" href="/css/project_header.css">
+    <link rel="stylesheet" href="/css/project_order_2_1.css">
+    <script src="/js/project_order_2_1.js"></script>
+</head>
+<header th:replace="~{/common/project_header :: header}"></header>
+<body>
+<div class='container'>
+        <h2>드라이클리닝</h2>
+        <div class='top'>
+            <div class='category'>
+                <select name="category1" id="category1">
+                    <th:block th:each="item : ${category}">
+                        <option th:value="${item.key}" th:text="${item.key}"></option>
+                    </th:block>
+                </select>
+                <select name="category2" id="category2">
+
+                </select>
+            </div>
+            <button type='button' class='categoryadd' id="categoryAdd">추가</button>
+        </div>
+    <form action="" method="get" id="dryForm">
+        <div class='deleteSec'>
+            <input type="checkbox" class="custom-checkbox" id="allDelete">
+            <label for="allDelete" class='custom-label'>전체선택</label>
+            <button type='button' class='allDeleteBtn'>삭제</button>
+        </div>
+        <div class='warp'>
+            <th:block th:if="${reload != null}">
+                <div class="box" th:each="item : ${reload}">
+                    <label th:for="${item.category.title}">
+                        <div class="sec1">
+                            <input type="checkbox" name="dry" th:id="${item.category.title}" class="custom-checkbox custom-label myCheckbox">
+                            <div class="info">
+                                <div class="classification1" th:text="${item.category.title}"></div>
+                                <div class="classification2" th:text="${item.category.parentCategory.title}">침구류</div>
+                            </div>
+                        </div>
+                    </label>
+                    <div class="sec2">
+                        <div class="countCheck">
+                            <div class="cntBox minus" onclick="values(this)">-</div>
+                            <input type="text" th:name="${item.category.title}" th:value="${item.amount}" readonly="true" class="cntValue">
+
+                            <div class="cntBox plus" onclick="values(this)">+</div>
+                        </div>
+                        <div class="checkPrice">
+                            <th:block th:if="${memberShip}">
+                                <span class='passPrice' th:text="${#numbers.formatInteger(item.category.price * percent, 3, 'COMMA')} + '원'"></span>
+                                <span class="commonPrice line-through" th:text="${#numbers.formatInteger(item.category.price, 3, 'COMMA')} + '원'"></span>
+                            </th:block>
+                            <th:block th:unless="${memberShip}">
+                                <span class="commonPrice" th:text="${#numbers.formatInteger(item.category.price, 3, 'COMMA')} + '원'"></span>
+                            </th:block>
+                        </div>
+                    </div>
+                </div>
+            </th:block>
+        </div>
+        <div class='error'></div>
+        <div class="fixButton">
+            <input type="submit" class='submit bounce' id='submitBtn' value="저장하기">
+        </div>
+    </form>
+</div>
+</body>
+<footer th:replace="~{/common/project_footer :: footer}"> </footer>
+<script th:inline="javascript">
+    var category = [[${category}]];
+    var percent = [[${percent}]];
+    console.log(percent);
+
+    var memberShip = (percent != null && percent != '') ? true : false;
+    console.log(memberShip);
+
+
+
+</script>
+</html>

@@ -1,0 +1,39 @@
+.introTitle{
+    font-size: 2.2rem;
+}
+
+.infoBox{
+    margin: 3rem 0 5rem 0;
+}
+
+.imgBox{
+    width: 100%;
+    border: none;
+    border-radius: 1rem;
+    margin-bottom: 2rem;
+}
+.imgBox img{
+    width: 100%;
+    height: 100%;
+    border-radius: 1rem;
+}
+.infoBox h1{
+    margin-bottom: 1rem;
+    color: var(--main-color);
+}
+
+.infoBox > h3{
+    line-height: 1.5rem;
+    font-weight: lighter;;
+}
+
+
+.subInfoBox{
+    background-color: #ebebeb;
+    padding: 1rem;
+    border-radius: 1rem;
+    color: rgb(105, 105, 105);
+    margin-top: 1rem;
+    margin: 1rem 0.5rem;
+    line-height: 1.4rem;
+}

@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="aug.laundry.dao.LaundryMapper">
+
+    <select id="firstInfo" resultType="aug.laundry.dto.OrderInfoDB">
+        SELECT DISTINCT Q.ORDERS_DETAIL_ID as isQuick, D.ORDERS_DETAIL_ID as isDry, C.ORDERS_DETAIL_ID as isCommon, R.ORDERS_DETAIL_ID as isRepair
+        FROM ORDERS_DETAIL O
+        LEFT JOIN QUICK_LAUNDRY Q ON (O.ORDERS_DETAIL_ID = Q.ORDERS_DETAIL_ID)
+        LEFT JOIN COMMON_LAUNDRY C ON (O.ORDERS_DETAIL_ID = C.ORDERS_DETAIL_ID)
+        LEFT JOIN DRYCLEANING D ON (O.ORDERS_DETAIL_ID = D.ORDERS_DETAIL_ID)
+        LEFT JOIN REPAIR R ON (O.ORDERS_DETAIL_ID = R.ORDERS_DETAIL_ID)
+        WHERE MEMBER_ID = #{memberId} AND O.ORDERS_DETAIL_ID = #{ordersDetailId}
+    </select>
+
+    <select id="getCoupon" resultType="aug.laundry.dto.MyCoupon">
+        SELECT COUPON_LIST_ID, COUPON_PRICE, COUPON_NAME, TO_CHAR(COUPON_END_DATE, 'YYYY-MM-DD HH24:mm') as couponEndDate, CASE WHEN COUPON_END_DATE IS NULL THEN '무제한 사용가능'
+                                                                                                                                WHEN (COUPON_END_DATE - SYSDATE) >= 1 THEN ROUND(COUPON_END_DATE - SYSDATE) || '일 남음'
+                                                                                                                                ELSE ROUND(TRUNC((COUPON_END_DATE - SYSDATE) * 24)) || '시간 남음'
+                                                                                                                                END AS remainingTime
+        FROM COUPON_LIST
+        JOIN COUPON ON (COUPON_LIST.COUPON_ID = COUPON.COUPON_ID)
+        WHERE MEMBER_ID = #{memberId} AND COUPON_LIST_STATUS = 1 AND (COUPON_END_DATE > SYSDATE OR COUPON_END_DATE IS NULL)
+        ORDER BY COUPON_END_DATE
+    </select>
+
+    <select id="getAddress" resultType="aug.laundry.dto.Address">
+        SELECT MEMBER_ZIPCODE, MEMBER_ADDRESS, MEMBER_ADDRESS_DETAILS
+        FROM MEMBER
+        WHERE MEMBER_ID = #{memberId}
+    </select>
+
+    <select id="getDry" resultType="string">
+        SELECT DRYCLEANING_CATEGORY
+        FROM ORDERS_DETAIL
+        JOIN DRYCLEANING ON (ORDERS_DETAIL.ORDERS_DETAIL_ID = DRYCLEANING.ORDERS_DETAIL_ID)
+        WHERE MEMBER_ID = #{memberId} AND ORDERS_DETAIL.ORDERS_DETAIL_ID = #{ordersDetailId}
+    </select>
+
+    <select id="getRepair" resultType="string">
+        SELECT REPAIR_CATEGORY
+        FROM ORDERS_DETAIL
+        JOIN REPAIR ON (ORDERS_DETAIL.ORDERS_DETAIL_ID = REPAIR.ORDERS_DETAIL_ID)
+        WHERE MEMBER_ID = #{memberId} AND ORDERS_DETAIL.ORDERS_DETAIL_ID = #{ordersDetailId}
+    </select>
+
+    <select id="isPass" resultType="Integer">
+        SELECT SUBSCRIPTION_ID
+        FROM MEMBER
+        WHERE MEMBER_ID = #{memberId}
+    </select>
+
+
+    <insert id="insert">
+        <selectKey keyProperty="ordersId" resultType="Long" order="BEFORE">
+            SELECT SEQ_ORDERS_ID.NEXTVAL
+            FROM DUAL
+        </selectKey>
+        INSERT INTO ORDERS (ORDERS_ID, MEMBER_ID, ORDERS_DATE, ORDERS_ADDRESS, ORDERS_ADDRESS_DETAILS, ORDERS_PICKUP, ORDERS_PICKUP_DATE, ORDERS_RETURN_DATE,
+        <if test="ordersInfo != null">
+            ORDERS_INFO,
+        </if>
+        ORDERS_REQUEST, ORDERS_EXPECTED_PRICE, ORDERS_STATUS)
+        VALUES (#{ordersId}, #{memberId}, SYSDATE, #{ordersAddress}, #{ordersAddressDetails}, #{ordersPickup},
+        <if test="ordersPickupDate != null"> TO_DATE(#{ordersPickupDate}, 'yyyy-MM-dd HH24:mi') , TO_DATE(#{ordersReturnDate}, 'yyyy-MM-dd HH24:mi'),</if>
+        <if test="ordersPickupDate == null"> TO_DATE(sysdate, 'yyyy-MM-dd HH24:mi') , TO_DATE(sysdate+1, 'yyyy-MM-dd HH24:mi'),</if>
+
+        <if test="ordersInfo != null">
+            #{ordersInfo},
+        </if>
+        #{ordersRequest},#{ordersExpectedPrice}, 2)
+    </insert>
+
+    <insert id="insertInspection">
+        Insert into INSPECTION (INSPECTION_ID,ADMIN_ID,INSPECTION_STATUS, ORDERS_ID)
+        values (seq_inspection_id.nextval, null, 'N', #{ordersId})
+    </insert>
+
+
+
+    <select id="validCoupon" resultType="aug.laundry.domain.CouponList">
+        SELECT DISTINCT COUPON_LIST_ID, MEMBER_ID, COUPON_ID, COUPON_LIST_CREATE_DATE, COUPON_LIST_STATUS, ORDERS_ID, COUPON_END_DATE
+        FROM COUPON_LIST
+        WHERE MEMBER_ID = #{memberId} AND COUPON_LIST_ID = #{couponListId} AND COUPON_LIST_STATUS = 1 AND (COUPON_END_DATE IS NULL OR COUPON_END_DATE > SYSDATE)
+    </select>
+
+    <update id="useCoupon">
+        UPDATE COUPON_LIST
+        SET COUPON_LIST_STATUS = COUPON_LIST_STATUS + 1 , ORDERS_ID = #{ordersId}
+        WHERE MEMBER_ID = #{memberId} AND COUPON_LIST_ID = #{couponListId} AND (COUPON_END_DATE IS NULL OR COUPON_END_DATE > SYSDATE)
+    </update>
+
+    <select id="getCouponDiscount">
+        SELECT COUPON_PRICE
+        FROM COUPON_LIST
+        JOIN COUPON ON (COUPON.COUPON_ID = COUPON_LIST.COUPON_ID)
+        WHERE MEMBER_ID = #{memberId} AND COUPON_LIST_ID = #{couponListId}
+    </select>
+
+
+    <select id="check">
+        SELECT ORDERS_DETAIL_ID
+        FROM ORDERS_DETAIL
+        WHERE MEMBER_ID = #{memberId} AND ORDERS_ID IS NULL
+        <if test="ordersDetailId != null">
+            AND ORDERS_DETAIL_ID = #{ordersDetailId}
+        </if>
+
+    </select>
+
+    <insert id="createOrdersDetail">
+        INSERT INTO ORDERS_DETAIL (ORDERS_DETAIL_ID, MEMBER_ID)
+        VALUES (SEQ_ORDERS_DETAIL_ID.NEXTVAL, #{memberId})
+    </insert>
+
+    <delete id="removeDrycleaning">
+        DELETE FROM DRYCLEANING
+        WHERE ORDERS_DETAIL_ID = #{ordersDetailId}
+    </delete>
+    <delete id="removeCommon">
+        DELETE FROM COMMON_LAUNDRY
+        WHERE ORDERS_DETAIL_ID = #{ordersDetailId}
+    </delete>
+    <delete id="removeRepairImages">
+        DELETE FROM REPAIR_IMAGE
+        WHERE REPAIR_ID = #{repairId}
+    </delete>
+    <delete id="removeRepair">
+        DELETE FROM REPAIR
+        WHERE ORDERS_DETAIL_ID = #{ordersDetailId}
+    </delete>
+    <delete id="removeQuickLaundry">
+        DELETE FROM QUICK_LAUNDRY
+        WHERE ORDERS_DETAIL_ID = #{ordersDetailId}
+    </delete>
+    <delete id="removeOrdersDetail">
+        DELETE FROM ORDERS_DETAIL
+        WHERE ORDERS_DETAIL_ID = #{ordersDetailId}
+    </delete>
+
+    <insert id="insertDryCleaning">
+        INSERT INTO DRYCLEANING (DRYCLEANING_ID, ORDERS_DETAIL_ID, DRYCLEANING_CATEGORY)
+        VALUES (SEQ_DRYCLEANING_ID.NEXTVAL, #{ordersDetailId}, #{category})
+
+    </insert>
+
+    <select id="reloadDrycleaning" resultType="aug.laundry.dto.OrderDrycleaning">
+        SELECT DRYCLEANING_CATEGORY, COUNT(DRYCLEANING_CATEGORY) as amount
+        FROM DRYCLEANING
+        WHERE ORDERS_DETAIL_ID = #{ordersDetailId}
+        GROUP BY DRYCLEANING_CATEGORY
+    </select>
+
+    <select id="reloadRepair" resultType="aug.laundry.dto.OrderRepair">
+        SELECT REPAIR_ID, ORDERS_DETAIL_ID, REPAIR_REQUEST, REPAIR_CATEGORY
+        FROM REPAIR
+        WHERE ORDERS_DETAIL_ID = #{ordersDetailId}
+    </select>
+
+    <select id="getRepairImage">
+        SELECT REPAIR_IMAGE_STORE_NAME
+        FROM REPAIR_IMAGE
+        WHERE REPAIR_ID = #{repairId}
+    </select>
+
+    <insert id="insertRepair">
+        <selectKey keyProperty="repairId" resultType="Long" order="BEFORE">
+            SELECT SEQ_REPAIR_ID.NEXTVAL
+            FROM DUAL
+        </selectKey>
+        INSERT INTO REPAIR (REPAIR_ID, ORDERS_DETAIL_ID,
+        <if test="request != null">
+            REPAIR_REQUEST,
+        </if>
+        REPAIR_CATEGORY)
+        VALUES (#{repairId}, #{ordersDetailId},
+        <if test="request != null">
+            #{request},
+        </if>
+        #{category})
+    </insert>
+    <select id="getRepairId">
+        SELECT DISTINCT REPAIR_ID
+        FROM REPAIR
+        WHERE ORDERS_DETAIL_ID = #{ordersDetailId}
+    </select>
+
+    <select id="getRepairImageStoreName">
+        SELECT REPAIR_IMAGE_STORE_NAME
+        FROM REPAIR_IMAGE
+        WHERE REPAIR_ID = #{repairId}
+    </select>
+
+    <insert id="insertCommon">
+        INSERT INTO COMMON_LAUNDRY ( COMMON_LAUNDRY_ID, ORDERS_DETAIL_ID )
+        VALUES (SEQ_COMMON_LAUNDRY_ID.NEXTVAL, #{ordersDetailId})
+    </insert>
+    <insert id="insertQuickLaundry">
+        INSERT INTO QUICK_LAUNDRY ( QUICK_LAUNDRY_ID, QUICK_LAUNDRY_TAKE_DATE, ORDERS_DETAIL_ID )
+        VALUES (SEQ_QUICK_LAUNDRY_ID.NEXTVAL, SYSDATE, #{ordersDetailId})
+    </insert>
+
+    <update id="updateOrdersDetail">
+        UPDATE ORDERS_DETAIL
+        SET ORDERS_ID = #{ordersId}
+        WHERE ORDERS_DETAIL_ID = #{ordersDetailId}
+    </update>
+  
+    <select id="findByRepairId">
+        SELECT DISTINCT REPAIR_ID
+        FROM REPAIR
+        WHERE ORDERS_DETAIL_ID = #{ordersDetailId}
+    </select>
+  
+    <select id="getCoupon2" resultType="aug.laundry.dto.MyCoupon">
+          SELECT COUPON_LIST_ID, COUPON_PRICE, COUPON_NAME, TO_CHAR(COUPON_END_DATE, 'YYYY-MM-DD HH24:mm') as couponEndDate, CASE WHEN COUPON_END_DATE IS NULL THEN '무제한 사용가능'
+          WHEN (COUPON_END_DATE - SYSDATE) >= 1 THEN ROUND(COUPON_END_DATE - SYSDATE) || '일 남음'
+          ELSE ROUND(TRUNC((COUPON_END_DATE - SYSDATE) * 24)) || '시간 남음'
+          END AS remainingTime
+          FROM COUPON_LIST
+          JOIN COUPON ON (COUPON_LIST.COUPON_ID = COUPON.COUPON_ID)
+          WHERE MEMBER_ID = #{memberId} AND (COUPON_LIST_STATUS = 1 OR COUPON_LIST_STATUS = 2) AND (COUPON_END_DATE > SYSDATE OR COUPON_END_DATE IS NULL)
+          ORDER BY COUPON_END_DATE
+      </select>
+</mapper>

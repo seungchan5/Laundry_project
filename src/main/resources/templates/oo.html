@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- sock js -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.2/sockjs.min.js"></script>
+    <!-- STOMP -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.4.0/kakao.min.js" integrity="sha384-mXVrIX2T/Kszp6Z0aEWaA8Nm7J6/ZeWXbL8UpGRjKwWe56Srd/iyNmWMBhcItAjH" crossorigin="anonymous"></script>
+    <script> Kakao.init('5658a574a621b53dc23388793fa3f81b'); // 사용하려는 앱의 JavaScript 키 입력</script>
+    <script>
+      window.addEventListener('load', function() {
+
+<!--        const pathArr = location.pathname.split("/");-->
+<!--        const storeId = pathArr[pathArr.length-1];-->
+<!--        const storeId = $('#orderId').val();-->
+<!--        console.log(pathArr);-->
+<!--        console.log(storeId);-->
+
+        $(document).ready(function(){
+
+
+            $(".btn").click(function(){
+<!--                    const pathArr = location.pathname.split("/");-->
+<!--                    const storeId = pathArr[pathArr.length-1];-->
+                        const ordersId = $('#ordersId').val();
+                        console.log(ordersId);
+            <!-------------------------------------------------------------------------------------------->
+            location.href = "/oo/63/" + ordersId;
+<!--                    var formData = new FormData(document.getElementById("orderForm"));-->
+
+<!--                      fetch("/rider/test", {-->
+<!--                        method : 'post',-->
+<!--                        headers : {-->
+<!--                          'Content-Type': 'application/json'-->
+<!--                        },-->
+<!--                        body : JSON.stringify(formData)-->
+<!--                      })-->
+<!--                      .then(response => response.json())-->
+<!--                      .then(map => console.log(map));-->
+
+
+<!--                alert('주문이 완료되었습니다.');-->
+
+<!--                let socket = new SockJS('/websocket');-->
+
+<!--                let stompClient = Stomp.over(socket);-->
+
+<!--                stompClient.connect({}, function() {-->
+<!--                    const message = {-->
+<!--                        message : "새 주문이 들어왔습니다"-->
+<!--                }-->
+<!--                    stompClient.send("/message/order-complete-message/" + ordersId, {}, JSON.stringify(message));-->
+<!--                    stompClient.disconnect();-->
+<!--                });-->
+            });
+
+
+
+            var formData = '';
+<!--            $('#orderForm').submit(function(e) {-->
+<!--                e.preventDefault(); // 폼 제출 기본 동작 방지-->
+
+<!--               var formData = new FormData(document.getElementById("orderForm"));-->
+<!--               console.log(formData);-->
+
+<!--               fetch("/rider/test", {-->
+<!--                    method : 'post',-->
+<!--                    headers : {-->
+<!--                      'Content-Type': 'application/json'-->
+<!--                    },-->
+<!--                    body : JSON.stringify(formData)-->
+<!--                  })-->
+<!--               .then(response => response.json())-->
+<!--               .then(map => console.log(map));-->
+<!--            });-->
+
+<!--            $('#sub').click(function(e){-->
+<!--            e.preventDefault();-->
+<!--                $('#orderForm').submit();-->
+<!--                console.log(formData);-->
+<!--                console.log('aa');-->
+
+<!--            });-->
+
+                $('#sub').click(function(){
+<!--                    e.preventDefault();-->
+<!--                    console.log('a');-->
+                const ordersId = $('#orderId').val();
+                var formData = new FormData(document.getElementById("orderForm"));
+
+                  fetch("/rider/test", {
+                    method : 'post',
+                        body: formData // 직렬화하지 않고 FormData 객체를 바로 전달
+                      })
+                      .then(response => response.json())
+                      .then(map => console.log(map));
+
+                });
+        });
+
+        // 관리자 페이지로 주문요청 메세지
+        function messageSend() {
+            let socket = new SockJS('/websocket');
+
+            let stompClient = Stomp.over(socket);
+
+            stompClient.connect({}, function() {
+                const message = {
+                    message : "새 주문이 들어왔습니다"
+                }
+                stompClient.send("/message/order-complete-message/" + storeId, {}, JSON.stringify(message));
+
+                 const messageBody = JSON.parse(message.body);
+
+<!--                // 여기서 원하는 처리를 수행-->
+<!--                const orders = messageBody.a;-->
+<!--                const orderId = orders.ordersId; // 서버에서 받은 주문 ID-->
+
+<!--                // HTML 요소에 값을 적용 (예시)-->
+<!--                $("#orderStatus").text("주문 완료 - 주문 ID: " + orderId);-->
+<!--                   $("#aa").text(storeId);-->
+
+		        stompClient.disconnect();
+
+            });
+        }
+      });
+    </script>
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.4.0/kakao.min.js"
+            integrity="sha384-mXVrIX2T/Kszp6Z0aEWaA8Nm7J6/ZeWXbL8UpGRjKwWe56Srd/iyNmWMBhcItAjH" crossorigin="anonymous"></script>
+    <script> Kakao.init('0b62ff88f2486bd7bface10342c8c856');</script>
+<body>
+  <form action="" id="orderForm">
+    주문번호 : <input type="text" id='ordersId' name='ordersId' value='37'><br>
+    회원번호 : <input type="text" id='memberId' name='memberId' value='63'><br>
+    주문날짜 : <input type="text" id='ordersDate' name='ordersDate' value=''><br>
+    주소 : <input type="text" id='ordersAddress' name='ordersAddress' value='서울 서대문구 이화여대길 50-12'><br>
+    주소 상세보기 : <input type="text" id='ordersAddressDetails' name='ordersAddressDetails' value='102동 333호'><br>
+    주문정보 : <input type="text" id='ordersInfo' name='ordersInfo' value=''><br>
+    요청사항 : <input type="text" id='ordersRequest' name='ordersRequest' value=''><br>
+    결제방법 : <input type="text" id='ordersPay' name='ordersPay' value='2'><br>
+    픽업장소 : <input type="text" id='ordersPickup' name='ordersPickup' value='문앞'><br>
+    최초금액 : <input type="text" id='ordersExpectedPrice' name='ordersExpectedPrice' value='12000'><br>
+    최종금액 : <input type="text" id='ordersFinalPrice' name='ordersFinalPrice' value='12000'><br>
+    진행상태 : <input type="text" id='ordersStatus' name='ordersPayStatus' value='2'><br>
+    기사 : <input type="text" id='riderId' name='riderId' value=''><br>
+    빠른배송 : <input type="text" id='quickRiderId' name='quickRiderId' value=''><br>
+    <input type="submit" value="주문하기" id="sub" class="sub">
+  </form>
+  <hr>
+      <input type="button" value="버튼클릴기리리리리리리리리" id="btn" class="btn">
+<hr>
+  <a id="start-navigation" href="javascript:startNavigation()">
+      <img src="https://developers.kakao.com/assets/img/about/buttons/navi/kakaonavi_btn_medium.png"
+           alt="길 안내하기 버튼" />
+  </a>
+</body>
+</html>

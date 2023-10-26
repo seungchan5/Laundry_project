@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/common.css">
+
+    <link rel="stylesheet" href="../css/project_footer.css">
+    <link rel="stylesheet" href="../css/project_header.css">
+    <link rel="stylesheet" href="../css/project_order_repair.css">
+
+
+</head>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.6.0/font/bootstrap-icons.css" />
+
+
+<script>
+
+    // 사진 불러오기
+    function setThumbnail(event) {
+        var reader = new FileReader();
+
+        reader.onload = function (event) {
+            var img = document.createElement("img");
+            img.setAttribute("src", event.target.result);
+            document.querySelector("div#image_container").appendChild(img);
+        };
+
+        reader.readAsDataURL(event.target.files[0]);
+    }
+
+
+
+    // 수선 삭제 버튼
+    // 삭제 버튼 처리를 위한 이벤트 위임
+    $(document).on('click', '.repairDelete', function () {
+        $(this).closest('#repairBox').remove();
+    });
+
+
+    // 수선 추가 버튼
+    function addNewRepairBox() {
+    var newItem = `
+        <div id='repairBox'>
+            <div id='repairHead'>
+                <div id='left'>수선</div>
+                <div id='right'><button class='repairDelete'>삭제</button></div>
+            </div>
+            <div id='repairBody'>
+                <span>사진(필수)</span>
+                <i class="bi bi-camera"></i>
+                <input type="file" id="image" accept="image/*" onchange="setThumbnail(event);"/>
+                <button class='imageDelete'><i class="bi bi-x-square-fill"></i></button>
+            </div>
+            <div class='imageBox'>
+                <div id="image_container"></div>
+            </div>
+            <div id='repairInfoBox'>
+                <input id='repairInfo' type='text' placeholder='예) 검은바지 기장 3cm 줄여주세요.'>
+            </div>
+        </div>`;
+
+    $('#repairAdd').before(newItem); // 새로운 repairBox를 추가
+
+}
+
+// 이미지 삭제 버튼 클릭 시 호출되는 함수
+function deleteImage(containerId) {
+    // 해당 containerId를 사용하여 이미지 컨테이너를 찾아냅니다.
+    var imageContainer = document.querySelector(`#${containerId} .imageBox #image_container`);
+
+    // 이미지 컨테이너를 비웁니다.
+    imageContainer.innerHTML = '';
+
+    // 파일 입력 필드도 비웁니다.
+    $(`#${containerId} input[type='file']`).val("");
+}
+
+// 이미지 삭제 버튼 클릭 이벤트를 연결
+$(document).on('click', '.imageDelete', function () {
+    var containerId = $(this).closest('#repairBox').attr('id');
+    deleteImage(containerId); // 해당 repairBox에 대한 이미지 삭제 함수 호출
+});
+
+</script>
+<header th:replace="~{/common/project_header :: header}"></header>
+
+<h2>수선</h2>
+
+<div id='info'>
+    <span id='spaninfo'> # 신청할 제품을 하나씩 작성해주세요. <br><br>
+        # 제품을 알아보기 쉽게 촬영해주세요. <br><br>
+        # 수선은 의류와 신발만 가능합니다. </span><br>
+</div>
+<div class='container'>
+    <form action="#" method="get">
+
+
+
+        <div id='repairBox'>
+            <div id='repairHead'>
+
+                <div id='left'>수선</div>
+                <div id='right'><button class='repairDelete'>삭제</button></div>
+
+            </div>
+
+
+            <div id='repairBody'>
+                <span>사진(필수)</span>
+                <i class="bi bi-camera"></i>
+                <input type="file" id="image" accept="image/*" onchange="setThumbnail(event);" />
+                <button class='imageDelete'><i class="bi bi-x-square-fill"></i></button>
+
+
+                <div class='imageBox'>
+                    <div id="image_container"></div>
+                </div>
+            </div>
+
+
+            <div id='repairInfoBox'>
+
+                <input id='repairInfo' type='text' placeholder='예) 검은바지 기장 3cm 줄여주세요.'>
+            </div>
+
+
+        </div>
+
+        <div id='repairAdd'>
+
+            <div id='plus'><button id='addbutton' onclick='addNewRepairBox()'>제품추가</button></div>
+        </div>
+        <div id='next'>
+            <input type="submit" value="다음">
+        </div>
+
+
+
+
+
+
+
+
+    </form>
+
+</div>
+
+</body>
+<footer th:replace="~{/common/project_footer :: footer}"> </footer>
+
+
+</html>

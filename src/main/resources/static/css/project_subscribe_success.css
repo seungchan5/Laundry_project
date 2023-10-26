@@ -1,0 +1,53 @@
+
+.title{
+    width: 100%;
+    height: 100px;
+    text-align: center;
+    line-height: 100px;
+    font-size: clamp(2.5rem, 3vw, 5rem);
+}
+
+.breakdown-wrap{
+    width: 100%;
+    border-width: 1px;
+    border-style: none;
+    background-color: #F6F6F6;
+    /* #f3f3f3 #f0f1eb #e3f0f5*/
+    border-radius: var(--border-radius);
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+
+.breakdown-container{
+    display: flex;
+    justify-content: space-between;
+    padding: 1.5rem 0;
+    font-size: clamp(1.3rem, 3vw, 2rem);
+}
+
+.comment{
+    height: 3rem;
+    line-height: 3rem;
+    text-align: center;
+    font-size: clamp(0.7rem, 3vw, 2rem);
+    color: var(--main-font-color);
+}
+
+.goLaundry{
+    width: 100%;
+    height : 3rem;
+    display: block;
+    text-align: center;
+    line-height: 3rem;
+    border: 1px solid black;
+    border-radius: 7px;
+}
+
+.check{
+    width: 100%;
+    height : 3rem;
+    display: block;
+    text-align: center;
+    line-height: 3rem;
+    border: 1px solid black;
+    border-radius: 7px;
+}

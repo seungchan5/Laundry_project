@@ -1,0 +1,103 @@
+.rider_header{
+    height: 4.5rem;
+    position: relative;
+    text-align: center;
+    border-bottom:2px solid black ;
+}
+
+.rider_header div{
+    display: inline-block;
+}
+.ride_head{
+    font-size: x-large;
+    margin-bottom: 0.5rem;
+}
+.logout{
+    float: right;
+    width: 4rem;
+    height: 1.8rem;
+    background: var(--main-font-color);
+    border-radius: var(--border-radius);
+    margin-right: 1rem;
+    color: white;
+}
+.ride_txt{
+    float: left;
+}
+
+.select_category{
+    border-bottom: 1px solid black;
+}
+.select_category ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+}
+.select_category li {
+    width: 100%;
+    height: 3rem; 
+    background-color: var(--main-font-color);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: medium;
+    color: white;
+}
+.select_category li.active {
+    color: white;
+    background-color: var(--main-color);
+}
+
+
+
+.delivery_list ul{
+    padding-left: 0px;
+}
+.delivery_list ul li{
+    border-bottom: 1px dotted black;
+    height: 6rem;
+    position: relative;
+    padding: 0.5rem;
+
+}
+.delivery_list ul li .delivery_address{
+    font-size: medium;
+
+    height: 2.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.order_num{
+    font-size: small;
+    color: red;
+    text-align: left;
+}
+.delivery_list ul li span{
+    display: inline-block;
+    float: left;
+}
+.space{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.delivery_list ul li .delivery_time{
+    margin: 0;
+    font-size: small;
+    color: silver;
+}
+.delivery_list ul li .delivery_dis{
+    font-size: medium;
+    color: green;
+    margin: 0;
+}
+.drive_none{
+    display: flex;
+    padding: 2rem;
+    align-items: center;
+    justify-items: center;
+    color: rgb(191, 191, 191);
+}

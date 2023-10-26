@@ -1,0 +1,176 @@
+.subscribe-title {
+    text-align: center;
+    font-size: larger;
+    font-weight: bolder;
+    margin-bottom: 1rem;
+}
+
+.box {
+    background-image: url("https://png.pngtree.com/background/20230617/original/pngtree-vintage-retro-abstract-background-with-vibrant-spectrum-colors-glowing-neon-lights-picture-image_3682035.jpg");
+    background-size: auto;
+    background-position: center;
+    width: 100%;
+    height: 500px;
+    position: relative;
+    border-radius: var(--border-radius);
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.sub_text {
+    text-align: center;
+    color: aliceblue;
+    font-size: x-large;
+    padding-top: 6rem;
+}
+
+.pass {
+    border: 2px solid green;
+    height: 4rem;
+    width: 30%;
+    border-radius: var(--border-radius);
+    color: green;
+    background-color: black;
+    font-size: x-large;
+    font-weight: bolder;
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 1rem;
+}
+
+.subscribe-benefit-container {
+    margin-top: 2rem;
+}
+
+.subscribe-benefit_one {
+    color: aliceblue;
+    font-size: x-large;
+    text-align: center;
+}
+
+.subscribe-benefit {
+    background-color: rgb(137, 43, 226);
+    width: 50%;
+    height: 2.5rem;
+    text-align: center;
+    border-radius: var(--border-radius);
+    margin-top: 1rem;
+    color: white;
+    padding-top: 0.6rem;
+}
+
+.promotion-target {
+    font-size: large;
+}
+
+.middel_text {
+    font-size: larger;
+    font-weight: bolder;
+    margin-top: 2rem;
+}
+
+.img1 {
+    height: 3rem;
+    display: inline-block;
+}
+
+.img2 {
+    height: 3rem;
+    display: inline-block;
+}
+
+.middle_info {
+    padding: 0px;
+    border: none;
+    background-color: white;
+    box-shadow: 2px 2px 5px #dadada;
+    border-radius: var(--border-radius);
+    margin-top: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    height: 3.5rem;
+}
+
+.middle_info img {
+    display: inline-block;
+    margin: 0;
+    width: 2.5rem;
+    height: 2.5rem;
+}
+
+.infoText {
+    padding: 0;
+    margin: 0;
+    margin-right: 2rem;
+}
+
+.promotion-target {
+    font-size: larger;
+    font-weight: bolder;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.subscribe-promotion-content {
+    width: 100%;
+    height: 4rem;
+    border-radius: var(--border-radius);
+    border: 1px solid black;
+    background-image: url("/images/subscribeImg.jpg");
+    background-color: black;
+    background-size: cover;
+    color: aliceblue;
+}
+
+.subscribe-promotion-content_info {
+    width: 60%;
+    margin: 0.8rem;
+}
+
+.subscribe-promotion-content_btn {
+    width: 20%;
+    height: 2rem;
+    border: 2px solid green;
+    color: green;
+    background-color: black;
+    border-radius: var(--border-radius);
+    margin: 0px;
+    float: right;
+    margin-right: 1rem;
+    text-align: center;
+    padding-top: 0.3rem;
+    margin-top: -3.0rem;
+}
+
+.subscribe-promotion-content_btn2 {
+    width: 20%;
+    height: 2rem;
+    border: 2px solid blueviolet;
+    color: blueviolet;
+    background-color: black;
+    border-radius: var(--border-radius);
+    margin: 0px;
+    float: right;
+    margin-right: 1rem;
+    text-align: center;
+    padding-top: 0.3rem;
+    margin-top: -2.0rem;
+}
+.passText{
+    margin: 0;
+    padding: 0;
+    font-size: 1rem;
+}
+.redText {
+    color: red;
+    text-decoration: line-through;
+}

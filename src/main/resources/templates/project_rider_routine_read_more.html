@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/project_footer.css">
+    <link rel="stylesheet" href="/css/project_header.css">
+    <link rel="stylesheet" href="/css/project_read_more.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=5xEXKwOOBa1ZkF3EBC9nc6DcYaOAwO858xW0ZDd2"></script>
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.4.0/kakao.min.js" integrity="sha384-mXVrIX2T/Kszp6Z0aEWaA8Nm7J6/ZeWXbL8UpGRjKwWe56Srd/iyNmWMBhcItAjH" crossorigin="anonymous"></script>
+    <script> Kakao.init('0b62ff88f2486bd7bface10342c8c856');</script>
+    <script src="/js/rider_routine_read_more.js"></script>
+    <style>
+        .icon_text:last-child{
+            margin-top: 1rem;
+            font-size: small;
+        }
+        .finish_img_list{
+        height: 10rem;
+        border: 1px solid black;
+        border-radius: 0.5rem;
+        }
+        .imglist{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top : 1rem
+        }
+        .imgbox svg{
+            margin: 0 auto;
+            fill: var(--border-color);
+        }
+
+        .imgbox{
+            width: calc(100% / 3 - 0.5rem);
+            height: calc(100% /3 - 0.5rem);
+            border: 1px solid #e9e9e9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--border-color);
+            margin: 0;
+        }
+        .banner{
+            width: 100%;
+            height: 7rem;
+            border-radius: var(--border-radius);
+            border: 1px solid black; /* 삭제 후 사용할 것*/
+        }
+        #start-navigation{
+            border-left: 1px dotted #8080804f;
+        }
+    </style>
+    <title>Document</title>
+</head>
+<header th:replace="~{/common/project_back_header :: header}"></header>
+<!--<body th:if="${info.ordersStatus == 2 or info.ordersStatus == 3 or info.ordersStatus == 10 or info.ordersStatus == 11}" onload="initTmap();">-->
+<!--<body th:if="${info.ordersStatus == 4 or info.ordersStatus == 12}">-->
+<body id="uploadBody">
+<!-- 로그인 페이지 -> 배달기사 페이지 -->
+
+<!-- 완료 : 배송완료 사진 / 대기중 : 이동경로 표시 -->
+<div class='address_map' id="map_div">
+    <img id="selectedImage" src="" alt="선택한 이미지" style='display: none;' th:if="${info.ordersStatus == 12}"/>
+    <img id="ig" th:src="@{/images/delivery_images/} + ${img.deliveryImageStoreName}" alt="선택한 이미지" th:if="${info.ordersStatus == 13}" style="width: 100%; height: 100%"/>
+    <img id="ig2" src="https://cdn-icons-png.flaticon.com/512/3847/3847871.png" alt="선택한 이미지" th:if="${info.ordersStatus == 4}" style="width: 100%; height: 100%"/>
+</div>
+<div class='agree_zone'>
+<!--    <form th:action="@{/ride/assign/{ordersId}(ordersId=${info.ordersId})}"  method="post">-->
+<!--        <input type="submit" value="수거완료" id='agree_btn' th:if="${info.ordersStatus == 2 or info.ordersStatus == 10}">-->
+<!--    </form>-->
+
+    <form th:action="@{/routine/assign/{ordersId} (ordersId=${info.ordersId})}"  method="post">
+        <input type="submit" value="수거완료" id='pick_btn' th:if="${info.ordersStatus == 3}">
+    </form>
+
+<!--    <form th:action="@{/ride/assign/{ordersId}(ordersId=${info.ordersId})}"  method="post">-->
+<!--        <input type="submit" value="업체배송완료" id='status4_btn' th:if="${info.ordersStatus == 4}">-->
+<!--    </form>-->
+
+    <form th:action="@{/ride/pickUp/{ordersId}/{riderId} (ordersId=${info.ordersId}, riderId=${info.riderId == null ? 1 : info.riderId})}" method="post" enctype="multipart/form-data">
+        <input type="submit" value="배송완료" id='complete_btn' th:if="${info.ordersStatus == 12}" style="display: none;">
+
+                    <div class='imglist' th:if="${info.ordersStatus == 12}" >
+                        <input type="file" name="files" id="fileInput" style="display:none">
+                        <label for="fileInput" id="customButton" style="width: 100%; height: 100%;">
+                        <div class='imgbox' style="border-radius: var(--border-radius); width: 100%; background-color: var(--main-color); height: 4rem; margin-top: -0.5rem;" >
+<!--                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width='2rem'>-->
+<!--                                <path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>-->
+                            <span style="font-size: 1.35rem; color: white;">사진첨부</span>
+                        </div>
+                        </label>
+                    </div>
+    </form>
+    <!-- 대기중 / 진행중 -->
+    <div class='location' th:if="${info.ordersStatus == 3}">
+        <svg xmlns="http://www.w3.org/2000/svg" class='left' viewBox="0 0 384 512"><path d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" class='right' viewBox="0 0 384 512"><path d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z"/></svg>
+    </div>
+    <div class='progress ' th:if="${info.ordersStatus == 3}">
+        <div class='icon'>
+            <p class='icon_text' id='distance'></p>
+            <p class='icon_text' id='time'></p>
+        </div>
+        <div class='line'></div>
+    </div>
+    <div style="height: 1rem; width: 100%;" th:if="${info.ordersStatus == 3 or info.ordersStatus == 4 or info.ordersStatus == 10}">
+</div>
+<div class='drive_information'>
+    <p>주문번호</p>
+    <input type="text" name="" id="orderNum" value='주문번호가 없습니다.' readonlyt th:value="${info.ordersId ?: '주문번호가 없습니다.'}">
+    <br>
+    <p>주소</p>
+    <input type="text" name="" id="address" value='주소를 확인해 주세요.' readonly th:value="${info.ordersAddress + ' ' + info.ordersAddressDetails ?: '주소를 확인해 주세요.'}">
+    <br>
+    <p>주문시간</p>
+    <input type="text" name="" id="pickUpTime" value='비밀번호 없음' readonly th:value="${info.ordersDate ?: '비밀번호 없음'}">
+    <br>
+<!--    <p>요청시간</p>-->
+<!--    <input type="text" name="" id="requestTime" value='요청시간 없음' th:value="'금일 ' + ${info.ordersPickupDate} + '까지'">-->
+<!--    <br>-->
+    <p>요청사항</p>
+    <input type="text" name="" id="requestInfo" value='요청사항 없음' readonly th:value="${info.ordersRequest ?: '요청사항 없음'}">
+    <br>
+    <p>수거위치</p>
+    <input type="text" name="" id="pickUpRegion" value='문 앞' readonly th:value="${info.ordersPickup ?: '문 앞'}">
+    <br>
+    <p>공동현관 비밀번호</p><input type="text" name="" id="doorPw" value='비밀번호 없음' readonly th:value="${info.ordersInfo ?: '비밀번호 없음'}">
+<!--    <input type="hidden" name="" id="orderStatus" value="" th:if="${info.ordersStatus == null}" th:value="${info.ordersStatus ?: 3}">-->
+<!--    <input type="hidden" id="orderStatus" th:value="${info.ordersStatus != null ? info.ordersStatus : 3}" />-->
+    <input type="hidden" id="orderStatus" th:value="${info != null ? info.ordersStatus : 3}" />
+    <input type="hidden" name="" id="addressValue" value="" th:value="${info.ordersAddress}">
+</div>
+</form>
+</div>
+</body>
+<footer th:replace="~{/common/project_rider_footer :: footer}"> </footer>
+</html>

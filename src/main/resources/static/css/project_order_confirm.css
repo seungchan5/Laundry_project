@@ -1,0 +1,242 @@
+.bighr{
+    width: 100%;
+    border: 4px solid #e9e9e9;
+}
+
+hr{
+    border: 1.5px solid #e9e9e9;
+    margin: 1.5rem 0 0.5rem 0;
+}
+
+th span{
+    margin: 0;
+    margin-left: 0.5rem;
+    display: inline;
+    font-size: 0.9rem;
+    color: #757575;
+}
+.info{
+    width: 100%;
+    min-height: 4rem;
+    border: none;
+    border-radius: var(--border-radius);
+    background-color: white;
+    padding: 0.5rem;
+    box-shadow: 2px 2px 5px #dadada;
+    margin: 1rem 0;
+}
+h4{
+    margin: 1rem 0;
+    font-size: large;
+}
+
+h2{
+    margin: 1rem 0;
+    font-size: larger;
+}
+
+table{
+    margin: 0;
+    margin-top: 1rem;
+    width: 100%;
+}
+
+tr{
+    display: flex;
+    justify-content: space-between;
+    margin: 0.5rem 0.25rem;
+}
+
+th, td{
+    margin: 0;
+}
+
+.change{
+    text-decoration: underline;
+}
+
+span, .location{
+    display: block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 90%;
+}
+
+.content_name{
+    display: initial;
+    text-overflow: initial;
+    overflow: initial;
+    white-space: initial;
+    width: initial;
+}
+
+.coupon{
+    width: 100%;
+    height: 2.5rem;
+    padding: 0 1rem;
+    border: 1px solid #dadada;
+    border-radius: var(--border-radius);
+    display: flex;
+    align-items:center;
+    justify-content: space-between;
+}
+.couponName{
+    margin: 0;
+    width: auto;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.coupon svg{
+    margin: 0;
+    width: 1rem;
+    min-width: 1rem;
+    fill: #757575;
+}
+
+.radioBox{
+    width:100%
+}
+.radioBox .box{
+    width: 100%;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 0;
+}
+.radioBox .box input[type=text]{
+    margin: 0;
+    width: calc(100% - 4rem);
+    height: 2rem;
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    border: 1px solid #ccc;
+    outline: none;
+}
+.box label{
+    margin: 0;
+}
+
+input[type=radio] {
+    display: none;
+}
+
+input[type=radio]:checked + .custom-radio {
+    border: 6px solid var(--main-font-color);
+
+}
+
+.custom-radio {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    background-color: white;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+    margin: 0 1rem;
+}
+
+.additional{
+    margin: 0;
+}
+
+.more{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--gray);
+    fill: var(--gray);
+
+}
+.more span{
+    margin: 0;
+    width: auto;
+    margin: 0.5rem;
+}
+.more svg{
+    width: 0.5rem;
+    margin: 0;
+}
+
+.content{
+    color: var(--gray);
+    fill: var(--gray);
+}
+
+body{
+    margin-bottom: clamp(12rem, 3vw, 13rem); /* 푸터의 height 만큼 margin을 주어야지 스크롤이 가능하다. */
+}
+input[type=submit]{
+    width: calc(100% - 2rem);
+
+}
+
+.fixbox{
+    bottom: 4rem;
+    height: 7rem;
+    margin: 0;
+    left: 0rem;
+    width: 100%;
+    position: fixed;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    justify-content: center;
+    border:none;
+    background-color: var(--container-color);
+}
+
+.address{
+    display: inline;
+    margin: 0;
+}
+.detail_info{
+    width: 100%;
+    margin-top: -1rem;
+    padding-left: 1rem;
+}
+
+.detailcontent{
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--gray);
+}
+.detailcontent *, .detailcontent{
+    font-size: 0.9rem;
+}
+
+input[type=text]{
+    width: calc(100% - 2rem);
+    padding: 0.3rem 1rem;
+    height: 2.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid #ccc;
+    outline: none;
+    margin: 0.5rem 1rem;
+    font-size: 1rem;
+    background-color: white;
+}
+
+.addressDetails{
+    margin: 0;
+}
+
+.error{
+    color: red;
+    margin: 0.5rem 0 0 1rem;
+}
+.disabled{
+    display: none;
+}
+
+.info .content{
+    text-overflow: initial;
+    white-space: initial;
+    overflow: initial;
+    line-height: 1.5rem;
+}

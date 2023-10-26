@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/project_footer.css">
+    <link rel="stylesheet" href="/css/project_header.css">
+    <link rel="stylesheet" href="/css/project_search_id_result.css">
+    <title>세탁신청</title>
+</head>
+<header th:replace="~{/common/project_header :: header}"></header>
+<body>
+<div class='container'>
+    <div class='res_box'>
+        <div class='res_title_box'>
+            <h5 class='res_title'>아이디찾기</h5>
+        </div>
+        <div class='res_text_box'>
+            <h5 class='res_text'>요청하신 아이디 찾기 결과입니다.</h5>
+        </div>
+
+        <div class='res_email_box'>
+            <div id="userId" th:each="li : ${list}">
+                <span th:text="${li.memberAccount}"></span>
+                <span th:if="${li.memberSocial == 'kakao'}">(카카오 회원)</span>
+                <span th:if="${li.memberSocial == 'naver'}">(네이버 회원)</span>
+            </div>
+
+        </div>
+
+        <div class='find_id_button'>
+            <a href="/login">로그인하기</a>
+        </div>
+    </div>
+</div>
+
+</body>
+<footer th:replace="~{/common/project_footer :: footer}"> </footer>
+</html>

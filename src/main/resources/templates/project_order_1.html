@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/project_footer.css">
+    <link rel="stylesheet" href="/css/project_header.css">
+    <link rel="stylesheet" href="/css/project_order_1.css">
+    <link rel="stylesheet" href="/css/calendar.css">
+    <script src="/js/project_order_1.js"></script>
+    <script src="/js/startCalendar.js"></script>
+    <script src="/js/CalendarHandler.js"></script>
+    <title>세탁신청 :: 세탁해조</title>
+</head>
+<header th:replace="~{/common/project_header :: header}"></header>
+<body>
+    <div class='container'>
+        <form action="" method="post" id="laundryForm">
+            <h2>옵션</h2>
+            <div class='option'>
+                <input type="radio" name="option" id="slow" value="slow" hidden checked>
+                <label for="slow" class='slowLabel select1'>
+                    <span class='span'>일반세탁</span>
+                    <span class='spandetails'>정해진 시간에 배송되요.</span>
+                </label>
+                <input type="radio" name="option" id="fast" value="fast" hidden>
+                <label for="fast" class='fastLabel'>
+                    <span class='span'>빠른세탁</span>
+                    <span class='spandetails'>세탁이 완료되면 바로 배송되요.</span>
+                </label>
+            </div>
+            <h2>일정</h2>
+            <div class='option'>
+                <input type="hidden" name="takeDate" th:value="${dateTime.pickup}">
+                <input type="hidden" name="deliveryDate" th:value="${dateTime.returns}">
+                <nav class="subCal_location start">
+                    <div class='modal startModal'>
+                        <span class='content subCal_span' th:text="'수거 ' + ${dateTime.pickup} + ' ' + ${dateTime.pickupTime} + '시 부터'" id='pickup'>s</span>
+                    </div>
+                    <div class='subCalendar startChild'>
+                        <div class='subCal'>
+                            <div class='subCalTop'>
+                            <span id='subPreBtn'>
+                                <svg transform='rotate(180)' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                                    <path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg>
+                            </span>
+                                <div class='yearMonth'>
+                                    <span id='subYear'></span>
+                                    <span>.</span>
+                                    <span id='subMonth'></span>
+
+                                </div>
+                                <span id='subNextBtn'>
+                                <svg width='0.8rem' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg>
+                            </span>
+                            </div>
+                            <ul class='subWeekTitle'>
+                                <li class="subCol">일</li>
+                                <li class="subCol">월</li>
+                                <li class="subCol">화</li>
+                                <li class="subCol">수</li>
+                                <li class="subCol">목</li>
+                                <li class="subCol">금</li>
+                                <li class="subCol">토</li>
+                            </ul>
+                            <ul class='subDays'>
+
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+                <nav class='subCalTime startTime'>
+                    <input type="radio" name="takeDateTime" id="T10" value='10'><label for="T10">10:00</label>
+                    <input type="radio" name="takeDateTime" id="T23" value='23'><label for="T23">23:00</label>
+                </nav>
+
+                <nav class="subCal_location end">
+                    <div class='modal endModal'>
+                        <span class='content subCal_span' th:text="'배송 ' + ${dateTime.returns} + ' ' + ${dateTime.returnsTime} + '시 까지'" id='returns'>asdf</span>
+                    </div>
+                </nav>
+                <input type="radio" name="deliveryDateTime" id="E07" value='07' >
+                <input type="radio" name="deliveryDateTime" id="E18" value='18' >
+                <div class="notice none">
+                    <span>빠른세탁은 주문이 완료되는대로 기사님이 배정됩니다.</span>
+                </div>
+            </div>
+            <div class="error-cal"></div>
+            <h2>종류</h2>
+            <div class='option'>
+                <button class='optionbox' type='button' id="dryBtn">
+                    <div class='optionbox_title'>
+                        <h3>드라이클리닝</h3>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class='svg'><path d="M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-111 111-47-47c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l64 64c9.4 9.4 24.6 9.4 33.9 0L369 209z"/></svg>
+                    </div>
+                    <input type="checkbox" name="service" id="drycleaning" value="dry" hidden>
+                </button>
+
+                <button class='optionbox' type='button' id="commonBtn">
+                    <div class='optionbox_title'>
+                        <h3>일반세탁</h3>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class='svg'><path d="M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-111 111-47-47c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l64 64c9.4 9.4 24.6 9.4 33.9 0L369 209z"/></svg>
+                    </div>
+                    <input type="checkbox" name="service" id="common_laundry" value="common" hidden>
+                </button>
+
+                <button class='optionbox' type='button' id="repairBtn">
+                    <div class='optionbox_title'>
+                        <h3>수선</h3>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class='svg'><path d="M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-111 111-47-47c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l64 64c9.4 9.4 24.6 9.4 33.9 0L369 209z"/></svg>
+                    </div>
+                    <input type="checkbox" name="service" id="repair" value="repair" hidden>
+                </button>
+            </div>
+            <div class='error'></div>
+            <input type="submit" value="다음">
+        </form>
+        
+    </div>
+</body>
+<footer th:replace="~{/common/project_footer :: footer}"> </footer>
+
+<script th:inline="javascript">
+    let pickup = [[${dateTime.pickup}]]
+    let pickupTime = [[${dateTime.pickupTime}]]
+    document.querySelector('#T' + pickupTime).checked = true;
+    let returns = [[${dateTime.returns}]]
+    let returnsTime = [[${dateTime.returnsTime}]]
+    document.querySelector('#E' + returnsTime).checked = true;
+</script>
+</html>

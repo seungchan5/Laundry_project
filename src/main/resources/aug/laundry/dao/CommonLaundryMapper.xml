@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="aug.laundry.dao.basket.CommonLaundryMapper">
+
+    <insert id="insert">
+
+        insert into COMMON_LAUNDRY (COMMON_LAUNDRY_ID , COMMON_LAUNDRY_WEIGHT , ORDERS_DETAIL_ID)
+        values (SEQ_COMMON_LAUNDRY_ID.nextval , #{commonLaundryWeight}, #{ordersDetailId} )
+
+    </insert>
+
+
+</mapper>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/project_footer.css">
+    <link rel="stylesheet" href="/css/project_header.css">
+    <link rel="stylesheet" href="/css/project_rider.css">
+    <style>
+        .now_order_now{
+            position: absolute;
+            left: -9999px;
+            top: auto;
+            overflow: hidden;
+        }
+    </style>
+    <script>
+       window.addEventListener('load', function() {
+<!--            const divList = document.querySelectorAll(".delivery_list");-->
+            const liList = document.querySelectorAll(".select_category li");
+<!--            const orderTexts = document.querySelectorAll(".ride_txt .ch");-->
+
+            liList.forEach((li, index) => {
+                li.addEventListener("click", function() {
+                    liList.forEach(item => item.classList.remove("active"));
+                    this.classList.add("active");
+
+<!--                    divList.forEach(div => div.style.display = "none");-->
+<!--                    divList[index].style.display = "";-->
+
+<!--                     orderTexts.forEach(order => order.classList.add("now_order_now"));-->
+<!--                    orderTexts[index].classList.remove("now_order_now");-->
+                });
+            });
+        });
+    </script>
+    <title>Document</title>
+</head>
+<body>
+    <div class='container'>
+        <aside th:fragment="rider_header">
+            <div class='rider_header'>
+                <div class='ride_head'>배달</div><br>
+                <div class='ride_txt'>
+<!--                    <div class='ch'>대기중인 배달 건수 : </div>-->
+<!--                    <div class="now_order_now ch">진행중인 배달 건수 : </div>-->
+<!--                    <div class="now_order_now ch">완료한 배달 건수 : </div>-->
+                    <div>오늘 배달 건수 : </div>
+                    <div class='ride_num'>0건</div>
+                </div>
+            </div>
+            <div class='select_category'>
+                <ul>
+                    <a href="/test/22"><li class='active'>대기중(10)</li></a>
+                    <a href="/test/23"><li>진행중(16)</li></a>
+                    <a href="/test/24"><li>완료(7)</li></a>
+                </ul>
+            </div>
+        </aside>
+        
+    </div>
+</body>
+</html>

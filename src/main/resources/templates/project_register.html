@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/project_footer.css">
+    <link rel="stylesheet" href="/css/project_header.css">
+    <link rel="stylesheet" href="/css/project_register.css">
+    <title>세탁신청</title>
+</head>
+<header th:replace="~{/common/project_header :: header}"></header>
+<body>
+    <div class='container'>
+        <form class='register_form' method="post" action="/registerAction"  onsubmit="return validationSubmit()">
+            <div class='register_box_logo'>
+                <h5 class='top'>회원가입</h5>
+            </div>
+            <div class='regi_box_phone'>
+                <h5 class='text_style'>아이디</h5>
+                <div>
+                    <input type="text" maxlength='13' class='find_Id_box_pw' id="member_account" name="memberAccount">
+                    <button type="button" class='textCheck' onclick="idcheck()">중복체크</button>
+                </div>
+                <div id="checkMsg"></div>
+                <input type="text" class="validation-input validation-id">
+            </div>
+
+            <div class='register_box_pw'>
+                <h5 class='text_style'>비밀번호 *</h5>
+                <input type="password" class="password-input" maxlength='15' name="memberPassword" placeholder="대소문자, 숫자, 특수문자 포함 8~15자 이상" onkeyup="passwordCheck()" autoComplete="off">
+            </div>
+            <div class="passwordCheck1"></div>
+            <div class='register_box_pw'>
+                <h5 class='text_style'>비밀번호 확인 *</h5>
+                <label>
+                    <input type="password" class="password-check-input" maxlength='15' onkeyup="passwordValidation()" autoComplete="off">
+                </label>
+            </div>
+            <div class="passwordCheck2"></div>
+            <input type="text" class="validation-input validation-password">
+            <input type="text" class="validation-input validation-passwordCheck">
+
+            <div class='register_box_pw'>
+                <h5 class='text_style'>이름</h5>
+                <input type="text" name="memberName" id="memberName">
+            </div>
+            <div class='register_box_pw register_box_address'>
+                <h5 class='text_style'>주소</h5>
+                <div class="zipcode-container">
+                    <input type="text" id="register_postcode" placeholder="우편번호" name="memberZipcode">
+                    <button onclick="sample6_execDaumPostcode(event)" class='searchAddressBtn'>검색</button>
+                </div>
+                <input type="text" id="register_address" placeholder="주소" name="memberAddress"><br>
+                <input type="text" id="register_detailAddress" placeholder="상세주소 (예: 세탁아파트 101동 101호)" name="memberAddressDetails">
+                <input type="text" id="register_extraAddress" placeholder="참고항목" disabled>
+            </div>
+
+            <div class='regi_box_phone'>
+                <h5 class='text_style'>휴대폰번호</h5>
+                <div>
+                    <input type="tel" maxlength='13' class='find_Id_box_pw phoneNumber' onkeyup="phoneNum()" id="memberPhone" name="memberPhone">
+                    <button type="button" class='textCheck' id="sendSmsBtn" onclick="sendSms()">발송</button>
+                </div>
+                <div class='regi_box_phone_check' >
+                    <input type="text" class='find_Id_box_pw phonenumber-check-input'>
+                    <button type="button" class='textCheck phonenumber-check-button' >확인</button>
+
+                </div>
+                <th:block th:if="${msg != null}">
+                    <span class="errorMsg" th:text="${msg}"></span>
+                </th:block>
+                <div id="phonenumber-check-warn"></div>
+                <input type="text" class="validation-input validation-phonenumber">
+            </div>
+
+            <div class='regi_box_phone'>
+                <h5 class='text_style'>추천인코드</h5>
+                <div>
+                    <input type="tel" maxlength='13' class='find_Id_box_pw' id="inviteCode" name="memberInviteCode">
+                    <button type="button" class='textCheck' onclick="inviteCodeCheck()">확인</button>
+                </div>
+                <div class="inviteCodeCheck"></div>
+            </div>
+            <input type="text" class="validation-input validation-inviteCode">
+            
+            <div class='fixButton'>
+                <input type="submit" value="가입하기">
+            </div>
+        </form>
+    </div>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script src="/js/project_register.js"></script>
+</body>
+<footer th:replace="~{/common/project_footer :: footer}"> </footer>
+</html>

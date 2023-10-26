@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/project_footer.css">
+  <link rel="stylesheet" href="/css/project_header.css">
+  <link rel="stylesheet" href="/css/project_info.css">
+  <title>이용안내 :: 세탁해조</title>
+</head>
+<header th:replace="~{/common/project_header :: header}"></header>
+<body>
+<div class='container'>
+
+  <h1 class='introTitle'>서비스 이용 방법</h1>
+  <div class='infoBox'>
+    <div class='imgBox'>
+      <img src="/images/info1.png" alt="">
+    </div>
+    <h1>1. 세탁신청하기</h1>
+    <h3>메인화면에서 [세탁 신청] 버튼을 눌러주세요.</h3>
+  </div>
+  <div class='infoBox'>
+    <div class='imgBox'>
+      <img src="/images/info2.png" alt="">
+    </div>
+    <h1>2. 일정선택하기</h1>
+    <h3>신청화면에서 옵션과 일정을 선택하고 [드라이클리닝, 일반세탁, 수선] 중에 필요한 서비스를 골라주세요.</h3>
+    <div class='subInfoBox'>
+      빠른세탁은 유료서비스로 주문과 동시에 수거를 수거하고, 세탁이 완료되면 바로 배송되요.
+    </div>
+  </div>
+  <div class='infoBox'>
+    <div class='imgBox'>
+      <img src="/images/info3.png" alt="">
+    </div>
+    <h1>3. 주문정보 확인하기</h1>
+    <h3>선택한 옵션을 확인하고 신청완료하기</h3>
+    <div class='subInfoBox'>
+      세탁패스는 실제 결제일을 기준으로 적용됩니다.
+    </div>
+  </div>
+  <div class='infoBox'>
+    <div class='imgBox'>
+      <img src="/images/info4.png" alt="">
+    </div>
+    <h1>4. 지정된 장소에 내놓기</h1>
+    <h3>지정된 장소에 수거시간 전까지 세탁물을 가방 혹은 봉투에 담아 놓아주세요. 수거시간이 되면 기사님이 수거해요.</h3>
+  </div>
+  <div class='infoBox'>
+    <div class='imgBox'>
+      <img src="/images/info5.png" alt="">
+    </div>
+    <h1>5. 요금확인 후 결제하기</h1>
+    <h3>검수가 완료되면 실제 결제금액을 확인할 수 있어요. 요금을 확인하고 결제해주세요.</h3>
+    <div class='subInfoBox'>
+      검수과정에서 요금이 변경될 수 있어요.
+    </div>
+  </div>
+  <div class='infoBox'>
+    <div class='imgBox'>
+      <img src="/images/info6.png" alt="">
+    </div>
+    <h1>6. 세탁물 받기</h1>
+    <h3>2일 후에 깨끗해진 세탁물을 배송해드려요.</h3>
+    <div class='subInfoBox'>
+      빠른세탁은 세탁이 완료되면 바로 배송해드려요. 배송에 사용되었던 가방은 세탁물과 함께 돌려드려요.
+    </div>
+  </div>
+  <div class='fixButton'>
+    <button type='button'>세탁 신청하기</button>
+  </div>
+</div>
+</body>
+<footer th:replace="~{/common/project_footer :: footer}"> </footer>
+
+</html>

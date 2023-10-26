@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/project_footer.css">
+    <link rel="stylesheet" href="/css/project_header.css">
+    <link rel="stylesheet" href="/css/project_use_coupon.css">
+
+    <title>Document</title>
+</head>
+<body>
+    
+    <div class='container'>
+        <form action="/laundry/order" method="get">
+            <div class='middelHead'>쿠폰</div>
+            <div class='cupon'>
+                <div>보유쿠폰</div>
+                <div>0장</div>
+                <a href='#'><span>새 쿠폰 추가 ▶</span></a>
+            </div>
+            <div class='nonCoupon'>
+                <input type="radio" name="couponNum" id="couponEmpty" hidden checked>
+                <span class='custom-radio'></span>
+                <label for="couponEmpty">적용 안함</label>
+            </div>
+            <ul class='couponList'>
+                <li class='coupon' th:each="item : ${coupon}">
+                    <div class='couponRadio'>
+                        <span class='couponPrice' th:text="${#numbers.formatInteger(item.couponPrice, 3, 'COMMA')} + '원 할인'">5,000원 할인</span>
+                        <span hidden class="couponPriceValue" th:text="${item.couponPrice}"></span>
+                        <input type="radio" name="couponNum" th:id="couponNum + ${item.couponListId}" hidden th:value="${item.couponListId}">
+                        <span class='custom-radio'></span>
+                        <label th:for="couponNum + ${item.couponListId}"></label>
+                    </div>
+                    <span class='couponTitle' th:text="${item.couponName}">[신규회원] 5,000원 할인 쿠폰</span>
+                    <div class='couponDate'>
+                        <span class='couponExpireCount' th:text="${item.remainingTime}">3일 남음</span>
+                        <span class='couponExpireDate' th:text="${item.couponEndDate}">2023.08.31 23:59까지</span>
+                    </div>
+                </li>
+                <li class='coupon noncoupon' th:if="${coupon == null || coupon == 0}">
+                    <span>등록된 쿠폰이 없습니다.</span>
+                </li>
+            </ul>
+            <div class='cuponNote'>
+                <ul>
+                    <div>쿠폰 사용 유의사항</div>
+                    <li>- 한 주문에 한 장의 쿠폰만 사용할 수 있습니다.</li>
+                    <li>- 쿠폰은 현금으로 교환하거나 잔액을 환불해 드리지 않습니다.</li>
+                    <li>- 쿠폰 만료일은 수거일 기준으로 적용됩니다.</li>
+                </ul>
+            </div>
+            <button id="submit" type="button">적용하기</button>
+        </form>
+    </div>
+
+</body>
+<script>
+
+    let submitBtn = document.querySelector('#submit');
+    submitBtn.addEventListener('click', function(event){
+        event.preventDefault();
+        let radio = document.querySelector('input[name=couponNum]:checked');
+        if (radio.id == 'couponEmpty'){
+            opener.document.querySelector('.couponName').textContent = '선택안함';
+            opener.document.querySelector('input[name=coupon]').value = '';
+            opener.document.querySelector('.couponPrice').innerHTML = '- 0원';
+            var inputTotal = opener.document.querySelector('#total');
+            var tdTotal = opener.document.querySelector('#totalTd');
+            tdTotal.value = Number(inputTotal.value).toLocaleString() + '원';
+        } else {
+            opener.document.querySelector('.couponName').textContent = radio.parentElement.parentElement.children.item(1).textContent;
+            opener.document.querySelector('input[name=coupon]').value = radio.value;
+            opener.document.querySelector('.couponPrice').innerHTML = '- ' + Number(radio.parentElement.children.item(1).textContent).toLocaleString() + '원';
+
+
+            var inputTotal = opener.document.querySelector('#total');
+            var tdTotal = opener.document.querySelector('#totalTd');
+
+            tdTotal.innerHTML = (Number(inputTotal.value) - Number(radio.parentElement.children.item(1).textContent)).toLocaleString() + '원';
+        }
+
+        window.close();
+    })
+
+</script>
+</html>

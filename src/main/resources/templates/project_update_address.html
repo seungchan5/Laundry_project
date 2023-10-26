@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:form="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/project_footer.css">
+    <link rel="stylesheet" href="/css/project_header.css">
+    <link rel="stylesheet" href="/css/project_update_address.css">
+    <script src="/js/project_update_address.js"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <title>Document</title>
+</head>
+<header th:replace="~{/common/project_header :: header}"></header>
+<body>
+    <div class='container'>
+        <form action="./update" method="post" name="addressChangeForm">
+            <div class='searchAddress_box'>
+                <h3 class='text_style'>주소</h3>
+                <input type="text" id="zipcode" name="memberZipcode" placeholder="우편번호">
+                <button type="button" onclick="sample6_execDaumPostcode()" class='searchAddressBtn'>검색</button><br>
+                <input type="text" id="searchAddressValue" name="memberAddress" placeholder="주소"><br>
+                <input type="text" id="detailAddress" name="memberAddressDetails" placeholder="상세주소 (예: 세탁아파트 101동 101호)"><br>
+                <input type="hidden" id="extraAddress" name="extraAddress" placeholder="참고항목" disabled>
+                <div class="errors"></div>
+                <div class="errorBox"><span class="errors message" th:text="${msg}"></span></div>
+                <div class="fixButton">
+                    <input type="submit" id="button_addressChange" value="저장하기">
+                </div>
+            </div>
+        </form>
+        <input type="hidden" value='0' id="addressCheckRes">
+    </div>
+</body>
+<footer th:replace="~{/common/project_footer :: footer}"> </footer>
+</html>

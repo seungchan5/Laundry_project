@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/project_footer.css">
+    <link rel="stylesheet" href="/css/project_header.css">
+    <link rel="stylesheet" href="/css/project_main.css">
+</head>
+<header>
+    <img src="/images/mainpagelogo.png">
+</header>
+<body>
+<div class='container'>
+    <div class='floor'>
+        <div class='banner'>
+            <div class="arrow">
+                <svg id='left' onclick="javascript:prevSlide()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg>
+                <svg id='right' onclick="javascript:nextSlide()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg>
+            </div>
+            <th:block th:if="${session.memberId == null}">
+                <a href="/login" class="slide" id="banner5"></a>
+            </th:block>
+            <th:block th:if="${session.memberId != null}">
+            <a th:href="@{members/{memberId}/invite(memberId=${session.memberId})}" class="slide" id="banner1"></a>
+            </th:block>
+            <th:block th:if="${session.memberId == null}">
+                <a href="/subscription" class="slide" id="banner2"></a>
+            </th:block>
+            <th:block th:if="${session.memberId != null}">
+                <a th:href="@{/subscription/{memberId}(memberId=${session.memberId})}" class="slide" id="banner4"></a>
+            </th:block>
+            <a href="#" class="slide" id="banner3"></a>
+        </div>
+    </div>
+    <div class='floor status' th:each="item : ${orders}">
+        <a th:href="'/orders/' + ${item.ordersId} + '/payment'" id='order'>
+            <div class='orderText'>
+                <h3 class='orderTitle' th:text="${item.ordersStatus.title}"></h3>
+                <span class='orderStatus' th:text="${name + item.ordersStatus.content}"></span>
+                <span class='orderContent' th:text="${item.ordersStatus.subContent}"></span>
+            </div>
+            <div class='infomation'>
+                <div class='progressBar'>
+                    <div class='dot st'></div>
+                    <div class='bar'></div>
+                    <div class='dot ed'></div>
+                    <th:block th:with="styleResult = ${#strings.substring(item.ordersStatus, 1)} - 1">
+                        <th:block th:with="result = ${(100 / 12) * styleResult}">
+                            <div class='now dot' th:if="${styleResult == 1}" th:style="'left: 0%'"></div>
+                            <div class='now dot' th:if="${styleResult == 12}" th:style="'left: 96%'"></div>
+                            <div class='now dot' th:unless="${styleResult == 1 or styleResult == 12}" th:style="'left: ' + ${result + 4} + '%'"></div>
+                        </th:block>
+                    </th:block>
+                </div>
+                <div class='progressBar progressBarTitle'>
+                    <div class='barTitle'>접수완료</div>
+                    <div class='barTitle'>배송완료</div>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class='floor'>
+        <a href="/laundry" id='laundry'>
+            <div class='imgBox'>
+                <img src="/images/laundryDelivery.png" alt="">
+            </div>
+            <span>세탁신청</span>
+        </a>
+        <a href="/info" id='use'>
+            <div class='imgBox'>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M0 88C0 39.4 39.4 0 88 0H392c30.9 0 56 25.1 56 56V344c0 22.3-13.1 41.6-32 50.6V464h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H80c-44.2 0-80-35.8-80-80c0-2.7 .1-5.4 .4-8H0V88zM80 400c-17.7 0-32 14.3-32 32s14.3 32 32 32H368V400H80zM48 358.7c9.8-4.3 20.6-6.7 32-6.7H392c4.4 0 8-3.6 8-8V56c0-4.4-3.6-8-8-8H88C65.9 48 48 65.9 48 88V358.7zM152 112H328c13.3 0 24 10.7 24 24s-10.7 24-24 24H152c-13.3 0-24-10.7-24-24s10.7-24 24-24zm0 80H328c13.3 0 24 10.7 24 24s-10.7 24-24 24H152c-13.3 0-24-10.7-24-24s10.7-24 24-24z"/></svg>
+            </div>
+            <span>사용안내</span>
+        </a>
+    </div>
+    <div class='floor'>
+        <th:block th:if="${session.memberId == null}">
+            <a href="/subscription" id='pass'>
+                <div class='warp'>
+                        <span class='title'>
+                            세탁패스
+                            <div class='pass'>PASS</div>
+                        </span>
+                    <span class='content col'>지금 구독하면 평생 15%할인!</span>
+                </div>
+            </a>
+        </th:block>
+        <th:block th:if="${session.memberId != null}">
+            <a th:href="@{/subscription/{memberId}(memberId=${session.memberId})}" id='pass2'>
+                <div class='warp'>
+                        <span class='title'>
+                            세탁패스
+                            <div class='pass'>PASS</div>
+                        </span>
+                    <span class='content col'>지금 구독하면 평생 15%할인!</span>
+                </div>
+            </a>
+        </th:block>
+
+        <a href="/price" id='price'>
+            <div class='imgBox'>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M345 39.1L472.8 168.4c52.4 53 52.4 138.2 0 191.2L360.8 472.9c-9.3 9.4-24.5 9.5-33.9 .2s-9.5-24.5-.2-33.9L438.6 325.9c33.9-34.3 33.9-89.4 0-123.7L310.9 72.9c-9.3-9.4-9.2-24.6 .2-33.9s24.6-9.2 33.9 .2zM0 229.5V80C0 53.5 21.5 32 48 32H197.5c17 0 33.3 6.7 45.3 18.7l168 168c25 25 25 65.5 0 90.5L277.3 442.7c-25 25-65.5 25-90.5 0l-168-168C6.7 262.7 0 246.5 0 229.5zM144 144a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></svg>
+            </div>
+            <span>가격표</span>
+        </a>
+    </div>
+    <th:block th:if="${session.memberId != null}">
+        <div class='floor'>
+            <a th:href="@{/members/{memberId}/invite(memberId=${session.memberId})}" class='friend'>
+                <div class='warp'>
+                    <span class='title'>친구초대</span>
+                    <span class='content'>5,000원 쿠폰 받으러가기</span>
+                </div>
+                <div class='inviteCoupon first'>
+                    <span class='couponTitle'>POINT</span>
+                    <span class='couponPrice'>
+                            <span>5,000</span>
+                            <div class='priceBox'>P</div>
+                        </span>
+                </div>
+            </a>
+        </div>
+    </th:block>
+    <th:block th:if="${session.memberId == null}">
+        <div class='floor'>
+            <a href="/login" class='friend'>
+                <div class='warp'>
+                    <span class='title'>친구초대</span>
+                    <span class='content'>5,000원 쿠폰 받으러가기</span>
+                </div>
+                <div class='inviteCoupon first'>
+                    <span class='couponTitle'>POINT</span>
+                    <span class='couponPrice'>
+                            <span>5,000</span>
+                            <div class='priceBox'>P</div>
+                        </span>
+                </div>
+            </a>
+        </div>
+    </th:block>
+    <div class='modal' th:if="${firstLogin == 'Y'}">
+        <div class='modalBox'>
+            <button type='button' class='cancel'>
+                <svg xmlns="http://www.w3.org/2000/svg" class="addImg" viewBox="0 0 448 512"><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"></path></svg>
+            </button>
+            <div class='inviteCoupon modalCoupon'>
+                <span class='couponTitle'>POINT</span>
+                <span class='couponPrice'>
+                        <span>5,000</span>
+                        <div class='priceBox'>P</div>
+                    </span>
+            </div>
+            <div class='infoBox'>
+                <h2>신규회원쿠폰 발급</h2>
+                <span>5,000원 신규회원쿠폰이 발급되었습니다.</span>
+                <span>쿠폰함에서 확인해보세요.</span>
+            </div>
+            <a th:href="@{'/members/' + ${session.memberId} + '/coupons'}" class='moveToCoupon'>쿠폰함</a>
+        </div>
+    </div>
+</div>
+<script src="/js/project_main.js"></script>
+</body>
+<footer th:replace="~{/common/project_footer :: footer}"> </footer>
+</html>

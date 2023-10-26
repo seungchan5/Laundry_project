@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/project_footer.css">
+    <link rel="stylesheet" href="/css/project_header.css">
+    <link rel='stylesheet' href='/css/project_subscribe_choice.css'>
+
+    <!-- user-scalable 을 사용하지 않는 디바이스를 위해, maximun-scale/minimum-scale 설정을 하는 것입니다-->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+
+    <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+
+    <script th:inline="javascript">
+        let selectMonth = 0;
+        let totalPrice = 0;
+        let productName = '';
+
+        /*<![CDATA[*/
+        const memberId = [[${session.memberId != null ? session.memberId : 'null'}]];
+        const expire = '[[${data != null ? data.subscriptionExpireDate : null}]]';
+
+        const result = '[[${result}]]';
+        if(result!=='null'){
+            alert(result+"\n관리자에게 문의해주세요.");
+        }
+        /*]]>*/
+
+        function selectSubscribe(month, price) {
+            const btnPay = document.querySelector('#btnPay');
+
+            totalPrice = (month * price);
+            selectMonth = month;
+            productName = month + '개월 구독권'
+
+            btnPay.classList.remove('hidden');
+            btnPay.innerText = month + '개월 ' + totalPrice.toLocaleString('ko-KR');
+            console.log("month="+month);
+        }
+        // 결제
+        IMP.init('imp50315416');
+        function preparePay() {
+
+            const expireDate = new Date(expire);
+            const now = new Date();
+
+            if(expireDate>now) {
+                alert("이미 구독중입니다.");
+                return;
+            }
+
+            if(selectMonth == 0) {
+                alert("구독 개월수를 선택해주세요.");
+                return;
+            }
+            if(!document.querySelector('#terms_check').checked) {
+                alert("이용약관 동의가 필요합니다.");
+                return;
+            }
+
+            let merchant_uid = memberId+"_subscribe_"+formatDate(new Date());
+
+            console.log("expire=", expire);
+            console.log("expireDate=", expireDate);
+
+            if(expire === "null") {
+                // 신규회원일경우
+                totalPrice = 0;
+            }
+
+            console.log("신규회원 빌링키 totalPrice="+ totalPrice);
+
+            fetch('/payments/prepare', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    selectMonth: selectMonth,
+                    merchantUid: merchant_uid,
+                    customerUid: memberId,
+                    amount: totalPrice,
+                }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.result==='success') {
+                        // 성공할 경우
+                        requestPay(memberId, merchant_uid);
+                    } else {
+                        // 실패할 경우
+                        alert("잘못된 접근입니다.");
+                    }
+                });
+        }
+
+        function requestPay(memberId, merchant_uid) {
+            IMP.request_pay({
+                pg : "html5_inicis.INIBillTst",
+                // pg : "kakaopay.TCSUBSCRIP", // 실제 계약 후에는 실제 상점아이디로 변경
+                pay_method : 'card', // 'card'만 지원됩니다.
+                merchant_uid: merchant_uid, // 상점에서 관리하는 주문 번호
+                name : productName,
+                amount : totalPrice, // 결제창에 표시될 금액. 실제 승인이 이루어지지는 않습니다. (모바일에서는 가격이 표시되지 않음)
+                customer_uid : memberId, // 필수 입력.
+                m_redirect_url : 'http://localhost:8080/payments/mobile',
+                notice_url : 'http://localhost:8080/repayments/webhook'
+                //m_redirect_url : 'http://localhost:8080/payments/mobile' // 모바일에서 결제 완료 후 리디렉션 될 URL 예: https://www.my-service.com/payments/complete/mobile
+            }, function(rsp) {
+                if ( rsp.success ) {
+                    fetch('/payments/pc', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            selectMonth: selectMonth,
+                            merchantUid: merchant_uid,
+                            customerUid: memberId,
+                            amount: totalPrice,
+                            impUid: rsp.imp_uid
+                        }),
+                    })
+                        .then(response => response.json())
+                        .then(map => {
+                            if (map.result === 'success') {
+                                // pc결제 성공할 경우
+                                window.location.href='/subscription/confirm/'+rsp.imp_uid+'?result='+map.result;
+                            } else {
+                                // 실패 처리
+                                window.location.href='/subscription/order?result='+map.result;
+                            }
+                        });
+                }
+                else {
+                    // 사용자가 결제를 취소했을경우는 메세지 띄우지 말기 : [결제포기] 사용자가 결제를 취소하셨습니다.
+                    let msg = '빌링키 발급 실패.\n관리자에게 문의해주세요';
+                    msg+=rsp.error_msg;
+                    alert(msg);
+                }
+            });
+        }
+
+        function formatDate(date) {
+            var year = date.getFullYear();
+            var month = ('0' + (date.getMonth() + 1)).slice(-2);
+            var day = ('0' + date.getDate()).slice(-2);
+            var hours = ('0' + date.getHours()).slice(-2);
+            var minutes = ('0' + date.getMinutes()).slice(-2);
+            var seconds = ('0' + date.getSeconds()).slice(-2);
+            var milliseconds = ('00' + date.getMilliseconds()).slice(-3);
+
+            return year + '_' + month + '_' + day + '_' + hours + minutes + seconds + milliseconds;
+        }
+
+        function terms(){
+            console.log("이용약관표시");
+        }
+    </script>
+</head>
+<header th:replace="~{/common/project_header :: header}"></header>
+<body>
+<div class='container'>
+    <div class='subscribe-choice-title'>구독권 선택</div>
+
+    <div class='middle_info' onclick="selectSubscribe(1, 5900)">
+        <span class="passText">1개월 월 5,900원</span>
+    </div>
+    <div class='middle_info' onclick="selectSubscribe(3, 4900)">
+        <span class="passText">3개월 <span class="redText">17,700원</span> -> 14,700원</span>
+    </div>
+    <div class='middle_info' onclick="selectSubscribe(6, 4500)">
+        <span class="passText">6개월 <span class="redText">35,400원</span> -> 27,000원</span>
+    </div>
+    <div class='middle_info' onclick="selectSubscribe(12, 4100)">
+        <span class="passText">12개월 <span class="redText">70,800원</span> -> 49,200원</span>
+    </div>
+
+    <!-- * 신규결제일경우에 표시 * -->
+    <div class='payment-container' th:if="${data==null}">
+        <div>신규회원</div>
+        <div>첫 1개월 무료 적용</div>
+    </div>
+
+    <div class='price hidden' id="btnPay"></div>
+
+    <div class='view-terms-container'>
+        <div class='terms-check-container'>
+            <input type='radio' id='terms_check' value="Y">
+            <label for='terms_check'>이용약관에 동의합니다.</label>
+            <a class='view-terms' href='#' onclick="terms()">구독권 이용약관 보기</a>
+        </div>
+    </div>
+
+    <input type="button" class='pay' onclick="preparePay()" value="결제하기"/>
+</div>
+</body>
+
+<footer th:replace="~{/common/project_footer :: footer}"> </footer>
+
+</html>

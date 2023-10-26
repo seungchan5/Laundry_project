@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/project_footer.css">
+    <link rel="stylesheet" href="/css/project_header.css">
+    <link rel="stylesheet" href="/css/project_mypage_list.css">
+    <title>Document</title>
+</head>
+<header th:replace="~{/common/project_header :: header}"></header>
+<body>
+
+<div class='container'>
+    <div class='mypage_nickname'>
+        <th:block th:if="${userPass!=null}">
+            <span th:text="${userName}+'님'"></span>
+            <div th:text="${userPass}">Pass</div>
+        </th:block>
+        <th:block th:if="${userPass==null}">
+            <span th:text="${userName}+'님'"></span>
+        </th:block>
+    </div>
+    <ul>
+        <a th:href='@{/subscription/{memberId}(memberId=${session.memberId})}'>
+            <th:block th:if="${month == null && expireDate == null}">
+                <li class='mypagePass'>PASS
+                    <p>세탁패스 구매하기</p><br>
+                    <p>무제한 세탁 할인, 무제한 포인트 적립</p>
+                </li>
+            </th:block>
+            <th:block th:if="${month != null && expireDate != null}">
+                <li class='mypagePass'>PASS
+                    <p th:text="${month}+'구독중'">세탁패스 구매하기</p><br>
+                    <p th:text="'( ~ ' + ${expireDate} + ' )'" style="font-size: 0.9rem">무제한 세탁 할인, 무제한 포인트 적립</p>
+                </li>
+            </th:block>
+            <span>▶</span>
+
+        </a>
+        <a href='./coupons'>
+            <li>쿠폰</li>
+            <span>▶</span>
+        </a>
+        <a href='./points'>
+            <li>포인트</li>
+            <span>▶</span>
+        </a>
+        <a href='./update'>
+            <li>내정보 설정</li>
+            <span>▶</span>
+        </a>
+        <a href='./invite'>
+            <li>친구초대</li>
+            <span>▶</span>
+        </a>
+        <a href='/info'>
+            <li>이용안내</li>
+            <span>▶</span>
+        </a>
+        <a href='/logout'>
+            <li>로그아웃</li>
+            <span>▶</span>
+        </a>
+    </ul>
+</div>
+
+</body>
+<footer th:replace="~{/common/project_footer :: footer}"> </footer>
+</html>

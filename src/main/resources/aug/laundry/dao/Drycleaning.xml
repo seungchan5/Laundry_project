@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="aug.laundry.dao.basket.DrycleaningMapper">
+
+    <select id="find" resultType="int">
+        select seq_admin_id.nextval
+        from dual
+    </select>
+
+    <insert id="insert">
+        INSERT INTO DRYCLEANING (DRYCLEANING_ID, ORDERS_DETAIL_ID, DRYCLEANING_REQUEST, DRYCLEANING_CATEGORY)
+        VALUES (SEQ_DRYCLEANING_ID.NEXTVAL, 1, '잘부탁드립니다','와이셔츠');
+
+    </insert>
+
+
+
+
+
+
+
+</mapper>

@@ -1,0 +1,123 @@
+.logout{
+    float: right;
+    width: 4rem;
+    height: 1.5rem;
+    background: rgba(192, 192, 192, 0.322);
+    border-radius: var(--border-radius);
+    margin-right: 1rem;
+}
+
+.address_map{
+    border: 1px solid black;
+    height: 12rem;
+}
+.agree_zone{
+    height: 5rem;
+}
+.agree_zone #agree_btn{
+    border-radius: var(--border-radius);
+    margin-top: 0.5rem;
+}
+.agree_zone #complete_btn{
+    border-radius: var(--border-radius);
+    margin-top: 0.5rem;
+}
+.agree_zone #pick_btn{
+    border-radius: var(--border-radius);
+    margin-top: 0.5rem;
+}
+.agree_zone #status4_btn{
+    border-radius: var(--border-radius);
+    margin-top: 0.5rem;
+}
+.line{
+    width: 98%;
+    height: 0.7rem;
+    border-radius: 1rem;
+    background-color: rgba(0, 128, 0, 0.507);
+}
+.circle{
+    width: 0.7rem;
+    height: 0.7rem;
+    background-color: green;
+    border-radius: 1rem;
+    display: inline-block;
+}
+.line p{
+    margin-bottom: 1rem;
+}
+.line p:last-child{
+    margin-bottom: 1rem;
+    float: right;
+}
+.progress .icon svg{
+    width: clamp(2.5rem, 3vw, 2rem);
+    height: clamp(2rem, 3vw, 2rem);
+    margin-top: 1rem;
+}
+.progress .icon .rider{
+    float: right;
+}
+.icon_text{
+    text-align: center;
+    font-size: x-large;
+}
+.icon div{
+    width: 10%;
+    margin-bottom: -3rem;
+}
+.icon .loading{
+    font-size: x-small;
+    display: inline-block;
+    text-align: center;
+}
+.progress{
+    position: relative;
+}
+.icon{
+    position: absolute;
+    width: 100%;
+    top: -250%;
+}
+.info_head{
+    font-size: x-large;
+    margin: 1rem;
+    font-weight: bold;
+}
+.drive_information{
+margin-top: 2rem;
+}
+.drive_information p{
+    color: silver;
+    margin-top: 0.8rem;
+    margin-left: 0.5rem;
+}
+.drive_information input{
+    margin-top: 0.2rem;
+    background-color: rgba(192, 192, 192, 0.356);
+    box-sizing: border-box;
+    border: white;
+    border-radius: 0.5rem;
+    width: 100%;
+    height: 2rem;
+    padding-left: 1rem;
+    outline: none;
+}
+.location{
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+    margin-top: 1rem;
+}
+.location svg{
+    width: 1.3rem;
+    margin: 0;
+}
+
+.left{
+    fill: rgb(133, 229, 130);
+}
+
+.right{
+    fill: rgb(240, 124, 124);
+}

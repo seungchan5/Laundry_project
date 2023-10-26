@@ -1,0 +1,429 @@
+.floor{
+    width: 100%;
+    height: 7rem;
+    margin-bottom: 1rem;
+    border-radius: var(--border-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+.floor.status{
+    height: 9rem;
+}
+
+.banner{
+    overflow: hidden;
+    width: 100%;
+    height: inherit;
+    border-radius: var(--border-radius);
+    background-color: white;
+    box-shadow: 2px 2px 5px #dadada;
+    position: relative;
+}
+.banner a{
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+    white-space: nowrap;
+    border: none;
+    border-radius: var(--border-radius);
+    background-size: 100% 100%;
+}
+
+#banner1{
+    background-image: url(/images/banner1.png);
+
+}
+
+#banner5{
+    background-image: url(/images/banner1.png);
+
+}
+
+#banner2{
+    background-image: url(/images/banner2.png);
+
+}
+
+#banner4{
+    background-image: url(/images/banner2.png);
+
+}
+
+#banner3{
+    background-image: url(/images/banner3.png);
+   /*animation: fadeOut 5s;*/
+}
+/*
+@keyframes fadein {
+    from{
+        opacity:0.5;
+    }
+    to {
+        opacity:1;
+    }
+}
+@keyframes fadeOut {
+    from{
+        opacity:1;
+    }
+    to{
+        opacity:0.5;
+    }
+}
+*/
+.floor .ball{
+    position: absolute;
+
+}
+
+.floor > a{
+    margin: 0;
+    height: 100%;
+    border-radius: var(--border-radius);
+    line-height: 7rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    box-shadow: 2px 2px 5px #dadada;
+    background-color: white;
+}
+#laundry{
+    width: 70%;
+    background: var(--main-font-color);
+    color: white;
+    padding: 0.5rem;
+    line-height: initial;
+}
+#pass{
+    width: 180%;
+    background-color: var(--main-color);
+    color: white;
+}
+#pass2{
+    width: 180%;
+    background-color: var(--main-color);
+    color: white;
+}
+
+.imgBox{
+    width: 4rem;
+    height: 4rem;
+    border-radius: var(--border-radius);
+    display: flex;
+}
+
+.imgBox img{
+    width: 4rem;
+    filter: invert(95%) sepia(100%) saturate(0%) hue-rotate(6deg) brightness(102%) contrast(101%);
+}
+.imgBox svg{
+    width: 2.3rem;
+}
+#use, #price, #pass, #order{
+    padding: 0.5rem;
+    line-height: initial;
+}
+
+#pass{
+    display: flex;
+    align-items: center;
+}
+
+#pass2{
+    display: flex;
+    align-items: center;
+}
+
+.friend{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.friend .warp{
+    width: 100%;
+    margin: 0;
+    padding-left: 1.5rem;
+}
+.warp span{
+    white-space: initial;
+    line-height: initial;
+    display: block;
+    text-align: left;
+}
+.title{
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    position: relative;
+}
+.content{
+    color: var(--gray);
+}
+
+
+.col{
+    color: white;
+}
+
+
+
+
+.inviteCoupon{
+    width: 7rem;
+    height: 3.5rem;
+    border: none;
+    border-left: 0.6rem solid var(--main-color);
+    border-radius: var(--border-radius);
+    position: relative;
+    padding: 0.5rem;
+    box-shadow: 2px 2px 5px rgb(86, 86, 86);
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    line-height: initial;
+}
+
+.couponTitle{
+    color: var(--main-color);
+    font-size: 1rem;
+    font-family: 'Pretendard-Bold';
+    margin: 0;
+}
+.couponPrice span{
+    font-family: 'Pretendard-Bold';
+    font-size: 1.3rem;
+}
+
+.couponPrice .couponPointBox{
+    display: block;
+    background-color: antiquewhite;
+    height: 100%;
+}
+
+.priceBox{
+    display: inline-block;
+    font-size: 1rem;
+}
+
+.friend{
+    position: relative;
+}
+
+.first{
+    position: absolute;
+    right: 1rem;
+    top: calc(50% - 1.75rem);
+}
+
+
+.pass {
+    position: absolute;
+    top: -20%;
+    left: 50%;;
+    margin: 0;
+    display: inline-block;
+    border: 2px solid green;
+    border-radius: var(--border-radius);
+    height: 2rem;
+    line-height: 2rem;
+    width: 4rem;
+    background-color: rgb(33, 33, 33);
+    color: green;
+    font-size: large;
+    text-align: center;
+}
+
+
+.infomation{
+    width: 100%;
+    height: 2rem;
+}
+
+.progressBar{
+    width: calc(100% - 1.8rem);
+    height: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    margin: 0 0.9rem;
+
+}
+
+.progressBarTitle{
+    margin: 0;
+    width: 100%;
+    height: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dot{
+    width: 0.8rem;
+    height: 0.8rem;
+    border-radius: 50%;
+    background-color: var(--main-font-color);
+    margin: 0;
+}
+
+.bar{
+    width: calc(100% - 0.8rem);
+    height: 0.4rem;
+    background-color: var(--main-font-color);
+    position: absolute;
+    left: 0.4rem;
+}
+.now{
+    position: absolute;
+    animation: sizeChange 0.4s alternate infinite;
+}
+
+
+@keyframes sizeChange {
+
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(1.2);
+    }
+
+}
+
+.barTitle{
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--gray);
+}
+
+#order{
+    white-space: initial;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.orderTitle{
+    text-align: left;
+    margin: 0.5rem 0 0.8rem 0;
+}
+
+.orderStatus{
+    width: 100%;
+    text-align: left;
+    display: inline-block;
+    font-size: large;
+    margin-bottom: 0.3rem;
+}
+.orderContent{
+    width: 100%;
+    text-align: left;
+    display: inline-block;
+    color: var(--gray);
+}
+.orderText{
+    margin: 0;
+}
+
+#left, #right{
+    position: absolute;
+    top: calc(50% - 1rem);
+    margin: 0;
+}
+
+.arrow svg{
+    width: 1rem;
+}
+
+.arrow #right{
+    right: 0.5rem
+}
+.arrow #left{
+    left: 0.5rem;
+    transform: rotate(180deg);
+}
+
+
+.modal{
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #b3b3b3b1;
+    width: 100%;
+    height: 100%;
+}
+
+.modalBox{
+    width: calc(100% - 5rem);
+    height: 20rem;
+    border-radius: var(--border-radius);
+    background-color: white;
+    padding: 2rem;
+    position: relative;
+}
+
+
+.modalBox .cancel{
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: 0;
+}
+.modalBox .cancel svg{
+    transform: rotate(45deg);
+    width: 100%;
+    height: 100%;
+    fill: #8f8f8f;
+}
+
+.modalCoupon{
+    width: 10rem;
+    height: 5rem;
+    margin-top: 1rem;
+}
+.modalCoupon .couponTitle{
+    font-size: 1.1rem;
+}
+
+.modalCoupon .couponPrice span{
+    font-size: 2rem;
+}
+
+.modalCoupon .couponPrice .priceBox{
+    font-size: 1.2rem;
+}
+.modalBox .infoBox{
+    text-align: center;
+}
+
+.modalBox .infoBox h2{
+    margin: 1.5rem 0 1rem 0;
+}
+.modalBox .infoBox span{
+    color: #585858;
+}
+
+.modalBox .moveToCoupon{
+    display: flex;
+    height: 3rem;
+    background-color: var(--main-font-color);
+    margin-top: 1rem;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    border-radius: var(--border-radius);
+    color: white;
+    font-size: 1.2rem;
+}
+
+.hidden{
+    display: none;
+}

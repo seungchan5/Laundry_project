@@ -1,0 +1,67 @@
+.middelHead{
+    margin-bottom: 2rem;
+    text-align: center;
+    font-size: larger;
+    font-weight: bolder;
+}
+.pointNote ul{
+    position: fixed;
+    bottom: 10rem;
+    left: 0; 
+    padding: 1rem;
+    width: 100%;
+    background-color: rgba(192, 192, 192, 0.274);
+}
+.pointNote ul div{
+    font-size: medium;
+    margin-bottom: 1rem;
+    color: rgb(138, 141, 141);
+}
+.pointNote ul li{
+    font-size: x-small;
+    margin-bottom: 1rem;
+    color: rgb(183, 185, 187);
+}
+
+.use_point_form img{
+    position: fixed;
+    right: 0;
+    bottom: 20rem;
+    width: 10rem;
+}
+.use_point_form input[type='submit']{
+    position: fixed;
+    bottom: 5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+}
+.order_point_view{
+    padding: 0px;
+}
+.order_point_view li:first-child{
+    font-size: larger;
+}
+.order_point_view input[type='text']{
+    width: 100%;
+    height: 2rem;
+    text-align: right;
+    padding-right: 1rem;
+    font-size: 1rem;
+    border-radius: var(--border-radius);
+    border: 2px solid #6666668d;
+}
+.order_point_view div li{
+    margin-bottom: 1rem;
+    display: inline-block;
+}
+.order_point_view div li:last-child{
+    float: right;
+}
+.order_point_view div li:last-child button{
+    background-color: rgba(192, 192, 192, 0.281);
+    width: 5rem;
+    height: 1.7rem;
+    border-radius: 1rem;
+    font-size: small;
+}

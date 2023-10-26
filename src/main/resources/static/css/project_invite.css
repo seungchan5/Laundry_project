@@ -1,0 +1,158 @@
+.inviteHead{
+    width: 100%;
+    height: 2rem;
+    font-size: x-large;
+    font-weight: bold;
+    margin-left: 0px;
+    margin-bottom: 2rem;
+}
+.inviteCode{
+    background-color: var(--main-font-color);
+    width: 100%;
+    height: 6rem;
+    border-radius: 0.5rem;
+    margin-bottom: 2rem;
+    padding-top: 1.5rem;
+    text-align: center;
+    box-shadow: 2px 2px 5px;
+}
+.inviteCode p:first-child{
+    font-size: large;
+    color: white;
+    
+}
+.inviteCode .inviteCodeId{
+    font-size: x-large;
+    margin-top: 0.3rem;
+    color: white;
+}
+.inviteInfo{
+    width: 80%;
+    height: 5rem;
+    margin-bottom: 3rem;
+    text-align: center;
+}
+.infoTitle{
+    font-size: 1.4rem;
+    font-family: 'Pretendard-Bold';
+    margin-bottom: 1rem;
+}
+.invite_icon{
+    display: flex;
+    justify-content: center;
+    margin: 3rem 0;
+}
+.invite_icon button{
+    width: 60px;
+    height: 60px;
+    background-color: var(--main-font-color);
+    margin: 0 1rem;
+    position: relative;
+    border-radius: 100%;
+}
+
+.invite_icon button svg{
+    width: 28px;
+    height: 28px;
+    fill: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.inviteLogo{
+    background-color: var(--main-font-color);
+    border-radius: var(--border-radius);
+    height: 25rem;
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 2px 2px 5px;
+}
+.inviteLogo .plus{
+    margin: 1rem 0;
+}
+
+.inviteLogo .plus svg{
+    fill: white;
+    width: 1.5rem;
+}
+
+.inviteCoupon{
+    width: 15rem;
+    height: 8rem;
+    border: none;
+    border-left: 0.6rem solid var(--main-color);
+    border-radius: var(--border-radius);
+    position: relative;
+    padding: 0.5rem;
+    box-shadow: 2px 2px 5px rgb(86, 86, 86);
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.inviteCoupon .empty{
+    width: 1.5rem;
+    height: 1.5rem;
+    background-color: var(--main-font-color);
+    position: absolute;
+    right: -0.75rem;
+    top: calc(50% - 1rem);
+    border-radius: 100%;
+    box-shadow: 2px 2px 5px rgb(86,86,86) inset;
+}
+
+.commentMe, .commentYou{
+    position: absolute;
+    width: 6rem;
+    height: 2.5rem;
+    color: white;
+    background-color: var(--main-color);
+    border-radius: 2rem;
+    text-align: center;
+    line-height: 2.5rem;
+    font-size: 1.3rem;
+}
+
+.commentMe{
+    top: -1rem;
+    left: -1rem;
+}
+
+.commentYou{
+    bottom: -1rem;
+    right: -1rem;
+}
+
+.couponTitle{
+    color: var(--main-color);
+    font-size: 1rem;
+    font-family: 'Pretendard-Bold';
+}
+.couponPrice span{
+    font-family: 'Pretendard-Bold';
+    font-size: 2.5rem;
+}
+
+.couponPrice .couponPointBox{
+    display: block;
+    background-color: antiquewhite;
+    height: 100%;
+}
+
+.priceBox{
+    display: inline-block;
+    font-size: 1.5rem;
+}
+.infoContent{
+    font-size: 0.9rem;
+}
+
+body{
+    margin-bottom: clamp(6rem, 3vw, 8rem); /* 푸터의 height 만큼 margin을 주어야지 스크롤이 가능하다. */
+}

@@ -1,0 +1,92 @@
+body{
+    height: calc(100vh - clamp(4rem, 3vw, 5rem) - 2rem);
+}
+div[class^=login_box] {
+    font-size: 1.2rem;
+    margin: 1rem 0;
+}
+.find_id_logo{
+    width: 100%;
+    text-align: center;
+    margin: 5rem 0;
+}
+.res_title_box{
+    width: 100%;
+    text-align: center;
+    margin: 2rem 0;
+
+}
+.res_title{
+    font-size: 1.5rem;
+}
+.res_text_box{
+    width: 100%;
+    text-align: center;
+    margin: 1rem 0;
+    border: 1px solid #b4b4b4;
+    border-radius: var(--border-radius);
+    height: 3rem;
+    line-height: 3rem;
+}
+.res_text{
+    font-size: 1rem;
+}
+.res_email{
+    font-size: 1.2rem;
+}
+
+.res_email_box{
+    display: flex;
+    flex-direction: column;
+    margin: 0px;
+    width: 100%;
+    text-align: center;
+    border-top: 1px solid #6b6b6b;
+    border-bottom: 1px solid #6b6b6b;
+    line-height: 4rem;
+}
+.container{
+    padding: 0 1rem;
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.container > div{
+    margin: 0;
+    border-radius: var(--border-radius);
+}
+.res_box{
+    width: 100%;
+    margin: 0;
+}
+.find_id_button{
+    height: 3rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--main-color);
+    background-color: var(--main-color);
+    margin-top: 1rem;
+    position: fixed;
+    bottom: 4.5rem;
+    left: 1rem;
+    width: calc(100% - 2rem);
+}
+
+.find_id_button a{
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.1rem;
+    color: white;
+    border-radius: 0.5rem;
+}
+
+.find_id_button a:hover{
+    background-color: var(--main-color-hover);
+    color: #ebebeb;
+    
+}

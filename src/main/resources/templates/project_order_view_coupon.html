@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/project_footer.css">
+    <link rel="stylesheet" href="/css/project_header.css">
+    <link rel="stylesheet" href="/css/project_coupon.css">
+
+    <title>Document</title>
+</head>
+<header th:replace="~{/common/project_header :: header}"></header>
+<body>
+    
+    <div class='container'>
+        <div class='middelHead'>쿠폰</div>
+        <div class='cupon'>
+            <div>보유쿠폰</div>
+            <div>0장</div>
+            <a href='#'><span>새 쿠폰 추가 ▶</span></a>
+        </div>
+        <ul class='couponList'>
+            <li class='coupon'>
+                <span class='couponPrice'>5,000원 할인</span>
+                <span class='couponTitle'>[신규회원] 5,000원 할인 쿠폰</span>
+                <div class='couponDate'>
+                    <span class='couponExpireCount'>3일 남음</span>
+                    <span class='couponExpireDate'>2023.08.31 23:59까지</span>
+                </div>
+                <div class='empty'></div>
+            </li>
+            <li class='coupon noncoupon'>
+                <span>등록된 쿠폰이 없습니다.</span>
+                <div class='empty'></div>
+            </li>
+        </ul>
+        <div class='cuponNote'>
+            <ul>
+                <div>쿠폰 사용 유의사항</div>
+                <li>- 한 주문에 한 장의 쿠폰만 사용할 수 있습니다.</li>
+                <li>- 쿠폰은 현금으로 교환하거나 잔액을 환불해 드리지 않습니다.</li>
+                <li>- 쿠폰 만료일은 수거일 기준으로 적용됩니다.</li>
+            </ul>
+        </div>
+    </div>
+
+</body>
+<footer th:replace="~{/common/project_footer :: footer}"> </footer>
+</html>

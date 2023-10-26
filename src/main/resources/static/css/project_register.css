@@ -1,0 +1,183 @@
+.container{
+    width: 100%;
+    min-width: 310px;
+}
+
+input{
+    border: none;
+    border-bottom: 1px solid #dadada;
+    outline: none;
+    padding: 1rem;
+}
+
+.top{
+    font-size: 1.7rem;
+    margin-bottom: 2rem;
+}
+.register_form{
+    width: 100%;
+    margin: 0;
+}
+.register_box_logo{
+    width: 100%;
+    text-align: center;
+    margin: 5rem 0;
+}
+div[class^=register_box]{
+    font-size: 1.2rem;
+    margin: 1rem 0;
+}
+div[class^=register_box] input{
+    margin: 0.4rem 0;
+    width: 100%;
+    height: 2.5rem;
+    font-size: 0.9rem;
+    padding: 1rem;
+}
+.text_input{
+    width: 80%;
+    height: 2.5rem;
+    margin: 0.5rem 0;
+}
+.checkButton{
+    border: 1px solid #6b6b6b;
+    width: 20%;
+    height: 2.5rem;
+    margin: 0.5rem 0;
+}
+.regi_box_id{
+    display: flex;
+    gap: 1rem;
+}
+.regi_box_phone div{
+    display: flex;
+    gap: 0.3rem;
+    margin-bottom: 0.5rem;
+}
+.textCheck{
+    border: none;
+    border-radius: var(--border-radius);
+    background-color: var(--main-color);
+    color: white;
+    width: 25%;
+    font-size: 1rem;
+    height: 2.5rem;
+    margin: 0.5rem 0;
+}
+.pw_text{
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
+}
+
+.login_logo{
+    width: 100%;
+    text-align: center;
+    margin: 5rem 0;
+}
+
+
+.find_id_button{
+    height: 3rem;
+    border-radius: 1rem;
+    border: 1px solid var(--main-color);
+    background-color: var(--main-color);
+    position: fixed;
+    bottom: 4.5rem;
+    left: 1rem;
+    width: calc(100% - 2rem);
+
+}
+
+.find_id_button a{
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    color: white;
+    border-radius: 0.5rem;
+}
+
+.find_id_button a:hover{
+    background-color: var(--main-color-hover);
+    color: #ebebeb;
+    
+}
+.container{
+    padding: 0 1rem;
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.container > div{
+    margin: 0;
+    border-radius: var(--border-radius);
+}
+
+.find_Id_box input{
+    margin: 1rem 0;
+    width: 100%;
+    height: 2.5rem;
+    font-size: 0.9rem;
+    padding: 1rem;
+}
+.find_Id_box_pw{
+    width: 80%;
+    height: 2.5rem;
+    margin: 0.5rem 0;
+}
+
+.find_id_button a:hover{
+    background-color: var(--main-color-hover);
+    color: #ebebeb;
+}
+.text_style{
+    font-size: 1rem;
+}
+
+.phone_check_input{
+    display: none;
+}
+
+.phone_check_input input{
+    background-color: #fff;
+}
+
+#register_postcode{
+    width: 40%;
+    height: 2.5rem;
+
+}
+
+.searchAddressBtn{
+    width: 20%;
+    height: 3rem;
+    background-color: var(--main-color-hover);
+    color: #fff;
+    border-radius: var(--border-radius);
+    margin-left: 1rem;
+}
+
+#register_detailAddress{
+    width: 100%;
+}
+
+#register_extraAddress{
+    display: none;
+    width: 40%;
+    background-color: #fff;
+}
+
+
+.validation-input{
+    display: none;
+}
+
+.errorMsg{
+    color: red;
+}
+

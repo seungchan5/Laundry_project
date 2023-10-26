@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/project_footer.css">
+    <link rel="stylesheet" href="/css/project_header.css">
+    <link rel="stylesheet" href="/css/project_subscribe.css">
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        const memberId = [[${session.memberId != null ? session.memberId : null}]];
+        const expire = '[[${data != null ? data.subscriptionExpireDate : null}]]';
+        /*]]>*/
+        function firstPass() {
+            console.log("memberId=",memberId);
+            console.log("expire=",expire);
+
+            if(memberId !== null && expire !== 'null') {
+                alert("신규 회원 대상 이벤트입니다.");
+                return;
+            } else if(memberId !== null) {
+                location.href='/subscription/order/'+memberId;
+            } else {
+                location.href='/login';
+            }
+        }
+
+        function secondPass() {
+            console.log("memberId=",memberId);
+            console.log("expire=",expire);
+            const expireDate = new Date(expire);
+            const nowDate = new Date();
+
+            if(memberId === null) {
+               location.href='/login';
+            } else if(expireDate>=nowDate) {
+                alert("이미 패스에 가입중입니다.");
+                return;
+            } else {
+                location.href='/subscription/order/'+memberId;
+            }
+        }
+    </script>
+    <title>Document</title>
+</head>
+<header th:replace="~{/common/project_header :: header}"></header>
+
+<body>
+<div class='container'>
+    <div class='subscribe-title'>세탁패스</div>
+    <div class='box '>
+        <div class='sub_text'>세탁패스 가입하면</div>
+        <div class='pass'>PASS</div>
+        <div class='subscribe-benefit-container'>
+            <div class='subscribe-benefit_one'>
+                드라이 클리닝, 세탁, 수선 <br>15% 할인
+            </div>
+            <div class='subscribe-benefit'>포인트 3% 적립</div>
+            <div class='subscribe-benefit'>무제한 사용</div>
+        </div>
+    </div>
+
+    <div class='middel_text'>세탁 무제한, <br> 할인과 적립이 동시에!</div>
+    <div class='middle_info'>
+        <img src="../images/discount.png" alt="">
+        <span class="infoText">모든 종류의 세탁 15% 할인</span>
+    </div>
+    <div class='middle_info'>
+        <img src="../images/point.png" alt="">
+        <span class="infoText">포인트 3%적립</span>
+    </div>
+
+    <div class='middel_text'>구독권 종류</div>
+    <div class='middle_info'>
+        <span class="passText">1개월 월 5,900원</span>
+    </div>
+    <div class='middle_info'>
+        <span class="passText">3개월 <span class="redText">17,700원</span> -> 14,700원</span>
+    </div>
+    <div class='middle_info'>
+        <span class="passText">6개월 <span class="redText">35,400원</span> -> 27,000원</span>
+    </div>
+    <div class='middle_info'>
+        <span class="passText">12개월 <span class="redText">70,800원</span> -> 49,200원</span>
+    </div>
+
+    <div class='promotion-target'>신규회원이라면?</div>
+    <a onclick="firstPass()" class="bottom_info">
+        <div class='subscribe-promotion-content'>
+            <div class='subscribe-promotion-content_info'>세탁 특공대를 처음이라면 <br>무조건 첫 달 무료</div>
+            <div class='subscribe-promotion-content_btn'>신규회원</div>
+        </div>
+    </a>
+
+    <div class='promotion-target'>기존가입 고객이라면?</div>
+    <a onclick="secondPass()" class="bottom_info">
+        <div class='subscribe-promotion-content'>
+            <div class='subscribe-promotion-content_info'>계속해서 혜탁을 받고 싶다면</div>
+            <div class='subscribe-promotion-content_btn2'>월간구독</div>
+        </div>
+    </a>
+</div>
+</body>
+
+<footer th:replace="~{/common/project_footer :: footer}"> </footer>
+
+</html>

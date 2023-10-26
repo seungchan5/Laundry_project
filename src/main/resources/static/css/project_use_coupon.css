@@ -1,0 +1,172 @@
+.container .cupon{
+    border-bottom: 1px solid grey;
+    padding-bottom: 2rem;
+    margin-bottom: 2rem;
+    position: relative;
+}
+.middelHead{
+    text-align: center;
+    margin: 2rem 0;
+    font-size: 2rem;
+}
+.container .cupon div{
+    display: inline-block;
+    float: left;
+}
+.container .cupon div:nth-child(2){
+    margin-left: 0.5rem;
+    color: var(--main-color);
+}
+.container .cupon span{
+    display: inline-block;
+    float: right;
+    color: var(--main-color);
+}
+
+.couponList{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+}
+
+.coupon{
+    width: 100%;
+    height: 8rem;
+    border: none;
+    border-left: 0.6rem solid var(--main-color);
+    border-radius: var(--border-radius);
+    position: relative;
+    padding: 0.5rem;
+    padding-left: 1rem;
+    box-shadow: 2px 2px 5px rgb(185, 185, 185);
+    margin-bottom: 1rem;
+}
+
+.coupon .empty{
+    width: 1.5rem;
+    height: 1.5rem;
+    background-color: white;
+    position: absolute;
+    right: -0.75rem;
+    top: calc(50% - 1rem);
+    border-radius: 100%;
+    box-shadow: 2px 2px 5px rgb(185, 185, 185) inset;
+}
+
+.couponRadio{
+    display: flex;
+}
+
+.couponRadio label svg{
+    width: 1.5rem;
+}
+
+.couponPrice{
+    width: 100%;
+    display: block;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+.couponTitle{
+    display: block;
+    margin-bottom: 1.7rem;
+}
+.couponExpireCount{
+    margin-right: 1rem;
+}
+.couponExpireDate{
+    color: rgb(154, 154, 154);
+}
+
+.noncoupon{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgb(201, 201, 201);
+}
+
+
+.cuponNote ul{
+    padding: 1rem;
+    width: 100%;
+    background-color: white;
+}
+.cuponNote ul div{
+    font-size: medium;
+    margin-bottom: 1rem;
+    color: rgb(138, 141, 141);
+}
+.cuponNote ul li{
+    font-size: x-small;
+    margin-bottom: 1rem;
+    color: rgb(183, 185, 187);
+}
+
+body{
+    margin-bottom: clamp(9rem, 3vw, 10rem); /* 푸터의 height 만큼 margin을 주어야지 스크롤이 가능하다. */
+}
+input[type=submit]{
+    bottom: 4.5rem;
+    left: 1rem;
+    width: calc(100% - 2rem);
+    position: fixed;
+}
+
+.nonCoupon{
+    width: 100%;
+    height: 5rem;
+    border-radius: var(--border-radius);
+    box-shadow: 2px 2px 5px rgb(185, 185, 185);
+    margin-bottom: 1rem;
+    position: relative;
+    line-height: 5rem;
+    border-left: 0.6rem solid red;
+    font-size: 1.1rem;
+}
+
+label[for=couponEmpty]{
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+    text-align: center;
+}
+
+
+input[type=radio]:checked + .custom-radio {
+    border: 8px solid var(--main-font-color);
+}
+
+.custom-radio {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    background-color: white;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+    margin: 0;
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+}
+
+label[for^=couponNum]{
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    position: absolute;
+}
+
+#submit{
+    bottom: 1rem;
+    left: 1rem;
+    width: calc(100% - 2rem);
+    position: fixed;
+    height: 4rem;
+    border: none;
+    border-radius: var(--border-radius);
+    background-color: var(--main-color);
+    color: white;
+    font-size: 1.35rem;
+}

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/project_footer.css">
+    <link rel="stylesheet" href="/css/project_header.css">
+    <link rel="stylesheet" href="/css/project_rider.css">
+    <style>
+         .delivery-done {
+            background-color: #00ffff38;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=5xEXKwOOBa1ZkF3EBC9nc6DcYaOAwO858xW0ZDd2"></script>
+    <script src="/js/rider_using_list.js"></script>
+    <title>Document</title>
+</head>
+<!--<header th:replace="~{/common/project_back_header :: header}"></header>-->
+<header>
+    <div class='logo'>
+        <a href="#" onclick="history.back();">
+            <!--            <img id="ig" src="/images/laundryDelivery.png" alt="선택한 이미지" style="width: 100%; height: 100%; text-align: center;"/>-->
+        </a>
+    </div>
+</header>
+<body>
+    <div class='container'>
+        <div class='rider_header'>
+            <div class='ride_head'>배달</div><br>
+            <div class='ride_txt'>
+                <div>진행중인 배달 건수 : </div>
+                <div class='ride_num' th:text="${cnt[0]['RESULT']} + '건'">0건</div>
+            </div>
+        </div>
+        <div class='select_category'>
+            <ul>
+<!--                <a href="/ride/wait"><li th:text="${'대기중(' + cnt[1]['RESULT']} + ')'">대기중(0)</li></a>-->
+                <a href="/ride/wait"><li id="waitNum">대기중(0)</li></a>
+                <a href="/ride/accept"><li class='active' th:text="${'진행중(' + cnt[0]['RESULT']} + ')'">진행중(16)</li></a>
+                <a href="/ride/finish"><li th:text="${'완료(' + cnt[2]['RESULT']} + ')'">완료(7)</li></a>
+            </ul>
+        </div>
+            <div class='delivery_list'>
+                <ul>
+                    <th:block th:each="list : ${orderList}">
+                        <a th:href="@{/ride/orders/{ordersId}(ordersId=${list.ordersId})}" >
+                            <li th:class="${list.ordersStatus == '세탁 수거전' or list.ordersStatus == '세탁 수거완료'} ? 'delivery-done' : ''">
+                                <span class='order_num'>주문번호 :&nbsp;</span>
+                                <span class='order_num' name="ordersId" th:if="${list.ordersStatus == '세탁 수거전' or list.ordersStatus == '세탁 수거완료'}" th:text="${list.ordersId} + ' (집)'">1119</span>
+                                <span class='order_num' name="ordersId" th:if="${list.ordersStatus == '업체 수거전' or list.ordersStatus == '업체 수거완료'}" th:text="${list.ordersId} + ' (업체)'">1119</span><br>
+                                <span class='delivery_address' th:text="${list.ordersAddress + ' ' + list.ordersAddressDetails}">서울특별시 서대문구 대현동 777-8 508동 116호</span>
+                                <div class='space'>
+                                    <span class='delivery_time' th:text="${list.ordersStatus}"></span>
+                                    <span class='delivery_dis'>배송중..</span>
+                                </div>
+                            </li>
+                            <input type="hidden" name="" id="delivery_address" value="" th:value="${list.ordersAddress}">
+                            <input type="hidden" name="" id="ordersStatus" value="" th:value="${list.ordersStatus}">
+                        </a>
+                    </th:block>
+                    <th:block th:if="${cnt[0]['RESULT'] == 0}">
+                        <li class='drive_none'>
+                            <span>현재 진행 중인 배달이 없습니다!</span>
+                        </li>
+                    </th:block>
+                </ul>
+            </div>
+    </div>
+    <input type="hidden" name="workingArea" id="workingArea" value="" th:value="${riderInfo.workingArea}">
+    <input type="hidden" name="quickRiderId" id="quickRiderId" value="" th:value="${riderInfo.riderId}">
+</body>
+<!--<footer th:replace="~{/common/project_footer :: footer}"> </footer>-->
+<footer th:replace="~{/common/project_rider_footer :: footer}"> </footer>
+</html>

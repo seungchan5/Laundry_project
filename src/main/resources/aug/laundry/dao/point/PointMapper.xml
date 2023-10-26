@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="aug.laundry.dao.point.PointMapper">
+
+
+    <select id="findByMemberId" resultType="Integer">
+        SELECT POINT_NOW
+        FROM (
+            SELECT B.POINT_NOW, B.POINT_STACK_DATE, ROW_NUMBER() OVER (ORDER BY POINT_STACK_DATE DESC) AS rn
+            FROM MEMBER A
+            INNER JOIN POINT B
+            ON A.MEMBER_ID = B.MEMBER_ID
+            WHERE A.MEMBER_ID = #{memberId}
+            )
+        WHERE RN = 1
+    </select>
+
+    <insert id="registerPoint">
+        INSERT INTO POINT (POINT_ID, MEMBER_ID, POINT_STACK,POINT_STACK_REASON, POINT_STACK_DATE, POINT_NOW)
+        VALUES (SEQ_POINT_ID.NEXTVAL, #{memberId},1000,'회원가입', SYSDATE, 1000)
+    </insert>
+
+    <insert id="addRecommandPoint">
+        INSERT INTO POINT (POINT_ID, MEMBER_ID, POINT_STACK,POINT_STACK_REASON, POINT_STACK_DATE, POINT_NOW)
+        VALUES(
+                SEQ_POINT_ID.NEXTVAL,
+                #{memberId},
+                #{point},
+                #{reason},
+                sysdate,
+                (select a.POINT_NOW
+                from(select POINT_NOW FROM POINT WHERE MEMBER_ID = #{memberId} ORDER BY POINT_STACK_DATE DESC) a
+                WHERE rownum = 1) + #{point}
+        )
+
+    </insert>
+
+    <insert id="addBonusPoint">
+        INSERT INTO POINT (POINT_ID, MEMBER_ID, POINT_STACK,POINT_STACK_REASON, POINT_STACK_DATE, POINT_NOW)
+        VALUES(
+        SEQ_POINT_ID.NEXTVAL,
+        #{memberId},
+        #{point},
+        '포인트 적립',
+        sysdate,
+        (select a.POINT_NOW
+        from(select POINT_NOW FROM POINT WHERE MEMBER_ID = #{memberId} ORDER BY POINT_STACK_DATE DESC) a
+        WHERE rownum = 1) + #{point}
+        )
+    </insert>
+
+</mapper>

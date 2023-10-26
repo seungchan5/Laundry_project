@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="aug.laundry.dao.subscribe.SubscribeMapper">
+    <select id="getScheduleInfo" resultType="aug.laundry.dto.SubscriptionPayDto">
+        SELECT subscription_pay_id, customer_uid, merchant_uid, merchant_uid_re
+        FROM (
+                 SELECT ROW_NUMBER() OVER(ORDER BY s.pay_date DESC) rn, s.*
+                 FROM subscription_pay s
+                 WHERE customer_uid = #{customerUid}
+             )
+        WHERE rn = 1
+    </select>
+
+    <insert id="insertJoinSubscribe">
+        INSERT INTO subscription_pay(subscription_pay_id, select_month, merchant_uid,  customer_uid, amount, pay_date, subscription_status, imp_uid, repay_count)
+        VALUES(seq_subscription_pay_id.nextval, #{selectMonth}, #{merchantUid}, #{customerUid}, #{amount}, default, default, #{impUid}, 0)
+    </insert>
+
+    <update id="updateMemberSubscribe">
+        UPDATE member
+        SET subscription_id = (
+            SELECT subscription_id
+            FROM subscription
+            WHERE subscription_month=#{selectMonth}
+        ),subscription_expire_date =
+        <if test="amount != 0">
+            TRUNC(SYSDATE)+(31*#{selectMonth})+(INTERVAL '23:59:59' HOUR TO SECOND)
+        </if>
+        <if test="amount == 0">
+            TRUNC(SYSDATE)+31+(INTERVAL '23:59:59' HOUR TO SECOND)
+        </if>
+        WHERE member_id = #{customerUid}
+    </update>
+
+    <update id="updateNextMerchantId">
+        UPDATE subscription_pay
+        SET merchant_uid_re = #{merchantUidRe}
+        WHERE merchant_uid = #{merchantUid}
+    </update>
+
+    <update id="updateCancel">
+        UPDATE subscription_pay
+        SET subscription_status = 'N'
+        WHERE merchant_uid = #{merchantUid}
+    </update>
+
+    <select id="getRepayCount" resultType="int">
+        SELECT repay_count
+        FROM subscription_pay
+        WHERE merchant_uid = #{merchantUid}
+    </select>
+
+    <update id="updateRepayCount">
+        UPDATE subscription_pay
+        SET repay_count = repay_count+1
+        WHERE merchant_uid = #{merchantUid}
+    </update>
+
+    <select id="getSubscribeInfo" resultType="aug.laundry.dto.SubscriptionPayDto">
+        SELECT TO_CHAR(subscription_expire_date, 'YYYY-MM-DD') AS subscription_expire_date, select_month, amount, subscription_status
+        FROM (
+                 SELECT ROW_NUMBER() OVER(ORDER BY mp.subscription_pay_id DESC) rn, mp.*
+                 FROM (
+                          SELECT m.subscription_expire_date, p.select_month, p.amount, p.subscription_pay_id, p.subscription_status
+                          FROM member m
+                                   LEFT OUTER JOIN subscription_pay p ON m.member_id = p.customer_uid
+                          WHERE m.member_id = #{memberId}
+                      ) mp
+             )
+        WHERE rn=1
+    </select>
+
+    <update id="updateFailReason">
+        UPDATE subscription_pay
+        SET fail_reason = #{failReason}
+        WHERE merchant_uid = #{merchantUid}
+    </update>
+
+</mapper>

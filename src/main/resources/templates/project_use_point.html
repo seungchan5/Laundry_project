@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/project_footer.css">
+    <link rel="stylesheet" href="/css/project_header.css">
+    <link rel="stylesheet" href="/css/project_use_point.css">
+    <title>Document</title>
+</head>
+<header th:replace="~{/common/project_header :: header}"></header>
+<body>
+    <div class='container'>
+        <form action="" class='use_point_form'>
+            <div class='middelHead'>포인트</div>
+            <ul class='order_point_view'>
+                <div>
+                    <li>보유 포인트 : 520P</li>
+                    <li>
+                        <button class='use'>모두사용</button>
+                    </li>
+                </div>
+                <input type="text" name="mypoint" id="mypoint" value='300'>
+            </ul>
+            <div>
+                <img src="https://thumb.ac-illust.com/5f/5fe7573e1fc2fa3a4b550bc62a64b762_t.jpeg" alt="">
+            </div>
+            <div class='pointNote'>
+                <ul>
+                    <div>포인트 사용 안내</div>
+                    <li>- 포인트는 1원 단위로 사용 가능합니다.</li>
+                    <li>- 보유 포인트 중 만료 기간이 가까운 포인트부터 사용됩니다.</li>
+                    <li>- 적립 예정 포인트는 사용 가능한 포인트에서 제외됩니다.</li>
+                </ul>
+            </div>
+            <input type="submit" value="사용하기">
+        </form>
+    </div>
+</body>
+<footer th:replace="~{/common/project_footer :: footer}"> </footer>
+</html>

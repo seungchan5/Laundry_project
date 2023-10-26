@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/project_footer.css">
+</head>
+<footer th:fragment="footer">
+  <a href="/riderLogout">
+    <button type='button' class='orderlist'>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M32 0H0V32 192v32H64V192 109.3L297.4 342.6 320 365.3 365.3 320l-22.6-22.6L109.3 64H192h32V0H192 32zM288 128c88.4 0 160 71.6 160 160s-71.6 160-160 160s-160-71.6-160-160H64c0 123.7 100.3 224 224 224s224-100.3 224-224S411.7 64 288 64v64z"/></svg>
+      <span>퇴근하기</span>
+    </button>
+  </a>
+<!--    <a id="start-navigation" href="javascript:navi()" th:if="${info.ordersStatus == 2 or info.ordersStatus == 3 or info.ordersStatus == 4 or info.ordersStatus == 11}">-->
+  <a id="start-navigation" href="javascript:navi()" th:if="${info != null && (info.ordersStatus == 2 or info.ordersStatus == 3 or info.ordersStatus == 4 or info.ordersStatus == 11 or info.ordersStatus == 12)}">
+    <button type='button' class='mypage'>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M512 96c0 50.2-59.1 125.1-84.6 155c-3.8 4.4-9.4 6.1-14.5 5H320c-17.7 0-32 14.3-32 32s14.3 32 32 32h96c53 0 96 43 96 96s-43 96-96 96H139.6c8.7-9.9 19.3-22.6 30-36.8c6.3-8.4 12.8-17.6 19-27.2H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320c-53 0-96-43-96-96s43-96 96-96h39.8c-21-31.5-39.8-67.7-39.8-96c0-53 43-96 96-96s96 43 96 96zM117.1 489.1c-3.8 4.3-7.2 8.1-10.1 11.3l-1.8 2-.2-.2c-6 4.6-14.6 4-20-1.8C59.8 473 0 402.5 0 352c0-53 43-96 96-96s96 43 96 96c0 30-21.1 67-43.5 97.9c-10.7 14.7-21.7 28-30.8 38.5l-.6 .7zM128 352a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zM416 128a32 32 0 1 0 0-64 32 32 0 1 0 0 64z"/></svg>
+      <span id="asd">경로보기</span>
+    </button>
+  </a>
+  <a id="orderCheck" href="#" th:if="${regionCntWait != null}" style="width: 0;">
+    <form action="/ride/update" method="post" style="height: 100%;">
+      <button type='submit' class='sub' >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><defs><style>.fa-secondary{opacity:.4}</style></defs><path class="fa-primary" d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/><path class="fa-secondary" d=""/></svg>
+        <span id="">일괄처리</span>
+      </button>
+    </form>
+  </a>
+</footer>
+</html>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="aug.laundry.dao.MainMapper">
+    <select id="getOrders" resultType="aug.laundry.dto.OrdersEnum2">
+        SELECT ORDERS_ID, MEMBER_ID, ORDERS_DATE, ORDERS_ADDRESS, ORDERS_ADDRESS_DETAILS, ORDERS_INFO, ORDERS_REQUEST, ORDERS_PAY, ORDERS_PICKUP, ORDERS_EXPECTED_PRICE, ORDERS_FINAL_PRICE, 'R' || ORDERS_STATUS, RIDER_ID, QUICK_RIDER_ID, ORDERS_PICKUP_DATE, ORDERS_RETURN_DATE
+        FROM ORDERS
+        WHERE MEMBER_ID = #{memberId} AND ORDERS_STATUS BETWEEN 2 AND 13
+        ORDER BY ORDERS_DATE
+    </select>
+
+
+</mapper>

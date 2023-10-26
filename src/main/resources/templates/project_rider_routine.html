@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/project_footer.css">
+    <link rel="stylesheet" href="/css/project_header.css">
+    <link rel="stylesheet" href="/css/project_rider_routine.css">
+    <style>
+        #orderCheck{
+            border-left: 1px dotted #8080804f;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script>
+        window.addEventListener('load', function () {
+            const divList = document.querySelectorAll(".delivery_list");
+            const liList = document.querySelectorAll(".select_category li");
+            const orderTexts = document.querySelectorAll(".ride_txt .ch");
+
+            liList.forEach((li, index) => {
+                li.addEventListener("click", function () {
+                    liList.forEach(item => item.classList.remove("active"));
+                    this.classList.add("active");
+
+                    if(index === 0){
+
+                        var categoryBtn = $('.category_btn').html().split('(')[0]; // .category_btn의 내용을 가져옵니다.
+                        var btn2Elements = document.querySelectorAll('.btn2');
+                        for (var i = 0; i < btn2Elements.length; i++) {
+                        var btn2Element = btn2Elements[i];
+                        var btn2Content = btn2Element.innerHTML; // 각 .btn2 요소의 내용을 가져옵니다.
+
+                         if (btn2Content.includes(categoryBtn)) {
+                            console.log(btn2Content);
+                            $('.category_btn').html(btn2Content);
+
+                             let lili = li.innerHTML.split('(')[0];
+                            let presentStatus = encodeURIComponent(lili);
+                            let ordersAddress = encodeURIComponent($('.category_btn').html().split('(')[0]);
+console.log('aaaa');
+                            fetch('/region/list/'+ ordersAddress + '/' + presentStatus)
+                            .then(response => response.json())
+<!--                            .then(map => keywordList(map));-->
+                            .then(map => {
+
+
+                                                let regionList = map.list;
+                                                let cnt = map.cnt;
+                                                console.log(cnt);
+
+                                               const firstRegion = regionList[0];
+                                                const rideNum  = parseInt(document.querySelector('.ride_num').textContent);
+
+                                                const completeCntText = document.querySelector('.completeCnt').textContent; // '완료(4)'를 가져옴
+                                                const completeCntMatch = completeCntText.match(/\d+/); // 정규식으로 숫자 추출
+                                                const completeCnt = completeCntMatch ? parseInt(completeCntMatch[0]) : 0; // 숫자로 변환
+
+
+                                                if (firstRegion && firstRegion.ordersStatus === '세탁 수거완료' && rideNum === completeCnt) {
+                                                  const orderCheckElement = document.querySelector('#orderCheck');
+
+                                                  orderCheckElement.style.width = '100%';
+                                                }
+
+                                                let pageBlock = '';
+                                                console.log("aaaaa : " + regionList.length);
+                                                if(regionList.length != 0){
+                                                    regionList.forEach((list, index)=>{
+                                                    pageBlock += `
+                                                        <a href='/ride/routine/${list.ordersId}'>
+                                                            <li>
+                                                                <div class='order_num'>주문번호 : ${list.ordersId}</div><br>
+                                                                <div class='delivery_address'>${list.ordersAddress}&nbsp${list.ordersAddressDetails}</div><br>
+                                                                <div class='delivery_time'>${list.ordersStatus == '업체 수거완료' ? '배송예정' : list.ordersStatus}</div>
+                                                                <div class='delivery_dis'>거리 : 1.2km</div>
+                                                            </li>
+                                                        </a>`;
+                                                    });
+                                                    $('.delivery_list ul').html(pageBlock);
+                                                }else{
+                                                    pageBlock =
+                                                    `<li class='drive_none'>현재 진행중인 배달이 없습니다!</li>`;
+                                                    $('.delivery_list ul').html(pageBlock);
+                                                }
+
+
+                                                innerDistance();
+
+
+
+                            });
+
+                        }
+                    }
+
+
+                    }else{
+
+                        var categoryBtn = $('.category_btn').html().split('(')[0]; // .category_btn의 내용을 가져옵니다.
+                        var btn1Elements = document.querySelectorAll('.btn1');
+                        for (var i = 0; i < btn1Elements.length; i++) {
+                        var btn1Element = btn1Elements[i];
+                        var btn1Content = btn1Element.innerHTML; // 각 .btn2 요소의 내용을 가져옵니다.
+
+                         if (btn1Content.includes(categoryBtn)) {
+                            console.log(btn1Content);
+                            $('.category_btn').html(btn1Content);
+
+                             let lili = li.innerHTML.split('(')[0];
+                            let presentStatus = encodeURIComponent(lili);
+                            let ordersAddress = encodeURIComponent($('.category_btn').html().split('(')[0]);
+
+                            fetch('/region/list/'+ ordersAddress + '/' + presentStatus)
+                            .then(response => response.json())
+                            .then(map => keywordList(map));
+                        }
+                    }
+
+
+                    }
+
+                    divList.forEach(div => div.style.display = "none");
+                    divList[index].style.display = "";
+
+                    orderTexts.forEach(order => order.classList.add("now_order_now"));
+                    orderTexts[index].classList.remove("now_order_now");
+
+                    let lili = li.innerHTML.split('(')[0];
+                    let presentStatus = encodeURIComponent(lili);
+                    let ordersAddress = encodeURIComponent($('.category_btn').html());
+                    console.log('a');
+
+<!--                    fetch('/region/list/'+ ordersAddress + '/' + presentStatus)-->
+<!--                    .then(response => response.json())-->
+<!--                    .then(map => keywordList(map));-->
+                });
+            });
+
+
+            const modal = document.querySelector('.modal');
+            var categoryBtn = document.querySelector('.category_btn');
+            var ss = document.querySelector('.modalBox');
+            var area = document.body;
+            categoryBtn.addEventListener('click', function () {
+
+                if($('.active').html().split('(')[0] == '진행중'){
+                    modal1.style.display = 'block';
+
+                    window.addEventListener('click', function (event) {
+                    if (event.target === ss) {
+                    console.log('aaaa');
+                        modal.style.display = 'none'; // 모달을 닫음
+                        body.style.backgroundColor = ''; // 배경 색상을 원래대로 복원
+                    }
+                });
+                }else if($('.active').html().split('(')[0] == '완료'){
+                    modal2.style.display = 'block';
+
+
+                }
+                body.style.backgroundColor = '#00000033';
+
+            });
+            const selectBtn = document.querySelectorAll('.modalBox ul li');
+            let selectedButton = null;
+
+            const firstButton = selectBtn[0];
+            firstButton.style.color = 'white';
+            firstButton.style.backgroundColor = 'black';
+            selectedButton = firstButton;
+            categoryBtn.innerHTML = selectedButton.innerHTML;
+
+
+            selectBtn.forEach((item, index) => {
+                item.addEventListener('click', function () {
+
+                    console.log(index);
+                    modal.style.display = 'none';
+                    modal2.style.display = 'none';
+
+                    if (selectedButton) {
+                        selectedButton.style.color = '';
+                        selectedButton.style.backgroundColor = '';
+                    }
+
+                    item.style.color = 'white';
+                    item.style.backgroundColor = 'black';
+
+                    body.style.backgroundColor = '';
+                    selectedButton = item;
+                    console.log(selectedButton);
+                    console.log(selectedButton.innerHTML);
+                    categoryBtn.innerHTML = selectedButton.innerHTML;
+
+                    const desiredValue = selectedButton.innerHTML.split('(')[0];
+                    console.log(desiredValue);
+
+                    const present = $('.active').html().split('(')[0];
+                    console.log(present);
+
+                    let ordersAddress = encodeURIComponent(desiredValue);
+                    let presentStatus = encodeURIComponent(present);
+
+                    fetch('/region/list/'+ ordersAddress + '/' + presentStatus)
+                    .then(response => response.json())
+                    .then(map => keywordList(map));
+
+                });
+            });
+            innerDistance();
+
+
+        });
+
+        function keywordList(map){
+            let regionList = map.list;
+            let cnt = map.cnt;
+            console.log(cnt);
+
+           const firstRegion = regionList[0];
+            const rideNum  = parseInt(document.querySelector('.ride_num').textContent);
+
+            const completeCntText = document.querySelector('.completeCnt').textContent; // '완료(4)'를 가져옴
+            const completeCntMatch = completeCntText.match(/\d+/); // 정규식으로 숫자 추출
+            const completeCnt = completeCntMatch ? parseInt(completeCntMatch[0]) : 0; // 숫자로 변환
+
+
+            if (firstRegion && firstRegion.ordersStatus === '세탁 수거완료' && rideNum === completeCnt) {
+              const orderCheckElement = document.querySelector('#orderCheck');
+
+              orderCheckElement.style.width = '100%';
+            }
+
+            let pageBlock = '';
+            console.log('aaaaaaaaaaaaaaa : '+regionList.length);
+            if(regionList.length != 0){
+                regionList.forEach((list, index)=>{
+                pageBlock += `
+                    <a href='/ride/routine/${list.ordersId}'>
+                        <li>
+                            <div class='order_num'>주문번호 : ${list.ordersId}</div><br>
+                            <div class='delivery_address'>${list.ordersAddress}&nbsp${list.ordersAddressDetails}</div><br>
+                            <div class='delivery_time'>${list.ordersStatus == '업체 수거완료' ? '배송예정' : list.ordersStatus}</div>
+                            <div class='delivery_dis'>거리 : 1.2km</div>
+                        </li>
+                    </a>`;
+                });
+            }else{
+                pageBlock =
+                `<li class='drive_none'>현재 진행중인 배달이 없습니다!</li>`;
+            }
+            $('.delivery_list ul').html(pageBlock);
+
+            innerDistance();
+        }
+
+        function innerDistance(){
+               var fullAddressElements = document.querySelectorAll('.delivery_address');
+                        // 값을 담을 빈 배열을 생성합니다.
+                        var addresses = [];
+
+                        // 각 요소의 값을 배열에 추가합니다.
+                        fullAddressElements.forEach(function(element) {
+                            addresses.push(element.innerHTML);
+                        });
+                        console.log(addresses);
+                        var headers = {};
+                        headers["appKey"]="5xEXKwOOBa1ZkF3EBC9nc6DcYaOAwO858xW0ZDd2";
+
+                    var endX = '';
+                    var endY = '';
+
+                addresses.forEach(function(fullAddr, index) {
+                        $.ajax({
+                            method: "GET",
+                            headers: headers,
+                            url: "https://apis.openapi.sk.com/tmap/geo/fullAddrGeo?version=1&format=json",
+                            async: false,
+                            data: {
+                                "coordType": "WGS84GEO",
+                                "fullAddr": fullAddr
+                            },
+                            success: function(response) {
+                                var resultInfo = response.coordinateInfo;
+                                console.log(resultInfo);
+                                console.log(resultInfo.coordinate);
+                                console.log("주소: " + fullAddr);
+                                console.log("위도: " + resultInfo.coordinate[0].newLatEntr);
+                                console.log("경도: " + resultInfo.coordinate[0].newLonEntr);
+                               console.log("위도: " + resultInfo.coordinate[0].lat);
+                                console.log("경도: " + resultInfo.coordinate[0].lon);
+
+                               if (resultInfo.coordinate[0].adminDong === "" || resultInfo.coordinate[0].adminDong === null) {
+                                    endX = resultInfo.coordinate[0].newLonEntr;
+                                    endY = resultInfo.coordinate[0].newLatEntr;
+                                }else {
+                                    endX = resultInfo.coordinate[0].lon;
+                                    endY = resultInfo.coordinate[0].lat;
+                                }
+                                distance(endY, endX, index);
+                            },
+                            error: function(xhr, status, error) {
+                                console.error(error);
+                                $('.delivery_dis').eq(index).html("거리 알 수 없음");
+                            }
+                        });
+                    });
+            console.log(endX);
+            console.log(endY);
+        }
+
+        function distance(endY, endX, index){
+            navigator.geolocation.getCurrentPosition((position) => {
+
+                    console.log(position.coords.latitude);
+                    console.log(position.coords.longitude);
+                    var searchOption = "12";
+
+                    var trafficInfochk = "N";
+
+                    var headers = {};
+                    headers["appKey"]="5xEXKwOOBa1ZkF3EBC9nc6DcYaOAwO858xW0ZDd2";
+
+                    $.ajax({
+                    type : "POST",
+                    headers : headers,
+                    url : "https://apis.openapi.sk.com/tmap/routes?version=1&format=json&callback=result&appKey=5xEXKwOOBa1ZkF3EBC9nc6DcYaOAwO858xW0ZDd2",
+                    async : false,
+                    data : {
+                         "startX" : position.coords.longitude,
+                         "startY" : position.coords.latitude,
+<!--                         "startX" : "129.1473492875082",-->
+<!--                         "startY" : "35.16075155863797",-->
+                         "endX" : endX,
+                         "endY" : endY,
+                         "reqCoordType" : "WGS84GEO",
+                         "resCoordType" : "EPSG3857",
+                         "searchOption" : searchOption,
+                         "trafficInfo" : trafficInfochk
+                    },
+                    success : function(response) {
+
+                     var resultData = response.features;
+
+                     var tDistance = "거리 : " + (resultData[0].properties.totalDistance / 1000)
+                                 .toFixed(1) + "km";
+                    console.log(tDistance);
+                    $('.delivery_dis').eq(index).html(tDistance);
+
+                     var tTime = " 총 시간 : "
+                           + (resultData[0].properties.totalTime / 60)
+                                 .toFixed(0) + "분";
+                    }
+                });
+            });
+        }
+    </script>
+    <title>Title</title>
+</head>
+<!--<header th:replace="~{/common/project_back_header :: header}"></header>-->
+<header>
+    <div class='logo'>
+        <a href="#" onclick="history.back();">
+            <!--            <img id="ig" src="/images/laundryDelivery.png" alt="선택한 이미지" style="width: 100%; height: 100%; text-align: center;"/>-->
+        </a>
+    </div>
+</header>
+<body id='body'>
+<div class='container' id='lili'>
+    <div class='rider_header'>
+        <div class='ride_head'>정기배송</div><br>
+        <div class='ride_txt'>
+            <div class=" ch">총 배달 건수 : </div>
+            <div class="now_order_now ch">총 배달 건수 : </div>
+            <div class='ride_num' th:text="${total['RESULT']} + '건'">0건</div>
+        </div>
+        <div class='orderRegion' th:text="${rider.riderPossibleZipcode}">서대문구</div>
+    </div>
+    <div class='select_category'>
+        <ul>
+            <th:block th:each="cnt : ${cnt}">
+                <a th:if="${cnt['QUERY_NAME'] == 'waitCnt'}">
+                    <li class='active' id="ingCnt" th:text="'진행중(' + ${cnt['RESULT']} + ')'"></li>
+                </a>
+                <a th:if="${cnt['QUERY_NAME'] == 'completeCnt'}">
+                    <li class="completeCnt" th:text="'완료(' + ${cnt['RESULT']} + ')'"></li>
+                </a>
+            </th:block>
+        </ul>
+    </div>
+    <div class='category'>
+        <div class='category_btn'>배달지역 선택(15)</div>
+    </div>
+    <div class='delivery_list'>
+        <ul>
+            <th:block th:each="list : ${list}">
+            <a th:href="@{/ride/routine/{ordersId}(ordersId=${list.ordersId})}" >
+                <li>
+                    <div class='order_num' th:text="'주문번호 : '+ ${list.ordersId}">주문번호</div><br>
+                    <div class='delivery_address' id="delivery_address" th:text="${list.ordersAddress} + ' ' + ${list.ordersAddressDetails}">서울</div><br>
+                    <div class='delivery_time' th:text="${list.ordersStatus == '업체 수거완료' ? '배송예정' : list.ordersStatus}">수거전</div>
+                    <div class='delivery_dis'>거리 : 1.2km</div>
+                </li>
+            </a>
+            </th:block>
+            <li class='drive_none' th:if="${#lists.isEmpty(list)}">현재 진행할 배달이 없습니다!</li>
+        </ul>
+    </div>
+    <div class='delivery_list' style='display: none;'>
+        <ul>
+            <th:block th:each="list : ${list}">
+                <a th:href="@{/ride/routine/{ordersId}(ordersId=${list.ordersId})}" >
+                    <li>
+                        <div class='order_num' th:text="'주문번호 : '+ ${list.ordersId}">주문번호</div><br>
+                        <div class='delivery_address' th:text="${list.ordersAddress} + ' ' + ${list.ordersAddressDetails}">서울</div><br>
+                        <div class='delivery_time'>수거전</div>
+                        <div class='delivery_dis'>거리 : 1.2km</div>
+                    </li>
+                </a>
+            </th:block>
+            <li class='drive_none' th:if="${#lists.isEmpty(list)}">현재 완료된 배달이 없습니다~</li>
+        </ul>
+    </div>
+</div>
+<div class='modal' id="modal1">
+    <div class='modalBox'>
+        <ul>
+            <li th:each="region  : ${regionCntWait}" class="liBtn btn1" th:text="${region.dongInfo.dongNames + '('+ region.dongInfo.dongCnt +')'}"></li>
+<!--            <li th:each="dongName : ${dongNames}" class="liBtn" th:text="${dongName}"></li>-->
+<!--            <li th:each="dongCnt : ${dongCnt}" class="liBtn" th:text="${'('+dongCnt['RESULT']+')'}"></li>-->
+        </ul>
+    </div>
+</div>
+<div class='modal' id="modal2">
+    <div class='modalBox'>
+        <ul>
+            <li th:each="region  : ${regionCntComplete}" class="liBtn btn2" th:text="${region.dongInfo.dongNames + '('+ region.dongInfo.dongCnt +')'}"></li>
+            <!--            <li th:each="dongName : ${dongNames}" class="liBtn" th:text="${dongName}"></li>-->
+            <!--            <li th:each="dongCnt : ${dongCnt}" class="liBtn" th:text="${'('+dongCnt['RESULT']+')'}"></li>-->
+        </ul>
+    </div>
+</div>
+</body>
+<footer th:replace="~{/common/project_rider_footer :: footer}"> </footer>
+</html>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="aug.laundry.dao.basket.OrderDetailMapper">
+
+    <insert id="insert">
+
+        insert into ORDERS_DETAIL ( ORDERS_DETAIL_ID , ORDERS_ID , MEMBER_ID)
+        values(SEQ_ORDERS_DETAIL_ID.nextval , #{ordersId},#{memberId})
+
+    </insert>
+
+
+</mapper>

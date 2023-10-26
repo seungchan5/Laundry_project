@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/project_footer.css">
+    <link rel="stylesheet" href="../css/project_header.css">
+    <link rel="stylesheet" href="../css/project_order_drycleaning.css">
+</head>
+<header th:replace="~{/common/project_header :: header}"></header>
+
+<link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+<link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.6.0/font/bootstrap-icons.css" />
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+
+    $(function() {
+            addItem(); // 초기 아이템 생성
+        });
+
+            function addItem() {
+
+                var newItem = `
+                    <div class='list'>
+                        <div class='img'>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path d="M211.8 0c7.8 0 14.3 5.7 16.7 13.2C240.8 51.9 277.1 80 320 80s79.2-28.1 91.5-66.8C413.9 5.7 420.4 0 428.2 0h12.6c22.5 0 44.2 7.9 61.5 22.3L628.5 127.4c6.6 5.5 10.7 13.5 11.4 22.1s-2.1 17.1-7.8 23.6l-56 64c-11.4 13.1-31.2 14.6-44.6 3.5L480 197.7V448c0 35.3-28.7 64-64 64H224c-35.3 0-64-28.7-64-64V197.7l-51.5 42.9c-13.3 11.1-33.1 9.6-44.6-3.5l-56-64c-5.7-6.5-8.5-15-7.8-23.6s4.8-16.6 11.4-22.1L137.7 22.3C155 7.9 176.7 0 199.2 0h12.6z"/></svg>
+                            </div>
+                            <div class="category">
+                                <select class="c1" name="c_no1" onChange="chnQnaType(this)">
+                                    <option value="">대분류</option>
+                                    <option value="1">의류</option>
+                                    <option value="2">침구류</option>
+                                    <option value="3">신발</option>
+                                    <option value="4">기타</option>
+                                    </select>
+                                    <select class="c2" name="c_no2"></select>
+                                    </div>
+                                        <div class='count'>
+                                            <input type="number" id="quantity" name="quantity" min="0" max="100" step="1" value="1">
+                                        </div>
+
+                                        <span class='price'>9,000원</span>
+                                       <!--삭제버튼 -->
+                                        <button><i class="bi bi-x-square-fill"></i></button>
+                    </div>
+
+                `;
+
+                $('#itemList').append(newItem);
+            }
+
+            function chnQnaType(selectElement) {
+                event.stopPropagation(); // 이벤트 전파 차단
+                var type = $(selectElement).val();
+                var $c2Select = $(selectElement).closest('.list').find('.c2');
+
+                $c2Select.empty();
+                $c2Select.append('<option value="">소분류</option>');
+
+                if (type == '1') {
+                $('.c2').append("<option value='1'  ${ param.c2 eq '11' ? 'selected' : '' } >와이셔츠</option>'");
+                $('.c2').append("<option value='2'  ${ param.c2 eq '12' ? 'selected' : '' } >교복셔츠</option>'");
+                $('.c2').append("<option value='3'  ${ param.c2 eq '13' ? 'selected' : '' } >교복자켓</option>'");
+                $('.c2').append("<option value='4'  ${ param.c2 eq '14' ? 'selected' : '' } >일반셔츠</option>'");
+                $('.c2').append("<option value='5'  ${ param.c2 eq '15' ? 'selected' : '' } >블라우스</option>'");
+                $('.c2').append("<option value='6'  ${ param.c2 eq '16' ? 'selected' : '' } >티셔츠</option>'");
+                $('.c2').append("<option value='7'  ${ param.c2 eq '17' ? 'selected' : '' } >맨투맨</option>'");
+                $('.c2').append("<option value='8'  ${ param.c2 eq '18' ? 'selected' : '' } >후드티</option>'");
+                $('.c2').append("<option value='9'  ${ param.c2 eq '18' ? 'selected' : '' } >니트</option>'");
+                $('.c2').append("<option value='10'  ${ param.c2 eq '18' ? 'selected' : '' } >스웨터</option>'");
+                $('.c2').append("<option value='11'  ${ param.c2 eq '18' ? 'selected' : '' } >가디건</option>'");
+                $('.c2').append("<option value='12'  ${ param.c2 eq '18' ? 'selected' : '' } >바지</option>'");
+                $('.c2').append("<option value='13'  ${ param.c2 eq '18' ? 'selected' : '' } >스커트</option>'");
+                $('.c2').append("<option value='14'  ${ param.c2 eq '18' ? 'selected' : '' } >원피스</option>'");
+                $('.c2').append("<option value='15'  ${ param.c2 eq '18' ? 'selected' : '' } >점프수트</option>'");
+                $('.c2').append("<option value='16'  ${ param.c2 eq '18' ? 'selected' : '' } >인조가죽하의</option>'");
+                $('.c2').append("<option value='17'  ${ param.c2 eq '18' ? 'selected' : '' } >조끼</option>'");
+                $('.c2').append("<option value='18'  ${ param.c2 eq '18' ? 'selected' : '' } >패딩조끼</option>'");
+                $('.c2').append("<option value='19'  ${ param.c2 eq '18' ? 'selected' : '' } >스키, 보드 바지</option>'");
+                $('.c2').append("<option value='20'  ${ param.c2 eq '18' ? 'selected' : '' } >스키, 보드 점프수트</option>'");
+                $('.c2').append("<option value='21'  ${ param.c2 eq '18' ? 'selected' : '' } >패딩바지</option>'");
+                $('.c2').append("<option value='22'  ${ param.c2 eq '18' ? 'selected' : '' } >정장자켓</option>'");
+                $('.c2').append("<option value='23'  ${ param.c2 eq '18' ? 'selected' : '' } >자켓</option>'");
+                $('.c2').append("<option value='24'  ${ param.c2 eq '18' ? 'selected' : '' } >점퍼</option>'");
+                $('.c2').append("<option value='25'  ${ param.c2 eq '18' ? 'selected' : '' } >코트</option>'");
+                $('.c2').append("<option value='26'  ${ param.c2 eq '18' ? 'selected' : '' } >트렌치 코트</option>'");
+                $('.c2').append("<option value='27'  ${ param.c2 eq '18' ? 'selected' : '' } >경량패딩</option>'");
+                $('.c2').append("<option value='28'  ${ param.c2 eq '18' ? 'selected' : '' } >일반패딩</option>'");
+                $('.c2').append("<option value='29'  ${ param.c2 eq '18' ? 'selected' : '' } >다운패딩</option>'");
+                $('.c2').append("<option value='30'  ${ param.c2 eq '18' ? 'selected' : '' } >인조가죽자켓</option>'");
+                $('.c2').append("<option value='31'  ${ param.c2 eq '18' ? 'selected' : '' } >넥타이</option>'");
+                $('.c2').append("<option value='32'  ${ param.c2 eq '18' ? 'selected' : '' } >목도리</option>'");
+                $('.c2').append("<option value='33'  ${ param.c2 eq '18' ? 'selected' : '' } >스카프</option>'");
+                $('.c2').append("<option value='34'  ${ param.c2 eq '18' ? 'selected' : '' } >장갑</option>'");
+                $('.c2').append("<option value='35'  ${ param.c2 eq '18' ? 'selected' : '' } >니트모자</option>'");
+                $('.c2').append("<option value='36'  ${ param.c2 eq '18' ? 'selected' : '' } >캡모자</option>'");
+
+
+            } else if (type == '2') {
+                $('.c2').append("<option value='41'  ${ param.c2 eq '21' ? 'selected' : '' } >일반이불</option>'");
+                $('.c2').append("<option value='42'  ${ param.c2 eq '22' ? 'selected' : '' } >극세사이불</option>'");
+                $('.c2').append("<option value='43'  ${ param.c2 eq '23' ? 'selected' : '' } >다운퍼이불(오리,거위털)</option>'");
+                $('.c2').append("<option value='44'  ${ param.c2 eq '24' ? 'selected' : '' } >양모이불</option>'");
+                $('.c2').append("<option value='45'  ${ param.c2 eq '25' ? 'selected' : '' } >실크이불</option>'");
+                $('.c2').append("<option value='46'  ${ param.c2 eq '26' ? 'selected' : '' } >이불패드</option>'");
+                $('.c2').append("<option value='47'  ${ param.c2 eq '27' ? 'selected' : '' } >이불커버</option>'");
+                $('.c2').append("<option value='48'  ${ param.c2 eq '27' ? 'selected' : '' } >홑이불</option>'");
+                $('.c2').append("<option value='49'  ${ param.c2 eq '27' ? 'selected' : '' } >일반토퍼</option>'");
+                $('.c2').append("<option value='50'  ${ param.c2 eq '27' ? 'selected' : '' } >구스토퍼</option>'");
+                $('.c2').append("<option value='51'  ${ param.c2 eq '27' ? 'selected' : '' } >베개커버</option>'");
+                $('.c2').append("<option value='52'  ${ param.c2 eq '27' ? 'selected' : '' } >베개(솜)</option>'");
+                $('.c2').append("<option value='53'  ${ param.c2 eq '27' ? 'selected' : '' } >베개(다운퍼)</option>'");
+            } else if (type == '3') {
+                $('.c2').append("<option value='60'  ${ param.c2 eq '31' ? 'selected' : '' } >운동화</option>'");
+                $('.c2').append("<option value='61'  ${ param.c2 eq '32' ? 'selected' : '' } >구두</option>'");
+                $('.c2').append("<option value='62'  ${ param.c2 eq '33' ? 'selected' : '' } >토퍼</option>'");
+                $('.c2').append("<option value='63'  ${ param.c2 eq '34' ? 'selected' : '' } >스포츠화</option>'");
+                $('.c2').append("<option value='64'  ${ param.c2 eq '35' ? 'selected' : '' } >워커</option>'");
+                $('.c2').append("<option value='65'  ${ param.c2 eq '36' ? 'selected' : '' } >부츠</option>'");
+                $('.c2').append("<option value='66'  ${ param.c2 eq '37' ? 'selected' : '' } >어그부츠</option>'");
+            } else if (type == '4') {
+                $('.c2').append("<option value='70'  ${ param.c2 eq '41' ? 'selected' : '' } >기타1</option>'");
+                $('.c2').append("<option value='71'  ${ param.c2 eq '42' ? 'selected' : '' } >기타2</option>'");
+                $('.c2').append("<option value='72'  ${ param.c2 eq '43' ? 'selected' : '' } >기타3</option>'");
+                $('.c2').append("<option value='73'  ${ param.c2 eq '44' ? 'selected' : '' } >기타4</option>'");
+                $('.c2').append("<option value='74'  ${ param.c2 eq '45' ? 'selected' : '' } >기타5</option>'");
+            }
+
+                $c2Select.show();
+            }
+
+
+            document.querySelectorAll('.quantity').forEach(function(input) {
+                input.addEventListener('input', function() {
+                    var priceElement = this.closest('.list').querySelector('.price');
+                    var price = parseFloat(priceElement.textContent.replace(/[^\d.]/g, '')); // Extract numeric value
+                    var quantity = parseFloat(this.value);
+                    priceElement.textContent = (price * quantity).toFixed(2) + '원'; // Update price
+                });
+            });
+
+
+         // 삭제 버튼
+
+
+        $(document).on('click', '.list button', function(event) {
+        event.stopPropagation(); // 이벤트 전파 차단
+        $(this).closest('.list').remove();
+        calculateTotalPrice();
+    });
+
+        function calculateTotalPrice() {
+            var totalPrice = 0;
+            $('.list').each(function() {
+                var priceText = $(this).find('.price').text();
+                var price = parseInt(priceText.replace(/[^0-9]/g, ''), 10);
+                totalPrice += price;
+            });
+
+            $('.totalprice').text('총 ' + totalPrice.toLocaleString() + '원');
+        }
+
+
+
+
+
+
+</script>
+
+<body>
+<div class='container'>
+    <form action="#" method="get">
+        <h2>드라이클리닝</h2>
+        <div class='top'>
+            <button type='button' class='categoryadd' onclick="addItem()"><i class="bi bi-plus-square-fill"></i></button>
+        </div>
+
+
+        <div class='drycleaninglist' id="itemList">
+            <!--        여기에 카테고리 박스 나옴-->
+        </div>
+
+        <div class='totalpricebox'>
+            <span class='totalprice'>총 9,000원</span>
+        </div>
+        <input type="submit" class='submit'value="완료">
+    </form>
+</div>
+</body>
+<footer th:replace="~{/common/project_footer :: footer}"> </footer>
+
+</html>

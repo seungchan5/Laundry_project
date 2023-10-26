@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/project_footer.css">
+    <link rel="stylesheet" href="/css/project_header.css">
+    <link rel="stylesheet" href="/css/project_price_tag.css">
+    <script src="/js/project_price_tag.js"></script>
+</head>
+<header th:replace="~{/common/project_header :: header}"></header>
+<body>
+<div class='priceMenu'>
+    <button type='button' class='drycleaning select'>드라이클리닝</button>
+    <button type='button' class='repair'>수선</button>
+</div>
+<div class='container'>
+    <div class='priceWarp' id='drycleaning'>
+        <div class='categoryList'>
+            <button type='button' class='category clothes'>의류</button>
+            <button type='button' class='category bedding'>침구류</button>
+            <button type='button' class='category shoes'>신발</button>
+        </div>
+        <div class='categoryBox'>
+            <table class='categoryTableTop'>
+                <tr class='categoryTr'>
+                    <td class='categoryTitle'>품목</td>
+                    <td class='categoryPass'>패스</td>
+                    <td class='categoryCommon'>일반</td>
+                </tr>
+            </table>
+            <th:block th:each="parent : ${drycleaning}">
+                <div class='categoryFocus' th:text="${parent.key}"></div>
+                <table class="categoryTable">
+                    <tr class="categoryTr" th:each="item : ${parent.value}">
+                        <th class='categoryTitle' th:text="${item.key}"></th>
+                        <td class='categoryPass' th:text="${#numbers.formatInteger(item.value * percent, 3, 'COMMA')} + '원'"></td>
+                        <td class='categoryCommon' th:text="${#numbers.formatInteger(item.value, 3, 'COMMA')} + '원'"></td>
+                    </tr>
+                </table>
+            </th:block>
+        </div>
+    </div>
+    <div class='priceWarp hidden' id='repair'>
+        <div class='categoryFocus'>수선</div>
+        <div class='categoryBox'>
+            <table class='categoryTableTop'>
+                <tr class='categoryTr'>
+                    <td class='categoryTitle'>품목</td>
+                    <td class='categoryPass'>패스</td>
+                    <td class='categoryCommon'>일반</td>
+                </tr>
+            </table>
+
+            <table class="categoryTable">
+                <tr class="categoryTr" th:each="item : ${repair}">
+                    <th class='categoryTitle' th:text="${item.title}"></th>
+                    <td class='categoryPass' th:text="${#numbers.formatInteger(item.price * percent, 3, 'COMMA')} + '원'"></td>
+                    <td class='categoryCommon' th:text="${#numbers.formatInteger(item.price, 3, 'COMMA')} + '원'"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class='fixButton'>
+        <a href="/laundry" class='submit'>세탁 신청하기</a>
+    </div>
+</div>
+</body>
+<footer th:replace="~{/common/project_footer :: footer}"> </footer>
+<script>
+
+</script>
+</html>

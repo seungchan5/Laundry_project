@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/project_footer.css">
+    <link rel="stylesheet" href="/css/project_header.css">
+    <link rel="stylesheet" href="/css/project_point.css">
+
+    <title>Document</title>
+</head>
+<header th:replace="~{/common/project_header :: header}"></header>
+<body>
+
+<div class='container'>
+    <th:block th:if="${not #lists.isEmpty(point)}">
+    <div class='remainder'>
+        <p>보유 포인트</p>
+        <p class='point' th:text="${#numbers.formatInteger(pointNow, 1, 'COMMA')} + ' P'">100 P</p>
+    </div>
+    </th:block>
+    <th:block th:if="${not #lists.isEmpty(point)}">
+    <ul class='point_list' th:each="item : ${point}">
+        <li>
+            <div class='top'>
+                <div th:text="${item.pointStackReason}">헌 옷 포인트 적립</div>
+                <div id="pointStack" th:text="${#numbers.formatInteger(item.pointStack, 1, 'COMMA')} + ' P'">+ 180P</div>
+            </div>
+            <br>
+            <div class='bottom'>
+                <!--<div>1.8kg</div>-->
+                <div th:text="${item.pointStackDate}">23/08/22</div>
+            </div>
+        </li>
+    </ul>
+    </th:block>
+    <th:block th:if="${#lists.isEmpty(point)}">
+    <div class='remainder'>
+        <p>보유 포인트</p>
+        <p class='point'>0 P</p>
+    </div>
+    <ul>
+        <li class='none_point'>아직 보유한 포인트가 없어요!</li>
+    </ul>
+    </th:block>
+</div>
+
+</body>
+<footer th:replace="~{/common/project_footer :: footer}"> </footer>
+</html>

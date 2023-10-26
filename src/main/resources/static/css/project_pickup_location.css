@@ -1,0 +1,41 @@
+.radioBox{
+    width: 100%;
+    border: 3px solid rgb(201, 201, 201);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    font-size: 1.2rem;
+}
+
+.box{
+    margin: 2rem 0;
+    display: flex;
+    gap: 1rem;
+}
+
+.details{
+    width: 100%;
+}
+
+input[type=submit]{
+    margin-top: 1rem;
+}
+input[type=radio] {
+    display: none;
+}
+.custom-radio {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    background-color: white;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+    margin: 0;
+}
+
+
+input[type=radio]:checked + .custom-radio {
+    border: 6px solid var(--main-font-color);
+}
+label{
+    margin: 0;
+}

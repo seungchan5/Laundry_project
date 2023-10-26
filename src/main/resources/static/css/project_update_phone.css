@@ -1,0 +1,57 @@
+.container .intro{
+    font-size: 1.5rem;
+}
+
+.container > form{
+    text-align: center;
+    margin-top: 3rem;
+}
+
+input[type=tel]{
+    border: 2px solid var(--main-color);
+    border-radius: var(--border-radius);
+    width: 75%;
+    height: 3rem;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    padding: 1rem;
+    outline: none;
+}
+
+.container form button{
+    height: 3rem;
+    border: none;
+    border-radius: var(--border-radius);
+    background-color: var(--main-color);
+    color: white;
+}
+
+input[type=submit]{
+    bottom: 4.5rem;
+    left: 1rem;
+    width: calc(100% - 2rem);
+    position: fixed;
+}
+
+.errors{
+    text-align: center;
+    color: red;
+    margin-bottom: 1rem;
+}
+.errorsborder{
+    border: 2px solid rgb(255, 114, 114);
+}
+
+.errors.message{
+    font-size: 1.2rem;
+}
+
+.errorBox{
+    text-align: center;
+}
+
+.errors svg{
+    width: 1.2rem;
+    fill: rgb(48, 180, 31);
+}
+

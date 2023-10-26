@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="aug.laundry.dao.login.LoginMapper">
+    <select id="checkSocialId" resultType="int">
+        select count(SOCIAL_UID) from SOCIAL_UNIQUE_NUM where SOCIAL_UID = #{id}
+    </select>
+
+    <insert id="registerSocialUser">
+        INSERT INTO MEMBER (MEMBER_ID, MEMBER_ACCOUNT, MEMBER_PASSWORD, MEMBER_NAME, MEMBER_PHONE, MEMBER_ZIPCODE, MEMBER_ADDRESS, MEMBER_ADDRESS_DETAILS, MEMBER_CREATE_DATE, MEMBER_SOCIAL, SUBSCRIPTION_ID, SUBSCRIPTION_EXPIRE_DATE, GRADE_ID, MEMBER_RECENTLY_DATE, MEMBER_DELETE_STATUS, MEMBER_MY_INVITE_CODE, MEMBER_INVITE_CODE)
+        VALUES (SEQ_MEMBER_ID.NEXTVAL, #{memberAccount}, null, #{memberName}, #{memberPhone}, null, null, null,SYSDATE, #{memberSocial}, null, null , 2,  NULL, 'N', 'QWEASDZXC', NULL)
+    </insert>
+
+    <insert id="registerSocialNumber">
+        insert into SOCIAL_UNIQUE_NUM(SOCIAL_UID, MEMBER_ID) VALUES (#{id}, SEQ_MEMBER_ID.CURRVAL)
+    </insert>
+
+    <select id="socialLogin" resultType="aug.laundry.dto.MemberDto">
+        select * from member where MEMBER_ACCOUNT = #{memberAccount} and MEMBER_SOCIAL = #{memberSocial}
+    </select>
+
+    <select id="login" resultType="aug.laundry.dto.MemberDto">
+        select * from member where MEMBER_ACCOUNT = #{memberAccount} and MEMBER_DELETE_STATUS = 'N'
+    </select>
+
+    <select id="adminLogin" resultType="aug.laundry.dto.AdminDto">
+        select * from admin where ADMIN_EMAIL = #{adminEmail} and ADMIN_PASSWORD=#{adminPassword}
+    </select>
+
+    <select id="riderLogin" resultType="aug.laundry.dto.RiderDto">
+        select * from rider where RIDER_EMAIL = #{riderEmail} and RIDER_PASSWORD=#{riderPassword}
+    </select>
+
+    <select id="quickRiderLogin" resultType="aug.laundry.dto.QuickRiderDto">
+        select * from QUICK_RIDER where QUICK_RIDER_EMAIL = #{quickRiderEmail} and QUICK_RIDER_PASSWORD = #{quickRiderPassword}
+    </select>
+
+    <update id="keepLogin">
+        update MEMBER set SESSION_ID = #{sessionId}, SESSION_LIMIT = #{limit} where MEMBER_ID = #{memberId}
+    </update>
+
+    <select id="checkUserWithSessionId" resultType="aug.laundry.dto.MemberDto">
+        SELECT *
+        FROM MEMBER
+        WHERE SESSION_ID = #{sessionId}
+        AND SESSION_LIMIT > sysdate
+    </select>
+
+    <update id="renewLoginTime">
+        update MEMBER set MEMBER_RECENTLY_DATE = sysdate where MEMBER_ID = #{memberId}
+    </update>
+
+
+
+
+
+</mapper>

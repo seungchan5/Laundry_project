@@ -1,0 +1,207 @@
+h2, h3{
+    margin: 1rem 0;
+}
+.explain{
+    width: 100%;
+    height: 6rem;
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    color: #666;
+    background-color: white;
+    box-shadow: 2px 2px 5px #dadada;
+}
+.explain span{
+    line-height: 2rem;
+}
+.imglist{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1rem 0;
+}
+
+.imgbox .addImg{
+    margin: 0 auto;
+    fill: var(--border-color);
+    width: 1.5rem;
+}
+
+.imgbox span{
+    font-size: 0.8rem;
+}
+
+.deleteImg{
+    width: 0.8rem;
+    height: 0.8rem;
+    position: absolute;
+    right: 0.2rem;
+    top: 0.2rem;
+
+}
+
+.imgbox{
+    /* width: calc(100% / 4 - 0.5rem); */
+    /* height: calc(100% / 4 - 0.5rem); */
+    width: 5rem;
+    height: 5rem;
+    border: 1px solid #e9e9e9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--border-color);
+    margin: 0;
+    position: relative;
+}
+.required{
+    display: flex;
+    gap: 0.5rem;
+}
+
+.required input[type=text]{
+    width: calc(100% - 15% - 0.5rem);
+    height: 2rem;
+    padding: 1rem;
+    font-size: 1rem;
+    outline: none;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+}
+.deleteBtn{
+    border: none;
+    background-color: rgb(252, 130, 130);
+    color: white;
+    border-radius: var(--border-radius);
+    width: 15%;
+    font-size: 1.0rem;
+}
+
+input[type=submit]{
+    bottom: 4.5rem;
+    left: 1rem;
+    width: calc(100% - 2rem);
+    position: fixed;
+}
+body{
+    margin-bottom: clamp(10rem, 3vw, 11rem); /* 푸터의 height 만큼 margin을 주어야지 스크롤이 가능하다. */
+}
+
+.box{
+    width: 100%;
+    min-height: 16rem;
+    border-radius: var(--border-radius);
+    margin: 0.5rem 0 1rem 0;
+    box-shadow: 2px 2px 5px #dadada;
+    background-color: white;
+    padding: 1rem;
+}
+
+.categoryTop{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.categoryadd{
+    text-decoration: underline;
+    font-size: 1rem;
+    margin: 0;
+    background-color: rgba(255, 255, 255, 0);
+}
+
+.line-through{
+    text-decoration: line-through;
+}
+
+.categoryInfo{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+
+}
+.categoryTitle, .categoryPriceBox{
+    margin: 0;
+}
+
+h4{
+    margin-bottom: 0.5rem;
+}
+.imglist{
+    margin-bottom: 1rem;
+}
+
+.passPrice{
+    color: var(--main-color);
+    margin: 0.5rem;
+}
+
+hr{
+    border: 1px solid #dadada;
+    margin-bottom: 1rem;
+}
+
+.modal{
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #b3b3b3b1;
+    width: 100%;
+    height: 100%;
+}
+
+.modalBox{
+    width: calc(100% - 5rem);
+    height: calc(100% - 10rem);
+    border-radius: var(--border-radius);
+    background-color: white;
+    padding: 2rem;
+}
+
+.categoryList{
+    width: 100%;
+    height: 100%;
+    overflow: scroll;
+    scroll-behavior: smooth;
+}
+
+
+.repairCategory{
+    width: 100%;
+    height: 3rem;
+    font-size: 1.1rem;
+    margin: 0 0 0.5rem 0;
+    text-align: left;
+    border-bottom: 1px solid #dadada;
+}
+
+.modal.hidden{
+    display: none;
+}
+
+.imgbox img{
+    width: 100%;
+    height: 100%;
+}
+
+.box.empty{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #b8b8b8;
+    min-height: 5rem;
+}
+
+.message{
+    color: red;
+    font-size: 0.9rem;
+    margin-left: 0.3rem;
+}
+
+.error{
+    margin-bottom: 0.5rem;
+}
+

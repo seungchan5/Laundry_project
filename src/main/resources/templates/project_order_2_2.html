@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>수선 :: 세탁해조</title>
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/project_footer.css">
+    <link rel="stylesheet" href="/css/project_header.css">
+    <link rel="stylesheet" href="/css/project_order_2_2.css">
+    <script src="/js/project_order_2_2.js"></script>
+</head>
+<body>
+<div class='container'>
+    <h2>수선</h2>
+    <div class='explain'>
+        <span>수선목록에서 카테고리를 선택하신 후 수선이 필요한 부분을 찍어서 보내주세요.</span>
+    </div>
+    <div class='categoryTop'>
+        <h3>수선목록</h3>
+        <button type='button' class='categoryadd' id="categoryAdd">추가</button>
+    </div>
+    <form action="./laundry/repair/order" method="post" id='formTag' enctype="multipart/form-data">
+        <div class='warp'>
+            <div class='box' th:if="${reload != null}" th:each="item, iterStat : ${reload}">
+                <div class='categoryInfo'>
+                    <h4 class='categoryTitle' th:text="${item.repairCategory.title}">다운패딩 털 충전 롱패딩 (거위)</h4>
+                    <div class='categoryPriceBox'>
+                        <th:block th:if="${memberShip}">
+                            <span class='passPrice' th:text="${#numbers.formatInteger(item.repairCategory.price * percent, 3, 'COMMA')} + '원'"></span>
+                            <span class='commonPrice line-through' th:text="${#numbers.formatInteger(item.repairCategory.price, 3, 'COMMA')} + '원'"></span>
+                        </th:block>
+                        <th:block th:unless="${memberShip}">
+                            <span class='commonPrice' th:text="${#numbers.formatInteger(item.repairCategory.price, 3, 'COMMA')} + '원'"></span>
+                        </th:block>
+                    </div>
+                </div>
+                <hr>
+                <span class="imgTop">사진 첨부
+                    <span class='message'>1장 이상 필수 </span>
+                </span>
+                <div class='imglist'>
+                    <div class='imgbox fixbox'>
+                        <svg xmlns="http://www.w3.org/2000/svg" class='addImg' viewBox="0 0 448 512"><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
+                        <span>사진</span>
+                        <input type="file" th:name="${item.repairCategory} + '-' + ${iterStat.count}" th:id="${item.repairCategory} + '-' + ${iterStat.count}" multiple hidden accept=".jpg,.png">
+                    </div>
+                    <th:block th:each="findByRepairId : ${uploadImage}" th:if="${findByRepairId.key == item.repairId}"> <!-- Map<Long, List<String>> 에서 key == repairId와 같은것만 출력 -->
+                        <div class='imgbox' th:each="img : ${findByRepairId.value}"> <!-- List<String> 에서 출력-->
+                            <img th:src="@{ '/images/repair_images/' + ${img} }" alt="">
+                            <svg xmlns="http://www.w3.org/2000/svg" class='deleteImg' viewBox="0 0 384 512"><path d="M376.6 84.5c11.3-13.6 9.5-33.8-4.1-45.1s-33.8-9.5-45.1 4.1L192 206 56.6 43.5C45.3 29.9 25.1 28.1 11.5 39.4S-3.9 70.9 7.4 84.5L150.3 256 7.4 427.5c-11.3 13.6-9.5 33.8 4.1 45.1s33.8 9.5 45.1-4.1L192 306 327.4 468.5c11.3 13.6 31.5 15.4 45.1 4.1s15.4-31.5 4.1-45.1L233.7 256 376.6 84.5z"/></svg>
+                        </div>
+                    </th:block>
+                </div>
+                <div class='error'></div>
+                <div class='required'>
+                    <input type="text" th:name="'required-' + ${iterStat.count}" th:id="'required-' + ${iterStat.count}" placeholder='요청사항을 작성해주세요.' th:value="${item.repairRequest}">
+                    <button type='button' class='deleteBtn'>삭제</button>
+                </div>
+            </div>
+        </div>
+        <div class='box empty'>
+            추가를 눌러 카테고리를 선택해주세요.
+        </div>
+
+        <input type="submit" value="다음">
+    </form>
+    <div class='modal hidden'>
+        <div class='modalBox'>
+            <div class='categoryList'>
+                <th:block th:each="category : ${repairCategory}">
+                    <button type='button' class='repairCategory' th:id='${category}' th:value='${category.price}' th:text="${category.title}"></button>
+                </th:block>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script th:inline="javascript">
+    let percent = [[${percent}]];
+    var memberShip = (percent != null && percent != '') ? true : false;
+function updateSquareHeight() {
+    const imageboxes = document.querySelectorAll('.imgbox');
+    console.info(imageboxes);
+    imageboxes.forEach(div => {
+      const width = div.clientWidth;
+      console.log(width);
+      div.style.height = `${width}px`; // 너비와 같은 값으로 높이 설정
+    });
+  }
+  // 윈도우 크기 변경 시 높이 업데이트
+  window.addEventListener('resize', updateSquareHeight);
+  
+  // 초기화
+  updateSquareHeight();
+</script>
+</html>

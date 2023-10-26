@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>주문정보 :: 세탁해조</title>
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/project_footer.css">
+    <link rel="stylesheet" href="/css/project_header.css">
+    <link rel="stylesheet" href="/css/project_order_confirm.css">
+    <link rel="stylesheet" href="/css/calendar.css">
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="/js/project_order_confirm.js"></script>
+</head>
+<header th:replace="~{/common/project_header :: header}"></header>
+<body>
+
+<div class='container'>
+    <form action="" method="post">
+        <h2>주문정보</h2>
+        <div class='info'>
+            <span class='content'>세탁패스는 실제 결제일 기준으로 적용되므로, <br> 실제 결제금액고 차이가 있을 수 있습니다.</span>
+        </div>
+        <h4>주문내용</h4>
+        <table class='orderOption'>
+            <tr>
+                <th class='content' >선택사항</th>
+                <td class='content' th:text="${quickLaundry ? '빠른세탁' : '일반세탁'}"></td>
+            </tr>
+            <tr>
+                <th class='content'>세탁옵션</th>
+                <td class="content" th:text="${info}"></td>
+                <input type="hidden" name="laundryOptioin" th:value="${info}">
+            </tr>
+        </table>
+<!--        <hr>-->
+<!--        <h4>헌 옷 수거</h4>-->
+<!--        <div class='info'>-->
+<!--            <span class='content'>헌 옷 수거에 대한 내용</span>-->
+<!--        </div>-->
+        <hr class='bighr'>
+        <h4>수거 / 배송 정보</h4>
+
+        <th:block th:if="${quickLaundry}">
+            <div class="notice">
+                <span>빠른세탁은 주문이 완료되는대로 기사님이 배정됩니다.</span>
+            </div>
+        </th:block>
+        <th:block th:unless="${quickLaundry}">
+            <input type="hidden" name="takeDate" th:value="${dateTime.takeDate} + ' ' + ${dateTime.takeDateTime}">
+            <input type="hidden" name="deliveryDate" th:value="${dateTime.deliveryDate} + ' ' + ${dateTime.deliveryDateTime}">
+
+            <nav class="subCal_location start">
+                <div class='modal startModal'>
+                    <span class='content subCal_span' th:text="'수거 ' + ${dateTime.takeDate} + ' ' + ${dateTime.takeDateTime} + '시 부터'" id='pickup'></span>
+                </div>
+            </nav>
+            <nav class="subCal_location end">
+                <div class='modal endModal'>
+                    <span class='content subCal_span' th:text="'배송 ' + ${dateTime.deliveryDate} + ' ' + ${dateTime.deliveryDateTime} +  '시 까지'" id='returns'></span>
+                </div>
+            </nav>
+        </th:block>
+
+        <hr>
+        <table>
+            <tr>
+                <th>주소</th>
+                <td><a class='change' id="changeAddress">변경</a></td>
+            </tr>
+        </table>
+        <span class='content title' th:text="${address.memberAddress}" id="address"></span>
+        <input type="hidden" name="zipcode" th:value="${address.zipcode}" id="zipcode">
+        <input type="hidden" name="address" th:value="${address.memberAddress}" id="addressInput">
+        <table class='addressDetails'>
+            <tr>
+                <th class='content'>상세주소</th>
+                <td></td>
+            </tr>
+        </table>
+        <input type="text" name="addressDetails" th:value="${address.memberAddressDetails}" placeholder='OO아파트 101동 101호'>
+        <hr>
+        <table>
+            <tr>
+                <th>수거 / 배송 위치</th>
+                <td><a class='change' id="changeLocation">변경</a></td>
+            </tr>
+        </table>
+        <div class='location content title' th:id="location">문 앞</div>
+        <input type='hidden' name='location' value="문 앞">
+        <hr>
+        <table>
+            <tr>
+                <th>쿠폰
+                    <span th:text="'사용 가능한 쿠폰 ' + ${couponCount} + '장 >'"></span>
+                </th>
+                <td></td>
+            </tr>
+        </table>
+        <button class='coupon' id="selectCoupon" type="button">
+            <span class='couponName content'>적용안함</span>
+            <svg xmlns="http://www.w3.org/2000/svg" style='rotate: 180deg;' viewBox="0 0 512 512"><path d="M290.5 51.8C283.3 39.5 270.2 32 256 32s-27.3 7.5-34.5 19.8l-216 368c-7.3 12.4-7.3 27.7-.2 40.1S25.7 480 40 480H472c14.3 0 27.6-7.7 34.7-20.1s7-27.8-.2-40.1l-216-368z"/></svg>
+        </button>
+        <input type="hidden" name="coupon">
+
+        <hr>
+
+        <h4>공동현관 비밀번호</h4>
+        <div class='radioBox'>
+            <div class='box'>
+                <input type="radio" name="isPw" id="O" value="O">
+                <span class="custom-radio" id='pwO' onclick='toogleRadio(this)'></span>
+                <input type="text" name="password" id="password" placeholder='예) 1234' disabled>
+            </div>
+            <div class='box'>
+                <input type="radio" name="isPw" id="X" value="X">
+                <span class="custom-radio" id='pwX' onclick='toogleRadio(this)'></span>
+                <label for="X" class='content'>비밀번호 없음</label>
+            </div>
+            <div class='error disabled'></div>
+        </div>
+        <h4>요청사항</h4>
+        <input type="text" name="request" id="request">
+        <hr class='bighr'>
+
+        <h4>결제 예상금액</h4>
+        <table>
+            <tr>
+                <th class='content' th:text="${delivery.title}">배송비</th>
+                <td class='content' th:text="'+ ' + ${#numbers.formatInteger(delivery.price, 3, 'COMMA') + '원'}"></td>
+            </tr>
+            <tr th:if="${infoPrice.isCommon}">
+                <th class='content' th:text="${common.title} + ' 기준'"></th>
+                <td class='content' th:text="'+ ' + ${#numbers.formatInteger(common.price, 3, 'COMMA')} + '원'"></td>
+            </tr>
+        </table>
+        <table class='additional dry' th:if="${infoPrice.isDry}">
+            <tr>
+                <th class='content'>드라이클리닝</th>
+<!--                <td class='content' th:text="'+ ' + ${#numbers.formatInteger(dryTotalPrice, 3, 'COMMA')} + '원'"></td>-->
+            </tr>
+            <tr class='details'>
+                <table class='detail_info'>
+                    <tr th:each="item : ${dry}">
+                        <th class='detailcontent'>
+                            <span class='content_name' th:text=${item.title}></span>
+                        </th>
+                        <td class='detailcontent' th:text="'+ ' + ${#numbers.formatInteger(item.price, 3, 'COMMA')} + '원'"></td>
+                    </tr>
+                </table>
+            </tr>
+        </table>
+        <table class='additional repair' th:if="${infoPrice.isRepair}">
+            <tr>
+                <th class='content'>수선</th>
+<!--                <td class='content' th:text="'+ ' + ${#numbers.formatInteger(repairTotalPrice, 3, 'COMMA')} + '원'"></td>-->
+            </tr>
+            <tr class='details'>
+                <table class='detail_info'>
+                    <tr th:each="item : ${repair}">
+                        <th class='detailcontent'>
+                            <span class='content_name' th:text="${item.title}"></span>
+                        </th>
+                        <td class='detailcontent' th:text="'+ ' + ${#numbers.formatInteger(item.price, 3, 'COMMA')} + '원'"></td>
+                    </tr>
+                </table>
+            </tr>
+        </table>
+
+        <h4>예상 할인 금액</h4>
+        <table>
+            <tr th:if="${memberShip}">
+                <th class='content'>패스</th>
+                <td class='content'  th:text="'- ' + ${#numbers.formatInteger(discount, 3, 'COMMA')} + '원'"></td>
+            </tr>
+            <tr>
+                <th class='content' >쿠폰</th>
+                <td class='content couponPrice'>- 0원</td>
+            </tr>
+            <tr>
+                <th class='content'>전체금액</th>
+                <td class='content' id="totalTd" th:text="${#numbers.formatInteger(totalPrice, 3, 'COMMA') + '원'}"></td>
+                <input type="hidden" name="total" id="total" th:value="${totalPrice}">
+            </tr>
+        </table>
+        <div class='fixbox'>
+            <span>검수과정에서 결제금액이 변경될 수 있습니다.</span>
+            <input type="submit" value="신청하기">
+        </div>
+    </form>
+</div>
+</body>
+<footer th:replace="~{/common/project_footer :: footer}"> </footer>
+</html>

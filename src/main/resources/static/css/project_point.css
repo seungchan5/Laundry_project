@@ -1,0 +1,51 @@
+.remainder{
+   border-bottom: 2px solid grey;
+   width: 100%;
+   padding-bottom: 2.5rem;
+   margin-bottom: 1.5rem;
+   position: relative;
+}
+.remainder p{
+   display: inline-block;
+   margin-left: 1rem;
+}
+.remainder .point{
+   float: right;
+   margin-right: 0.5rem;
+   font-size: xx-large;
+   font-weight: bold;
+   color: var(--main-font-color);
+}
+.point_list{
+   padding: 0px;
+}
+.point_list li{
+   border-bottom: 1px solid #e2e1e1;
+   width: 90%;
+   margin-bottom: 1rem;
+   height: 5rem;
+}
+.point_list li div{
+   position: relative;
+   overflow: auto;
+}
+.point_list li div div:first-child{
+   float: left;
+}
+.point_list li div div:last-child{
+   float: right;
+}
+.point_list .none_point{
+   text-align: center;
+   padding-top: 1.5rem;
+   color: #666;
+
+}
+.point_list div:first-child div{
+   font-size: large;
+}
+.point_list div:last-child div{
+   margin-top: 0.8rem;
+   font-size: small;
+   color: grey;
+}

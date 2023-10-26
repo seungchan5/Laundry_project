@@ -1,0 +1,222 @@
+nav{
+    display: inline-block;
+}
+.subCalBox{
+    display: flex;
+}
+
+.subCal_location > * span{
+    display: inline-block;
+    text-overflow: initial;
+    overflow: initial;
+    white-space: initial;
+    width: initial;
+}
+
+.subCalendar{
+    width: 100%;
+    padding: 1rem;
+    flex-wrap: wrap;
+    background-color: white;
+    margin: 0;
+    display: none;
+}
+
+
+.subCal .subCalTop{
+    text-align: center;
+    font-size: 1.3rem;
+    margin-top: 0.6rem;
+    font-weight: bold;
+    display: flex;
+    border: 0;
+    align-items: center;
+    justify-content: center;
+}
+
+.subCal .subCalTop *{
+    margin: 0;
+}
+
+.subCal ul{
+    display: flex;
+    flex-wrap: wrap;
+    text-align: center;
+    padding: 0;
+    margin: 0.7rem 0;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+
+.subCal ul li{
+    width: calc(100% / 7);
+    position: relative;
+    margin: 0.4rem 0;
+}
+
+.subDay{
+    font-size: 1.3rem;
+    cursor: pointer;
+}
+.subDay:hover{
+    background-color: #b0b0b0;
+    border-radius: 1rem;
+}
+
+.subCal div #subPreBtn, #subPreBtnE{
+    margin-right: 1rem;
+    display: flex;
+    align-items: center;
+}
+.subCal div #subPreBtn svg, #subPreBtnE svg{
+    width:0.8rem;
+    fill: black;
+}
+
+.subCal div #subNextBtn, #subNextBtnE{
+    margin-left: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.subCal div #subNextBtn svg, #subNextBtnE svg{
+    width:0.8rem;
+    fill: black;
+}
+
+.hidden{
+    display: none;
+}
+
+.select{
+    background-color: yellow;
+}
+
+.disabled{
+    color: #b0b0b0;
+}
+
+
+.disabled:hover{
+    background-color: white;
+}
+
+.today{
+    background-color: rgb(179, 189, 255);
+    border-radius: 1rem;
+}
+
+
+.subCal_location{
+    width: 100%;
+    margin: 0;
+    box-shadow: 2px 2px 5px #dadada;
+    border-radius: var(--border-radius);
+    background-color: white;
+}
+
+.yearMonth > span{
+    font-size: 1.3rem;
+}
+
+.possible{
+    background-color: rgb(62, 227, 98);
+}
+
+.impossible{
+    background-color: rgb(239, 95, 95);
+}
+/* 캘린더 종료 */
+
+.enabledBox{
+    width: 20rem;
+    margin: 0;
+}
+
+.enabledDate{
+    margin: 0;
+    width: 20rem;
+    height: 2.5rem;
+    line-height: 2.5rem;
+    text-align: center;
+    font-size: 1.1rem;
+    border: 3px solid var(--border-color);
+    border-radius: 0.9rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.enabledDate span{
+    margin: 0;
+}
+
+.enabledDate svg{
+    width: 0.5rem;
+    margin: 0;
+}
+
+.subCalTime{
+    display: none;
+    width: 100%;
+    box-shadow: 2px 2px 5px #dadada;
+    border-radius: var(--border-radius);
+    margin: 1rem 0;
+    padding: 1rem;
+    column-gap: 0.5rem;
+    row-gap: 1rem;
+    flex-wrap: wrap;
+    background-color:white;
+}
+.active{
+    display: flex;
+}
+
+.subCalTime label{
+    display: inline-block;
+    font-size: 1.2rem;
+    box-shadow: 2px 2px 5px #dadada;
+    border-radius: 2rem;
+    width: calc(100% / 4.5);
+    height: 2.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.modal{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+.modal.hidden{
+    display: none;
+}
+.subCal_span{
+    margin: 0 0 0 1rem;
+}
+.subCal_location{
+    height: 3rem;
+    overflow: hidden;
+    transition: height 0.3s ease;
+}
+
+.calActive{
+    height: 21.5rem;
+}
+
+.title{
+    margin: 1rem;
+}
+.calDisabled{
+    color: #ccc;
+}
+.disabled{
+    display: none;
+}
+input[type=radio] {
+    display: none;
+}
