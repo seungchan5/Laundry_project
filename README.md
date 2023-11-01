@@ -16,7 +16,7 @@
 -   Tymeleaf 3.1.2
 -   MyBatis 2.3.1
 -   Oracle 11g
--   IntelliJ
+-   IntelliJ 2023.2.1
   
 #### `Front-end`
 
