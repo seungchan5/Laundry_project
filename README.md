@@ -46,7 +46,7 @@
   - 회원 보유 포인트 및 포인트 사용내역 조회
   - 회원 주소, 전화번호, 비밀번호 변경
   - 회원탈퇴
-  - 카카오톡 공유를 통한 친구 초대 `laundry/src/resources/js/project_invire.js` : [코드확인](https://github.com/seungchan5/Laundry_project/blob/main/src/main/resources/static/js/project_invite.js)
+  - 카카오톡 공유를 통한 친구 초대 `laundry/src/resources/js/project_invite.js` : [코드확인](https://github.com/seungchan5/Laundry_project/blob/main/src/main/resources/static/js/project_invite.js)
 
   </br>
 
