@@ -9,20 +9,15 @@
 
 ## 2. 개발도구 및 환경
 
-#### `Back-end`
-
--   Java 11 /Gradle
--   Spring Boot 2.7.14
--   Tymeleaf 3.1.2
--   MyBatis 2.3.1
+-   Java 11 / Gradle
 -   Oracle 11g
+-   Apache Tomcat 9.0.78
+-   Spring Boot 2.7.14
+-   MyBatis 2.3.1
+-   jQuery 3.7.1
+-   Thymeleaf 3.1.2
 -   IntelliJ 2023.2.1
-  
-#### `Front-end`
-
--   HTML5
--   CSS3
--   Javascript
+-   Git, Github
 
 </br>
 
