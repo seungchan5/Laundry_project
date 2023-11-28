@@ -22,18 +22,31 @@
 </br>
 
 ## 3. 프로젝트 주요 기능
-- 회원가입 및 로그인(NAVER, KAKAO 로그인 API포함)
-- 세탁신청 및 결제
-- 정기 구독권 신청 및 결제
+- 회원
+  - 회원가입 및 로그인(NAVER, KAKAO 로그인 API포함)
+  - 세탁신청 및 결제
+  - 정기 구독권 신청 및 결제
+  
+
+- 배달원
+  - 실시간 배달 주문 목록 조회
+  - 티맵 API를 통한 위치 기반 거리 계산
+  - 카카오 내비 API를 통한 경로 안내
+  - 배달 현황 등록
+  
+ 
+- 검수자
+  - 검수사항 등록 및 수정
+
 </br>
 
 ## 4. 나의 역할
-- 마이페이지 기능 구현
+- 마이페이지 기능 구현 `Controller : laundry/controller/MypageController.java` : [코드확인](https://github.com/seungchan5/Laundry_project/blob/main/src/main/java/aug/laundry/controller/MypageController_osc.java)
   - 회원 쿠폰리스트 조회
   - 회원 보유 포인트 및 포인트 사용내역 조회
-  - 카카오톡 공유를 통한 친구 초대
   - 회원 주소, 전화번호, 비밀번호 변경
   - 회원탈퇴
+  - 카카오톡 공유를 통한 친구 초대 `laundry/src/resources/js/project_invire.js` : [코드확인](https://github.com/seungchan5/Laundry_project/blob/main/src/main/resources/static/js/project_invite.js)
 
   </br>
 
